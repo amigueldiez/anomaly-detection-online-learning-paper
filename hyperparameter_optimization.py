@@ -333,11 +333,11 @@ def test_model(model, final_test_dataset, dataset_test_labeled, parameter):
         elif recall >= 0.90:
             saveData(filename_log[2]+"Recall.log", parameter)
 
-    # save_plot_accuracies(filename_plot_acc, accuracies)
-    # save_plot_recall(filename_plot_recall, recalls)
-    # save_plot_false_positive(filename_plot_fpr, false_positives)
-    # save_plot_f1_score("plot_f1.png", f1_scores)
-    # save_plot_precision("plot_precision.png", precision_list)
+    save_plot_accuracies(filename_plot_acc, accuracies)
+    save_plot_recall(filename_plot_recall, recalls)
+    save_plot_false_positive(filename_plot_fpr, false_positives)
+    save_plot_f1_score("plot_f1.png", f1_scores)
+    save_plot_precision("plot_precision.png", precision_list)
     # save_plot_anomalies(filename_plot_anomalies, anomalies)
     # save_plot_histogram()
 
@@ -379,12 +379,12 @@ def save_plot_f1_score(filename_plot,f1_score):
     print("📊 | Saving plot")
     plt.savefig(filename_plot)
 
-def save_plot_precission(filename_plot,precission):
+def save_plot_precision(filename_plot,precision):
     plt.figure()
-    plt.plot(precission)
+    plt.plot(precision)
     plt.xlabel('Samples')
-    plt.ylabel('Precission')
-    plt.title('Precission of the model')
+    plt.ylabel('Precision')
+    plt.title('Precision of the model')
     print("📊 | Saving plot")
     plt.savefig(filename_plot)
 
