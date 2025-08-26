@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Miguel-Diez"
+    given-names: "Alberto"
+    orcid: "https://orcid.org/0009-0006-9969-3047"
+    affiliation: "University of León, Robotics Group. Campus de Vegazana S/N., León, Spain"
+  - family-names: "Campazas-Vega"
+    given-names: "Adrián"
+    orcid: "https://orcid.org/0000-0001-8237-5962"
+    affiliation: "University of León, Robotics Group. Campus de Vegazana S/N., León, Spain"
+  - family-names: "Guerrero-Higueras"
+    given-names: "Ángel Manuel"
+    orcid: "https://orcid.org/0000-0001-8237-5962"
+    affiliation: "University of León, Robotics Group. Campus de Vegazana S/N., León, Spain"
+  - family-names: "Álvarez-Aparicio"
+    given-names: "Claudia"
+    orcid: "https://orcid.org/0000-0002-7465-8054"
+    affiliation: "University of León, Robotics Group. Campus de Vegazana S/N., León, Spain"
+  - family-names: "Matellán-Olivera"
+    given-names: "Vicente"
+    orcid: "https://orcid.org/0000-0001-7844-9658"
+    affiliation: "University of León, Robotics Group. Campus de Vegazana S/N., León, Spain"
+title: "Anomaly detection in network flows using unsupervised online machine learning"
+version: 1.0.0
+date-released: 2025-08-26
+url: "https://github.com/amigueldiez/anomaly-detection-online-learning-paper"
