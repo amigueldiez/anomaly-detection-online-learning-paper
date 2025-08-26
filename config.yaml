@@ -1,7 +1,9 @@
-# Configuración de archivo y logs
+# Configuración general
 
+# Path to dataset
 FILENAME: '../NF-UNSW-NB15.csv'
 
+# Log configuration
 logs_save:
   - 'accuracy'
   - 'recall'
@@ -15,17 +17,17 @@ filename_plot_recall: 'plot_recall.png'
 filename_plot_fpr: 'plot_fpr.png'
 filename_plot_anomalies: 'plot_anomalies.png'
 
-# Configuración preprocesado IPs
+# IP preprocess configuration
 # IPv4 or IP_DOMAINS
 TYPE_IP: 'IPv4'
 
-# Unifica L_SRC_PORT, L_DST_PORT y DIRECTION en una sola columna con el purto signicativo
+# Unifies L_SRC_PORT, L_DST_PORT, and DIRECTION into a single column with the significant port
 SIGNIFICANT_PORT: False
 
-# Número de flujso benignos que se añaden adicionalmente al conjunto de evaluación
+# Number of benign flows that are additionally added to the evaluation set
 BENIGN_FLOWS_ADDITIONAL: 0
 
-# Configuración de escalado.
+# Scaling configuration
 scaling_type:
   - 'MaxAbsScaler'
   # - 'MinMaxScaler'
@@ -33,7 +35,7 @@ scaling_type:
   # - 'RobustScaler'
   # - 'StandardScaler'
 
-# Parámetros del modelo
+# Model parameters
 nu_value:
   - 0.05
   # - 0.06
@@ -80,9 +82,8 @@ learning_rate:
   # - 0.000005
   # - 0.000001
 
-# Columnas a mantener del dataset
+# Columns to keep from the dataset
 FEATURES:
-  # Lo comentado es lo que uso en los datasets del paper
   - 'IPV4_SRC_ADDR'
   - 'IPV4_DST_ADDR'
   - 'L4_DST_PORT'
@@ -93,6 +94,6 @@ FEATURES:
   - 'FLOW_DURATION_MILLISECONDS'
   - 'Label'
 
-# Configuración de los flujos
+# Flows configuration
 FLOWS_TRAIN_SCALER: 1000
 FLOWS_TRAIN_OML: 100000
