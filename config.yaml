@@ -27,7 +27,7 @@ SIGNIFICANT_PORT: False
 # Number of benign flows that are additionally added to the evaluation set
 BENIGN_FLOWS_ADDITIONAL: 0
 
-# Scaling configuration
+# Scaling configuration to test
 scaling_type:
   - 'MaxAbsScaler'
   # - 'MinMaxScaler'
@@ -35,7 +35,7 @@ scaling_type:
   # - 'RobustScaler'
   # - 'StandardScaler'
 
-# Model parameters
+# Model parameters to test
 nu_value:
   - 0.05
   # - 0.06
