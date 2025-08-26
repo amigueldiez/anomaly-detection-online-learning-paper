@@ -1,4 +1,4 @@
-# Anomaly detection in network flows using unsupervised online machine learningano
+# Anomaly detection in network flows using unsupervised online machine learning
 
 ## Acknowledgements
 
