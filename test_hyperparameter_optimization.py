@@ -11,6 +11,7 @@ sys.path.insert(0, REPO_ROOT)
 import pandas as pd
 
 import hyperparameter_optimization as hpo
+import multiexecution as me
 
 
 def make_labeled_df(n_benign, n_anomalous):
@@ -209,6 +210,24 @@ class TestGenerateDatasetIntegration(unittest.TestCase):
         for key in ("tp", "tn", "fp", "fn", "accuracy", "precision", "recall", "false_positive", "f1"):
             self.assertIn(key, metrics)
         self.assertEqual(len(curves["accuracy"]), len(scaled["validation"]))
+
+
+class TestMeanStd(unittest.TestCase):
+    def test_empty(self):
+        self.assertEqual(me.mean_std([]), (0.0, 0.0))
+
+    def test_single_value(self):
+        self.assertEqual(me.mean_std([5.0]), (5.0, 0.0))
+
+    def test_mean_and_sample_std(self):
+        mean, std = me.mean_std([1.0, 2.0, 3.0, 4.0])
+        self.assertAlmostEqual(mean, 2.5)
+        self.assertAlmostEqual(std, (5.0 / 3.0) ** 0.5)
+
+    def test_two_values(self):
+        mean, std = me.mean_std([2.0, 4.0])
+        self.assertAlmostEqual(mean, 3.0)
+        self.assertAlmostEqual(std, 2.0 ** 0.5)
 
 
 if __name__ == "__main__":
