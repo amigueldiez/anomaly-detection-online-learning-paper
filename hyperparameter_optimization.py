@@ -42,6 +42,8 @@ TYPE_IP = config['TYPE_IP']
 SIGNIFICANT_PORT = config['SIGNIFICANT_PORT']
 LOGS_SAVE = config['logs_save']
 BENIGN_FLOWS_ADDITIONAL = config['BENIGN_FLOWS_ADDITIONAL']
+VALIDATION_RATIO = config['VALIDATION_RATIO']
+SELECTION_METRIC = config['SELECTION_METRIC']
 
 
 probability_preprocessing = preprocessing.MinMaxScaler()
@@ -70,8 +72,113 @@ def is_valid_ipv6(ip):
     ipv6_pattern = re.compile(r"^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$")
     return ipv6_pattern.match(ip) and all(0 <= int(part, 16) <= 65535 for part in ip.split(':'))
 
+#############################################################
+# Dataset splitting and evaluation helpers                  #
+#############################################################
+
+# Metrics for which a lower value is better (used by select_best_parameter)
+LOWER_IS_BETTER = {'false_positive', 'fpr'}
+
+
+def split_flows(dataset, flows_train_scaler, flows_train_oml, validation_ratio=0.5, benign_additional=0):
+    """Split a labeled flow dataset into scaler, train, validation and test sets.
+
+    Benign flows are consumed in order to build the scaler and training (warm-up)
+    sets. The remaining benign flows and all the anomalous flows are then divided
+    between the validation and test sets. ``validation_ratio`` is the fraction of
+    the anomalous flows assigned to the validation set; the rest go to the test
+    set. Both sets are balanced so that they contain the same number of benign
+    and anomalous flows (plus ``benign_additional`` extra benign flows). The four
+    returned sets are pairwise disjoint.
+    """
+    if not 0.0 <= validation_ratio <= 1.0:
+        raise ValueError("validation_ratio must be between 0 and 1")
+
+    benign = dataset.loc[dataset['Label'] == 0]
+    anomalous = dataset.loc[dataset['Label'] == 1]
+
+    n_benign_required = flows_train_scaler + flows_train_oml
+    if len(benign) < n_benign_required:
+        raise ValueError("Not enough benign flows to build the scaler and training sets")
+
+    n_val_anomalies = int(round(len(anomalous) * validation_ratio))
+    n_val_benign = n_val_anomalies + benign_additional
+    n_test_benign = (len(anomalous) - n_val_anomalies) + benign_additional
+
+    remaining_benign = benign.iloc[n_benign_required:]
+    if len(remaining_benign) < n_val_benign + n_test_benign:
+        raise ValueError("Not enough benign flows to balance the validation and test sets")
+
+    validation = pd.concat([
+        remaining_benign.iloc[:n_val_benign],
+        anomalous.iloc[:n_val_anomalies],
+    ])
+    test = pd.concat([
+        remaining_benign.iloc[n_val_benign:n_val_benign + n_test_benign],
+        anomalous.iloc[n_val_anomalies:],
+    ])
+
+    return {
+        'scaler': benign.iloc[:flows_train_scaler].sample(frac=1),
+        'train': benign.iloc[flows_train_scaler:n_benign_required].sample(frac=1),
+        'validation': validation.sample(frac=1),
+        'test': test.sample(frac=1),
+    }
+
+
+def classification_metrics(labels, predictions):
+    """Compute confusion-matrix counts and derived metrics.
+
+    ``labels`` holds the ground-truth labels (1 = anomalous, 0 = benign) and
+    ``predictions`` holds booleans where True means the flow was flagged as
+    anomalous.
+    """
+    tp = tn = fp = fn = 0
+    for label, predicted in zip(labels, predictions):
+        if predicted and label == 1:
+            tp += 1
+        elif predicted and label == 0:
+            fp += 1
+        elif not predicted and label == 1:
+            fn += 1
+        else:
+            tn += 1
+
+    total = tp + tn + fp + fn
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+    recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+    return {
+        'tp': tp,
+        'tn': tn,
+        'fp': fp,
+        'fn': fn,
+        'accuracy': (tp + tn) / total if total > 0 else 0,
+        'precision': precision,
+        'recall': recall,
+        'false_positive': fp / (fp + tn) if (fp + tn) > 0 else 0,
+        'f1': 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0,
+    }
+
+
+def select_best_parameter(results, metric='f1'):
+    """Return the parameter with the best ``metric`` on the validation set.
+
+    ``results`` is a list of ``(parameter, metrics)`` pairs. For metrics such as
+    the false positive rate, lower is better.
+    """
+    if not results:
+        raise ValueError("No results to select from")
+    if metric in LOWER_IS_BETTER:
+        return min(results, key=lambda result: result[1][metric])[0]
+    return max(results, key=lambda result: result[1][metric])[0]
+
+
 # Dataset generation
-def generate_dataset(filename):
+def generate_dataset(filename, flows_train_scaler=FLOWS_TRAIN_SCALER,
+                     flows_train_oml=FLOWS_TRAIN_OML,
+                     validation_ratio=VALIDATION_RATIO,
+                     benign_additional=BENIGN_FLOWS_ADDITIONAL,
+                     save_logs=True):
 
     print('⏳ | Loading dataset...')
     dataset = pd.read_csv(filename, index_col=False)
@@ -116,28 +223,17 @@ def generate_dataset(filename):
         dataset = dataset.drop(columns=['L_SRC_PORT', 'L_DST_PORT'])
         dataset = dataset.rename(columns={'DIRECTION': 'PORT'})
 
-    datasets_training = dataset.loc[dataset['Label'] == 0].iloc[:FLOWS_TRAIN_SCALER + FLOWS_TRAIN_OML]
-    dataset_train_scaler = datasets_training.loc[dataset['Label'] == 0].iloc[:FLOWS_TRAIN_SCALER]
-    dataset_train_oml = datasets_training.loc[dataset['Label'] == 0].iloc[FLOWS_TRAIN_SCALER:FLOWS_TRAIN_SCALER + FLOWS_TRAIN_OML + 1]
-
-    dataset = dataset.drop(dataset_train_scaler.index)
-    dataset = dataset.drop(dataset_train_oml.index)
-
-    anomalies_samples = dataset.loc[dataset['Label'] == 1].shape[0]
-    benign_samples = dataset.loc[dataset['Label'] == 0].shape[0]
-
-    if benign_samples > anomalies_samples:
-        dataset = dataset.drop(dataset.loc[dataset['Label'] == 0].index[:benign_samples - anomalies_samples - BENIGN_FLOWS_ADDITIONAL])
-    else:
-        dataset = dataset.drop(dataset.loc[dataset['Label'] == 1].index[:anomalies_samples - benign_samples])
-        if BENIGN_FLOWS_ADDITIONAL > 0:
-            print("Not enough benign samples to add")
-
-    dataset_test_labeled = dataset
-
-    dataset_train_scaler = dataset_train_scaler.sample(frac=1).reset_index(drop=True)
-    dataset_train_oml = dataset_train_oml.sample(frac=1).reset_index(drop=True)
-    dataset_test_labeled = dataset_test_labeled.sample(frac=1).reset_index(drop=True)
+    splits = split_flows(
+        dataset,
+        flows_train_scaler=flows_train_scaler,
+        flows_train_oml=flows_train_oml,
+        validation_ratio=validation_ratio,
+        benign_additional=benign_additional,
+    )
+    dataset_train_scaler = splits['scaler'].reset_index(drop=True)
+    dataset_train_oml = splits['train'].reset_index(drop=True)
+    dataset_validation_labeled = splits['validation'].reset_index(drop=True)
+    dataset_test_labeled = splits['test'].reset_index(drop=True)
 
     if TYPE_IP == 'IP_DOMAINS' and 'IPV_SRC_ADDR' or 'IPv4_SRC_ADDR' in FEATURES and 'IPV_SRC_ADDR' or 'IPv4_SRC_ADDR' in FEATURES:
         encoder = preprocessing.OrdinalEncoder()
@@ -156,6 +252,13 @@ def generate_dataset(filename):
             dataset_train_oml.iloc[i, 0] = first_two_elements[0]
             dataset_train_oml.iloc[i, 1] = first_two_elements[1]
 
+        for i in range(len(dataset_validation_labeled)):
+            first_two_elements = {j: str(dataset_validation_labeled.iloc[i, j]) for j in range(2)}
+            encoder.learn_one(first_two_elements)
+            first_two_elements = encoder.transform_one(first_two_elements)
+            dataset_validation_labeled.iloc[i, 0] = first_two_elements[0]
+            dataset_validation_labeled.iloc[i, 1] = first_two_elements[1]
+
         for i in range(len(dataset_test_labeled)):
             first_two_elements = {j: str(dataset_test_labeled.iloc[i, j]) for j in range(2)}
             encoder.learn_one(first_two_elements)
@@ -169,67 +272,86 @@ def generate_dataset(filename):
     print('Number of normal samples in the train scaler dataset:\t', dataset_train_scaler.loc[dataset_train_scaler['Label'] == 0].shape[0])
     print('Number of normal samples in the trainOML dataset:\t', dataset_train_oml.loc[dataset_train_oml['Label'] == 0].shape[0])
     print('Number of anomaly samples in the trainOML dataset:\t', dataset_train_oml.loc[dataset_train_oml['Label'] == 1].shape[0])
+    print('Number of anomalies in the validation dataset:\t', dataset_validation_labeled.loc[dataset_validation_labeled['Label'] == 1].shape[0])
+    print('Number of normal samples in the validation dataset:\t', dataset_validation_labeled.loc[dataset_validation_labeled['Label'] == 0].shape[0])
     print('Number of anomalies in the test dataset:\t', dataset_test_labeled.loc[dataset_test_labeled['Label'] == 1].shape[0])
     print('Number of normal samples in the test dataset:\t', dataset_test_labeled.loc[dataset_test_labeled['Label'] == 0].shape[0])
     print('=====================================================================================================')
 
-    if 'accuracy' in LOGS_SAVE:
-        save_data_dataset(filename_log[0]+"Accuracy.log", dataset_train_scaler, dataset_train_oml, dataset_test_labeled)
-        save_data_dataset(filename_log[1]+"Accuracy.log", dataset_train_scaler, dataset_train_oml, dataset_test_labeled)
-        save_data_dataset(filename_log[2]+"Accuracy.log", dataset_train_scaler, dataset_train_oml, dataset_test_labeled)
-    if 'recall' in LOGS_SAVE:
-        save_data_dataset("50_70Recall.log", dataset_train_scaler, dataset_train_oml, dataset_test_labeled)
-        save_data_dataset(filename_log[0]+"Recall.log", dataset_train_scaler, dataset_train_oml, dataset_test_labeled)
-        save_data_dataset(filename_log[1]+"Recall.log", dataset_train_scaler, dataset_train_oml, dataset_test_labeled)
-        save_data_dataset(filename_log[2]+"Recall.log", dataset_train_scaler, dataset_train_oml, dataset_test_labeled)
+    if save_logs and 'accuracy' in LOGS_SAVE:
+        save_data_dataset(filename_log[0]+"Accuracy.log", dataset_train_scaler, dataset_train_oml, dataset_validation_labeled, dataset_test_labeled)
+        save_data_dataset(filename_log[1]+"Accuracy.log", dataset_train_scaler, dataset_train_oml, dataset_validation_labeled, dataset_test_labeled)
+        save_data_dataset(filename_log[2]+"Accuracy.log", dataset_train_scaler, dataset_train_oml, dataset_validation_labeled, dataset_test_labeled)
+    if save_logs and 'recall' in LOGS_SAVE:
+        save_data_dataset("50_70Recall.log", dataset_train_scaler, dataset_train_oml, dataset_validation_labeled, dataset_test_labeled)
+        save_data_dataset(filename_log[0]+"Recall.log", dataset_train_scaler, dataset_train_oml, dataset_validation_labeled, dataset_test_labeled)
+        save_data_dataset(filename_log[1]+"Recall.log", dataset_train_scaler, dataset_train_oml, dataset_validation_labeled, dataset_test_labeled)
+        save_data_dataset(filename_log[2]+"Recall.log", dataset_train_scaler, dataset_train_oml, dataset_validation_labeled, dataset_test_labeled)
 
-    dataset_train_no_labels = np.delete(dataset_train_oml, -1, axis=1)
-    dataset_test_no_labels = np.delete(dataset_test_labeled, -1, axis=1)
+    dataset_train_no_labels = dataset_train_oml.drop(columns=['Label']).to_numpy()
+    dataset_validation_no_labels = dataset_validation_labeled.drop(columns=['Label']).to_numpy()
+    dataset_test_no_labels = dataset_test_labeled.drop(columns=['Label']).to_numpy()
     dataset_train_scaler = dataset_train_scaler.drop(columns=['Label'])
 
-    return dataset_train_scaler, dataset_train_no_labels, dataset_test_no_labels, dataset_test_labeled
+    return {
+        'scaler': dataset_train_scaler,
+        'train': dataset_train_no_labels,
+        'validation': dataset_validation_no_labels,
+        'test': dataset_test_no_labels,
+        'validation_labeled': dataset_validation_labeled,
+        'test_labeled': dataset_test_labeled,
+    }
 
+
+
+def build_scaler(scaling_type):
+    if scaling_type == 'MaxAbsScaler':
+        return preprocessing.MaxAbsScaler()
+    elif scaling_type == 'MinMaxScaler':
+        return preprocessing.MinMaxScaler()
+    elif scaling_type == 'Normalizer':
+        return preprocessing.Normalizer()
+    elif scaling_type == 'RobustScaler':
+        return preprocessing.RobustScaler()
+    elif scaling_type == 'StandardScaler':
+        return preprocessing.StandardScaler()
+    raise ValueError(f"Unknown scaling type: {scaling_type}")
 
 
 # Scale datasets
-def scale_datasets(parameter, dataset_train_scaler, dataset_train_no_labels, dataset_test_no_labels):
+def scale_datasets(parameter, splits):
     print("⏳ | Scaling Datasets")
-    if parameter.get_scaling_type() == 'MaxAbsScaler':
-        scaler = preprocessing.MaxAbsScaler()
-    elif parameter.get_scaling_type() == 'MinMaxScaler':
-        scaler = preprocessing.MinMaxScaler()
-    elif parameter.get_scaling_type() == 'Normalizer':
-        scaler = preprocessing.Normalizer()
-    elif parameter.get_scaling_type() == 'RobustScaler':
-        scaler = preprocessing.RobustScaler()
-    elif parameter.get_scaling_type() == 'StandardScaler':
-        scaler = preprocessing.StandardScaler()
-    
+    scaler = build_scaler(parameter.get_scaling_type())
+
+    def as_dict(row):
+        return {i: value for i, value in enumerate(row)}
+
+    # The scaler is fitted on the scaler and training flows only, so that the
+    # validation and test flows remain held out.
+    for _, row in splits['scaler'].iterrows():
+        scaler.learn_one(as_dict(row))
+
     scaler_dataset_train = []
+    scaler_dataset_validation = []
     scaler_dataset_test = []
 
-    dataset_train_scaler = pd.DataFrame(dataset_train_scaler)
-    dataset_train_no_labels = pd.DataFrame(dataset_train_no_labels)
-    dataset_test_no_labels = pd.DataFrame(dataset_test_no_labels)
-
-    for _, row in dataset_train_scaler.iterrows():
-        row = {i: value for i, value in enumerate(row)}
+    # The training stream keeps updating the scaler (online scaling).
+    for _, row in pd.DataFrame(splits['train']).iterrows():
+        row = as_dict(row)
         scaler.learn_one(row)
+        scaler_dataset_train.append(list(scaler.transform_one(row).values()))
 
-    for _, row in dataset_train_no_labels.iterrows():
-        row = row.to_dict()
-        scaler.learn_one(row)
-        row = scaler.transform_one(row)
-        scaler_dataset_train.append(list(row.values()))
-
-    for _, row in dataset_test_no_labels.iterrows():
-        row = row.to_dict()
-        scaler.learn_one(row)
-        row = scaler.transform_one(row)
-        scaler_dataset_test.append(list(row.values()))
+    # Validation and test are only transformed, never used to fit the scaler.
+    for name, target in (('validation', scaler_dataset_validation), ('test', scaler_dataset_test)):
+        for _, row in pd.DataFrame(splits[name]).iterrows():
+            target.append(list(scaler.transform_one(as_dict(row)).values()))
 
     print("✅ | Dataset Scaled")
-    return scaler_dataset_train, scaler_dataset_test
+    return {
+        'train': scaler_dataset_train,
+        'validation': scaler_dataset_validation,
+        'test': scaler_dataset_test,
+    }
 
 
 
@@ -251,34 +373,38 @@ def train_model_OML(scaler_dataset_train, parameter):
         probability_preprocessing.learn_one({0: score})
         probability.update(probability_preprocessing.transform_one({0: score})[0])
     end_time = time.time()
-    print("OML Training time: ", end_time - start_time)
     print("✅ | Training phase completed")
-    return model
+    return model, end_time - start_time
 
 
-# Test model
-def test_model(model, final_test_dataset, dataset_test_labeled, parameter):
-    fp, fn, tp, tn = 0, 0, 0, 0
-    accuracies, recalls, false_positives, anomalies, precision_list, f1_scores = [], [], [], [], [], []
+# Evaluate a model over a labeled stream
+def evaluate_stream(model, dataset_no_labels, dataset_labeled):
+    """Run the online evaluation loop over a labeled stream.
 
-    start_time = time.time()
+    Returns a ``(metrics, curves)`` pair. ``metrics`` holds the final
+    confusion-matrix counts and the derived metrics, while ``curves`` holds the
+    cumulative evolution of each metric across the stream.
+    """
+    labels = list(dataset_labeled['Label'])
+    tp, tn, fp, fn = 0, 0, 0, 0
+    predictions = []
+    curves = {'accuracy': [], 'recall': [], 'false_positive': [], 'precision': [], 'f1': []}
 
-    for i, row in enumerate(final_test_dataset):
+    for i, row in enumerate(dataset_no_labels):
         if isinstance(row, list):
             row = {f'feature_{j}': value for j, value in enumerate(row)}
 
         score = model.score_one(row)
         anomalous = model.classify(score)
-        anomalies.append(anomalous)
+        predictions.append(anomalous)
 
         probability_preprocessing.learn_one({0: score})
         probability.update(probability_preprocessing.transform_one({0: score})[0])
-        rank = probability.cdf(probability_preprocessing.transform_one({0: score})[0])
 
         if not anomalous:
             model.learn_one(row)
 
-        label = dataset_test_labeled.iloc[i, -1]
+        label = labels[i]
 
         if anomalous and label == 1:
             tp += 1
@@ -289,20 +415,29 @@ def test_model(model, final_test_dataset, dataset_test_labeled, parameter):
         elif not anomalous and label == 1:
             fn += 1
 
-        accuracies.append((tp + tn) / (tp + tn + fp + fn))
-        recalls.append(tp / (tp + fn) if (tp + fn) > 0 else 0)
-        false_positives.append(fp / (fp + tn) if (fp + tn) > 0 else 0)
-        precision_list.append(tp / (tp + fp) if (tp + fp) > 0 else 0)
-        f1_scores.append(2 * (precision_list[i] * recalls[i]) / (precision_list[i] + recalls[i]) if (precision_list[i] + recalls[i]) > 0 else 0)
+        recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+        precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+        curves['accuracy'].append((tp + tn) / (tp + tn + fp + fn))
+        curves['recall'].append(recall)
+        curves['false_positive'].append(fp / (fp + tn) if (fp + tn) > 0 else 0)
+        curves['precision'].append(precision)
+        curves['f1'].append(2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0)
 
+    return classification_metrics(labels, predictions), curves
+
+
+# Test model
+def test_model(model, final_test_dataset, dataset_test_labeled, parameter):
+    start_time = time.time()
+    metrics, curves = evaluate_stream(model, final_test_dataset, dataset_test_labeled)
     end_time = time.time()
     print("Testing time: ", end_time - start_time)
 
-    accuracy = (tp + tn) / (tp + tn + fp + fn)
-    recall = tp / (tp + fn) if (tp + fn) > 0 else 0
-    false_positive = fp / (fp + tn)
-    precision = tp / (tp + fp) if (tp + fp) > 0 else 0
-    f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+    accuracy = metrics['accuracy']
+    recall = metrics['recall']
+    false_positive = metrics['false_positive']
+    precision = metrics['precision']
+    f1_score = metrics['f1']
 
     print("✅ | Testing phase completed")
     print("🟢 | Accuracy: ", accuracy)
@@ -310,7 +445,7 @@ def test_model(model, final_test_dataset, dataset_test_labeled, parameter):
     print("🟢 | False Positive Rate: ", false_positive)
     print("🟢 | Precision: ", precision)
     print("🟢 | F1 Score: ", f1_score)
-    print("TP: ", tp, "TN: ", tn, "FP: ", fp, "FN: ", fn)
+    print("TP: ", metrics['tp'], "TN: ", metrics['tn'], "FP: ", metrics['fp'], "FN: ", metrics['fn'])
 
     parameter.accuracy = accuracy
     parameter.recall = recall
@@ -333,11 +468,11 @@ def test_model(model, final_test_dataset, dataset_test_labeled, parameter):
         elif recall >= 0.90:
             saveData(filename_log[2]+"Recall.log", parameter)
 
-    save_plot_accuracies(filename_plot_acc, accuracies)
-    save_plot_recall(filename_plot_recall, recalls)
-    save_plot_false_positive(filename_plot_fpr, false_positives)
-    save_plot_f1_score("plot_f1.png", f1_scores)
-    save_plot_precision("plot_precision.png", precision_list)
+    save_plot_accuracies(filename_plot_acc, curves['accuracy'])
+    save_plot_recall(filename_plot_recall, curves['recall'])
+    save_plot_false_positive(filename_plot_fpr, curves['false_positive'])
+    save_plot_f1_score("plot_f1.png", curves['f1'])
+    save_plot_precision("plot_precision.png", curves['precision'])
     # save_plot_anomalies(filename_plot_anomalies, anomalies)
     # save_plot_histogram()
 
@@ -451,7 +586,7 @@ def saveData(log_file, parameter):
         log.write("False Positive Rate: " + str(parameter.get_false_positive()) + "\n\n")
         log.write("########################################################################### \n\n")
 
-def save_data_dataset(log_file,dataset_train_scaler,dataset_train_oml,dataset_test):
+def save_data_dataset(log_file, dataset_train_scaler, dataset_train_oml, dataset_validation, dataset_test):
     log = open(log_file, "w")
     log.write('✅ | Datasets ready' + " \n")
 
@@ -459,35 +594,61 @@ def save_data_dataset(log_file,dataset_train_scaler,dataset_train_oml,dataset_te
     log.write('Number of normal samples in the train Scaler dataset: '+ str(dataset_train_scaler.loc[dataset_train_scaler['Label'] == 0].shape[0])+ " \n" )
     log.write('Number of normal samples in the trainOML dataset: '+ str(dataset_train_oml.loc[dataset_train_oml['Label'] == 0].shape[0])+ " \n" )
     log.write('Number of anomaly samples in the trainOML dataset: '+ str(dataset_train_oml.loc[dataset_train_oml['Label'] == 1].shape[0])+ " \n" )
+    log.write('Number of anomalies in the validation dataset: '+ str(dataset_validation.loc[dataset_validation['Label'] == 1].shape[0])+ " \n" )
+    log.write('Number of normal samples in the validation dataset: '+ str(dataset_validation.loc[dataset_validation['Label'] == 0].shape[0])+ " \n" )
     log.write('Number of anomalies in the test dataset: '+ str(dataset_test.loc[dataset_test['Label'] == 1].shape[0])+ " \n" )
     log.write('Number of normal samples in the test dataset: ' + str(dataset_test.loc[dataset_test['Label'] == 0].shape[0])+ " \n" )
-    log.write('====================================================================================================='" \n \n \n" )
+    log.write('=====================================================================================================' + " \n \n \n" )
+    log.close()
 
 
 
 def main():
-    old_scaler = ""
     # Generate parameter objects
     array_parameters = define_parameters(FEATURES, scaling_type, nu_value, q_value, learning_rate, FLOWS_TRAIN_OML)
-    # Generate datasets
-    dataset_train_scaler, dataset_train_OML, dataset_test, dataset_test_labeled = generate_dataset(FILENAME)
+    # Generate datasets (scaler, train, validation and test are pairwise disjoint)
+    splits = generate_dataset(FILENAME)
 
     time.sleep(3)
     print("Number of iterations: ", len(array_parameters))
-    i = 0
 
+    # Scaling only depends on the scaler type, so cache the scaled sets.
+    scaled_cache = {}
+
+    def scaled_splits(parameter):
+        scaling_name = parameter.get_scaling_type()
+        if scaling_name not in scaled_cache:
+            scaled_cache[scaling_name] = scale_datasets(parameter, splits)
+        return scaled_cache[scaling_name]
+
+    # Phase 1: select the best hyperparameter configuration on the validation set.
+    results = []
     for parameter in array_parameters:
-        if old_scaler != parameter.get_scaling_type():
-            # Scale datasets
-            scaler_dataset_train_OML, scaler_dataset_test = scale_datasets(parameter, dataset_train_scaler, dataset_train_OML, dataset_test)
+        scaled = scaled_splits(parameter)
+        model, _ = train_model_OML(scaled['train'], parameter)
+        metrics, _ = evaluate_stream(model, scaled['validation'], splits['validation_labeled'])
+        results.append((parameter, metrics))
+        print("🔵 | Validation accuracy: ", metrics['accuracy'],
+              "| Recall: ", metrics['recall'],
+              "| False Positive Rate: ", metrics['false_positive'],
+              "| Precision: ", metrics['precision'],
+              "| F1 Score: ", metrics['f1'])
 
-        # Train the Online model
-        model = train_model_OML(scaler_dataset_train_OML, parameter)
-        test_model(model, scaler_dataset_test, dataset_test_labeled, parameter)
-        # Update old scaler
-        old_scaler = parameter.get_scaling_type()
+    best_parameter = select_best_parameter(results, SELECTION_METRIC)
+    print("✅ | Best configuration selected on the validation set using", SELECTION_METRIC)
+    print("    Scaling: ", best_parameter.get_scaling_type(),
+          "| Q: ", best_parameter.get_q_value(),
+          "| Nu: ", best_parameter.get_nu_value(),
+          "| Learning_rate: ", best_parameter.get_learning_rate())
+
+    # Phase 2: retrain the selected configuration and evaluate it on the test set.
+    scaled = scaled_splits(best_parameter)
+    model, training_time = train_model_OML(scaled['train'], best_parameter)
+    print("OML Training time: ", training_time)
+    test_model(model, scaled['test'], splits['test_labeled'], best_parameter)
 
 
 
-main()
+if __name__ == '__main__':
+    main()
 

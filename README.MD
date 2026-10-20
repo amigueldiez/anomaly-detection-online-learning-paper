@@ -42,6 +42,33 @@ python3 multiexecution.py
 
 It's important to update the `config.yaml` file with the appropriate dataset paths and parameters before running the scripts.
 
+## Data split and hyperparameter selection
+
+The pipeline splits the flows into four disjoint sets:
+
+* **Scaler**: a small set of benign flows used to initialise the scaler.
+* **Training**: benign flows used for the warm-up phase.
+* **Validation**: a balanced set (the same number of benign and anomalous flows) used to select the hyperparameters.
+* **Test**: a balanced set, disjoint from the validation set, used only for the final evaluation.
+
+The hyperparameter grid is evaluated on the validation set and the best configuration is
+selected using `SELECTION_METRIC`. The selected configuration is then retrained from
+scratch and evaluated once on the held-out test set. The scaler is fitted on the scaler
+and training flows only, so the validation and test sets remain held out.
+
+Two extra parameters control this behaviour in `config.yaml`:
+
+* `VALIDATION_RATIO`: fraction of the anomalous flows assigned to the validation set (the rest go to the test set). Default `0.5`.
+* `SELECTION_METRIC`: metric used to pick the best configuration (`accuracy`, `precision`, `recall`, `false_positive` or `f1`). Default `f1`.
+
+## Tests
+
+The unit and integration tests can be run with:
+
+```bash
+python3 -m unittest test_hyperparameter_optimization -v
+```
+
 ## Acknowledgements
 
 This research is part of the CIBERLAB project, financed "by European Union NextGeneration-EU, the Recovery Plan, Transformation and Resilience, through INCIBE".
