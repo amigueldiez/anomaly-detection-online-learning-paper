@@ -97,3 +97,11 @@ FEATURES:
 # Flows configuration
 FLOWS_TRAIN_SCALER: 1000
 FLOWS_TRAIN_OML: 100000
+
+# Fraction of the anomalous flows reserved for the validation set (the rest go
+# to the test set). Both sets are balanced with an equal number of benign flows.
+VALIDATION_RATIO: 0.5
+
+# Metric used to select the best hyperparameter configuration on the validation
+# set. One of: accuracy, precision, recall, false_positive, f1
+SELECTION_METRIC: 'f1'
