@@ -80,7 +80,7 @@ def candidate_thresholds(upper=10.0, step=0.1):
 
 
 def select_threshold(train_rows, validation_rows, labels, n_features, aggregation,
-                     metric='f1'):
+                     metric='f1', step=0.1):
     """Select the threshold on validation using the same online protocol as test.
 
     For every candidate threshold a fresh model is trained on the benign
@@ -93,7 +93,7 @@ def select_threshold(train_rows, validation_rows, labels, n_features, aggregatio
     decision boundary is not placed at either edge.
     """
     results = []
-    for threshold in candidate_thresholds():
+    for threshold in candidate_thresholds(step=step):
         model = train_model(n_features, aggregation, train_rows)
         metrics, _ = evaluate_stream(model, validation_rows, labels, threshold)
         results.append((float(threshold), metrics))
@@ -138,6 +138,9 @@ def main():
                              '(default: %(default)s)')
     parser.add_argument('--seed', type=int, default=42,
                         help='Random seed for the dataset split (default: %(default)s)')
+    parser.add_argument('--threshold-step', type=float, default=0.1,
+                        help='Step of the validation threshold grid in sigma units '
+                             '(default: %(default)s)')
     parser.add_argument('--filename', default=hp.FILENAME,
                         help='Path to the labeled CSV dataset (default: %(default)s)')
     args = parser.parse_args()
@@ -167,6 +170,7 @@ def main():
     threshold, val_metrics, results = select_threshold(
         scaled['train'], scaled['validation'], val_labels,
         n_features, args.aggregation, args.selection_metric,
+        step=args.threshold_step,
     )
     selection_time = time.time() - start
     print(f'Threshold search time: {selection_time:.2f} s '

@@ -10,7 +10,7 @@ del pipeline principal (`hyperparameter_optimization.py`).
 |---|---|
 | Fecha de ejecución | 2026-10-26 |
 | Rama | `feature/more-models` |
-| Commit | `ce381b0` |
+| Commit | `990521e` (`sad_unsw.py`) |
 | Script | `sad_unsw.py` |
 | Ejecuciones | 1 por dataset, semilla fija `42` |
 | Python | 3.12.3 |
@@ -106,12 +106,21 @@ Parámetros comunes:
 
 | Parámetro | Valor |
 |---|---|
-| Escalador | `MaxAbsScaler` |
+| `FILENAME` | `../NF-UNSW-NB15.csv` / `../NF-UNSW-NB15-v2.csv` |
+| `TYPE_IP` | `IPv4` |
+| `SIGNIFICANT_PORT` | `False` |
+| `BENIGN_FLOWS_ADDITIONAL` | `0` |
+| `VALIDATION_RATIO` | `0.5` |
+| `scaling_type` | `MaxAbsScaler` |
+| Modelo | `StandardAbsoluteDeviation(sub_stat=stats.Mean(), varianza=stats.Var)` |
 | Agregación | `max` |
-| Warm-up (`FLOWS_TRAIN_OML`) | 100.000 flujos benignos |
-| `FLOWS_TRAIN_SCALER` | 1.000 |
-| Métrica de selección | `f1` |
+| `FLOWS_TRAIN_SCALER` | `1000` |
+| `FLOWS_TRAIN_OML` | `100000` |
+| `SELECTION_METRIC` | `f1` |
+| Rejilla de umbrales | `0,0–10,0σ` paso `0,1` + `12/15/20` (104 candidatos) |
 | Semilla del split | `42` |
+| Filtro de varianza | `> 1e-12` |
+| Actualización online | solo si el flujo **no** se marca como anómalo |
 
 ## Cómo ejecutar los experimentos
 
@@ -133,6 +142,7 @@ Opciones disponibles:
 | `--flows-train-oml` | `100000` | Flujos benignos de warm-up |
 | `--aggregation` | `max` | `max`, `mean` o `median` |
 | `--selection-metric` | `f1` | `accuracy`, `precision`, `recall`, `false_positive` o `f1` |
+| `--threshold-step` | `0.1` | Paso de la rejilla de umbrales (en σ) |
 | `--seed` | `42` | Semilla del split scaler/entrenamiento/validación/test |
 
 > No se recomienda `--selection-metric false_positive` para elegir el umbral:
@@ -253,4 +263,14 @@ Los ficheros de datos son:
 
 El script fija `np.random.seed(42)` antes de generar las particiones, por lo que
 las tablas de este documento se reproducen ejecutando los comandos anteriores
-con las mismas versiones de las librerías.
+con las mismas versiones de las librerías. El resto de opciones se dejan en su
+valor por defecto, documentado en la tabla de parámetros.
+
+## Otros datasets
+
+La misma prueba sobre NF-CSE-CIC-IDS2018 está documentada en
+`resultados_sad_cic_ids2018.md`. Resumen: SAD funciona en CIC pero con un
+rendimiento claramente inferior (F1 ≈ 91 %, FPR ≈ 6,8 %, recall ≈ 89 % con un
+split aleatorio), y el split secuencial del pipeline distorsiona la comparación
+entre validación y test.
+
