@@ -18,7 +18,9 @@ Protocol (no leakage):
 """
 
 import argparse
+import json
 import time
+from pathlib import Path
 
 import numpy as np
 
@@ -143,6 +145,8 @@ def main():
                              '(default: %(default)s)')
     parser.add_argument('--filename', default=hp.FILENAME,
                         help='Path to the labeled CSV dataset (default: %(default)s)')
+    parser.add_argument('--output-json', default=None,
+                        help='Optional path to save the metrics as JSON (default: disabled)')
     args = parser.parse_args()
 
     np.random.seed(args.seed)
@@ -197,12 +201,41 @@ def main():
     print('\nRetraining from scratch for the final evaluation...')
     start = time.time()
     model = train_model(n_features, args.aggregation, scaled['train'])
-    print(f'Training time: {time.time() - start:.2f} s')
+    training_time = time.time() - start
+    print(f'Training time: {training_time:.2f} s')
 
     start = time.time()
     test_metrics, _ = evaluate_stream(model, scaled['test'], test_labels, threshold)
     test_time = time.time() - start
     print_metrics('Test (held out, threshold fixed on validation)', test_metrics, test_time)
+
+    payload = {
+        'dataset': args.filename,
+        'model': 'StandardAbsoluteDeviation',
+        'aggregation': args.aggregation,
+        'threshold_step': args.threshold_step,
+        'seed': args.seed,
+        'flows_train_oml': args.flows_train_oml,
+        'selection_metric': args.selection_metric,
+        'selected_threshold': threshold,
+        'validation': val_metrics,
+        'test': test_metrics,
+        'validation_top5': [
+            {'threshold': candidate, 'metrics': metrics}
+            for candidate, metrics in top
+        ],
+        'timings': {
+            'threshold_search_seconds': selection_time,
+            'training_seconds': training_time,
+            'test_seconds': test_time,
+            'test_ms_per_flow': 1000 * test_time / len(scaled['test']),
+        },
+    }
+    if args.output_json:
+        output = Path(args.output_json)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(payload, indent=2) + '\n')
+        print(f'\nMetrics saved to {output}')
 
     print(f'\nFeatures used: {n_features}')
 

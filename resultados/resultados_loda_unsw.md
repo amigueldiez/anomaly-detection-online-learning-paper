@@ -266,3 +266,15 @@ Las pruebas sobre NF-ToN-IoT y NF-UQ-NIDS están documentadas en
 `resultados_loda_ton_iot.md` y `resultados_loda_uq_nids.md`. Resumen: ToN-IoT
 llega a ~84,19 % de F1 con ~37,56 % de FPR; UQ-NIDS se queda en ~70,61 % de F1
 con ~50,19 % de FPR.
+
+## Repeticiones multisemilla en UNSW
+
+Los resultados de este documento corresponden a una sola ejecución. La
+evaluación con 12 semillas sobre UNSW v1 y v2 está en
+`resultados_multisemilla_sad_loda_unsw.md`. Resumen de test (media ± desviación
+típica, n = 12):
+
+| Dataset | Accuracy | Recall | FPR | F1 |
+|---|---:|---:|---:|---:|
+| NF-UNSW-NB15 | 95,0337 ± 0,4223 % | 99,6962 ± 1,0525 % | 9,6288 ± 1,3981 % | 95,2561 ± 0,3819 % |
+| NF-UNSW-NB15-v2 | 98,8770 ± 0,3137 % | 99,9998 ± 0,0006 % | 2,2459 ± 0,6279 % | 98,8903 ± 0,3091 % |

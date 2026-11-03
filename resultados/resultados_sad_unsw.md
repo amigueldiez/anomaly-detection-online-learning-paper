@@ -274,3 +274,15 @@ rendimiento claramente inferior (F1 ≈ 91 %, FPR ≈ 6,8 %, recall ≈ 89 % con
 split aleatorio), y el split secuencial del pipeline distorsiona la comparación
 entre validación y test.
 
+## Repeticiones multisemilla en UNSW
+
+Los resultados de este documento corresponden a una sola ejecución. La
+evaluación con 12 semillas sobre UNSW v1 y v2 está en
+`resultados_multisemilla_sad_loda_unsw.md`. Resumen de test (media ± desviación
+típica, n = 12):
+
+| Dataset | Accuracy | Recall | FPR | F1 |
+|---|---:|---:|---:|---:|
+| NF-UNSW-NB15 | 97,6051 ± 0,3651 % | 100,0000 ± 0,0000 % | 4,7899 ± 0,7302 % | 97,6622 ± 0,3475 % |
+| NF-UNSW-NB15-v2 | 99,8894 ± 0,0047 % | 100,0000 ± 0,0000 % | 0,2213 ± 0,0094 % | 99,8895 ± 0,0047 % |
+
