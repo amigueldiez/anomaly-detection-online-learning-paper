@@ -8,24 +8,29 @@ addresses) and a binary ``Label`` column (0 = benign, 1 = anomalous). Use
 ``config.yaml`` (currently NF-UNSW-NB15).
 
 LODA (Lightweight On-line Detector of Anomalies) is an ensemble of one-dimensional
-histograms built on sparse random projections. It is trained here only with benign
-flows; the anomaly threshold is then derived from the distribution of the training
-scores (quantiles) and selected on the validation split.
+histograms built on sparse random projections. It is trained here with benign flows
+and then keeps learning online, exactly like the SAD detector: every flow it does
+not flag as anomalous is used to update the histograms. The anomaly threshold is
+derived from the distribution of the warm-up scores (quantiles) and selected on the
+validation split.
 
 This is deliberately different from ``hyperparameter_optimization.py``, which wraps
 the detector in ``anomaly.QuantileFilter`` from the very first sample. That wrapper
 can freeze LODA during warm-up: LODA assigns its maximum score to values outside its
 histograms, and with ``protect_anomaly_detector=True`` the filter stops updating the
 detector after the first out-of-range score. Training LODA directly avoids that
-feedback loop.
+feedback loop; the online update during evaluation is done explicitly, without the
+filter, so it is never frozen.
 
 Protocol (no leakage):
 1. Fit the scaler and train LODA on benign flows only.
 2. Compute LODA scores for those benign flows and derive candidate thresholds as
    quantiles of the training scores.
-3. Evaluate every candidate on the validation split (frozen detector) and keep the
-   one that optimises ``SELECTION_METRIC`` (F1 by default).
-4. Evaluate the held-out test split once with the selected threshold.
+3. For every candidate, retrain LODA from scratch and evaluate the validation split
+   online (score, classify, and learn when not anomalous). Keep the candidate that
+   optimises ``SELECTION_METRIC`` (F1 by default).
+4. Retrain LODA from scratch and evaluate the held-out test split once, online, with
+   the selected threshold.
 """
 
 import argparse
@@ -64,9 +69,15 @@ def score_stream(model, rows):
     )
 
 
-def evaluate_scores(scores, labels, threshold):
-    """Classify pre-computed scores and return the repository's metric dict."""
-    predictions = scores >= threshold
+def evaluate_stream(model, rows, labels, threshold):
+    """Online evaluation: score, classify, and update when not anomalous."""
+    predictions = []
+    for row in rows:
+        score = model.score_one(as_dict(row))
+        anomalous = score >= threshold
+        predictions.append(anomalous)
+        if not anomalous:
+            model.learn_one(as_dict(row))
     return hp.classification_metrics(labels, predictions)
 
 
@@ -152,22 +163,17 @@ def main():
     val_labels = list(splits['validation_labeled']['Label'])
     test_labels = list(splits['test_labeled']['Label'])
 
-    # --- Phase 1: train LODA on benign flows and score the training stream ---
+    # --- Phase 1: derive candidate thresholds from the benign warm-up scores ---
     print('\nTraining LODA on benign flows...')
     start = time.time()
     model = train_loda(scaled['train'], args.n_bins, args.n_random_cuts, args.seed)
-    training_time = time.time() - start
-    print(f'Training time: {training_time:.2f} s')
+    warmup_training_time = time.time() - start
+    print(f'Warm-up training time: {warmup_training_time:.2f} s')
 
     start = time.time()
     train_scores = score_stream(model, scaled['train'])
     train_score_time = time.time() - start
-
-    start = time.time()
-    val_scores = score_stream(model, scaled['validation'])
-    val_score_time = time.time() - start
-    print(f'Training-score time: {train_score_time:.2f} s '
-          f'| validation-score time: {val_score_time:.2f} s')
+    print(f'Training-score time: {train_score_time:.2f} s')
 
     # --- Phase 2: select the threshold on validation (test is never touched) ---
     print('\nSelecting the threshold on the validation set...')
@@ -175,12 +181,14 @@ def main():
     results = []
     for q in quantiles:
         threshold = float(np.quantile(train_scores, q))
-        metrics = evaluate_scores(val_scores, val_labels, threshold)
+        candidate = train_loda(scaled['train'], args.n_bins, args.n_random_cuts, args.seed)
+        metrics = evaluate_stream(candidate, scaled['validation'], val_labels, threshold)
         results.append({'q': q, 'threshold': threshold, 'metrics': metrics})
     selection_time = time.time() - start
 
     best, tied = select_quantile(results, args.selection_metric)
-    print(f'Threshold search time: {selection_time:.2f} s ({len(results)} candidates)')
+    print(f'Threshold search time: {selection_time:.2f} s '
+          f'({len(results)} candidates, model retrained and evaluated online for each one)')
     print(f"Selected q: {best['q']:.4f} "
           f"(threshold {best['threshold']:.6f}; metric: {args.selection_metric})")
     if len(tied) > 1:
@@ -203,14 +211,19 @@ def main():
               f"{metrics['false_positive']:9.6f} {metrics['precision']:10.6f} "
               f"{metrics['f1']:8.6f}")
 
-    # --- Phase 3: evaluate the held-out test set once ---
-    print('\nEvaluating the held-out test set...')
+    # --- Phase 3: retrain from scratch and evaluate the held-out test set ---
+    print('\nRetraining from scratch for the final evaluation...')
     start = time.time()
-    test_scores = score_stream(model, scaled['test'])
-    test_score_time = time.time() - start
-    test_metrics = evaluate_scores(test_scores, test_labels, best['threshold'])
+    model = train_loda(scaled['train'], args.n_bins, args.n_random_cuts, args.seed)
+    training_time = time.time() - start
+    print(f'Training time: {training_time:.2f} s')
+
+    print('\nEvaluating the held-out test set (online)...')
+    start = time.time()
+    test_metrics = evaluate_stream(model, scaled['test'], test_labels, best['threshold'])
+    test_time = time.time() - start
     print_metrics('Test (held out, threshold fixed on validation)', test_metrics,
-                  test_score_time)
+                  test_time)
 
     payload = {
         'dataset': args.filename,
@@ -227,12 +240,12 @@ def main():
         'test': test_metrics,
         'validation_top5': top,
         'timings': {
-            'training_seconds': training_time,
+            'warmup_training_seconds': warmup_training_time,
             'train_score_seconds': train_score_time,
-            'validation_score_seconds': val_score_time,
             'threshold_selection_seconds': selection_time,
-            'test_score_seconds': test_score_time,
-            'test_ms_per_flow': 1000 * test_score_time / len(scaled['test']),
+            'training_seconds': training_time,
+            'test_seconds': test_time,
+            'test_ms_per_flow': 1000 * test_time / len(scaled['test']),
         },
     }
     if args.output_json:
