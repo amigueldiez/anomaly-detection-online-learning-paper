@@ -31,13 +31,13 @@ DATASETS = {
 
 MODELS = {
     'SAD': {
-        'script': 'sad_unsw.py',
+        'script': 'sad_detector.py',
         'args': ['--aggregation', 'max', '--threshold-step', '0.1'],
         'selected_key': 'selected_threshold',
         'configuration': 'MaxAbsScaler, aggregation=max, threshold grid 0.0-10.0 sigma step 0.1',
     },
     'LODA': {
-        'script': 'loda_unsw.py',
+        'script': 'loda_detector.py',
         'args': ['--scaling-type', 'StandardScaler', '--n-bins', '10', '--n-random-cuts', '100'],
         'selected_key': 'selected_q',
         'configuration': 'StandardScaler, n_bins=10, n_random_cuts=100',

@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Train River's LODA directly on benign NF-UNSW-NB15 flows and evaluate it.
+"""Train River's LODA on benign flows and evaluate it on a labeled dataset.
+
+The script is dataset-agnostic: it works with any CSV that contains the columns
+listed in ``FEATURES`` in ``config.yaml`` (the first two must be valid IPv4
+addresses) and a binary ``Label`` column (0 = benign, 1 = anomalous). Use
+``--filename`` to select the dataset; the default is the path configured in
+``config.yaml`` (currently NF-UNSW-NB15).
 
 LODA (Lightweight On-line Detector of Anomalies) is an ensemble of one-dimensional
 histograms built on sparse random projections. It is trained here only with benign

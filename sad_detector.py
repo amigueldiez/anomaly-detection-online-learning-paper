@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Functional test of River's StandardAbsoluteDeviation (SAD) on NF-UNSW-NB15.
+"""Evaluate River's StandardAbsoluteDeviation (SAD) on a labeled flow dataset.
+
+The script is dataset-agnostic: it works with any CSV that contains the columns
+listed in ``FEATURES`` in ``config.yaml`` (the first two must be valid IPv4
+addresses) and a binary ``Label`` column (0 = benign, 1 = anomalous). Use
+``--filename`` to select the dataset; the default is the path configured in
+``config.yaml`` (currently NF-UNSW-NB15).
 
 SAD is a univariate detector: ``learn_one(x, y)`` / ``score_one(x, y)`` only
 look at the scalar ``y``. To process multivariate network flows, one SAD
