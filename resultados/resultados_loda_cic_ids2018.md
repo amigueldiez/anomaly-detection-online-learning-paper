@@ -15,8 +15,8 @@ separar el efecto del modelo del efecto del particionado.
 |---|---|
 | Fecha de ejecución | 2026-10-27 |
 | Rama | `feature/more-models` |
-| Commit | `7d7e8a3` + cambios locales (`loda_unsw.py`, documentos de resultados) |
-| Script | `loda_unsw.py` |
+| Commit | `7d7e8a3` + cambios locales (`loda_detector.py`, documentos de resultados) |
+| Script | `loda_detector.py` |
 | Ejecuciones | 4: split secuencial + split aleatorio (100 cortes) + 200 cortes + MaxAbsScaler |
 | Semilla | `42` (split y LODA) |
 | Python | 3.12.3 |
@@ -225,31 +225,31 @@ Split secuencial:
 
 ```bash
 cd "/home/alberto/Online machine learning/codigo-paper-oml-computer-security"
-.venv/bin/python loda_unsw.py --filename ../NF-CSE-CIC-IDS2018.csv
+.venv/bin/python loda_detector.py --filename ../NF-CSE-CIC-IDS2018.csv
 ```
 
 Split aleatorio (crear antes el CSV barajado con el fragmento de Python de
 arriba):
 
 ```bash
-.venv/bin/python loda_unsw.py \
+.venv/bin/python loda_detector.py \
   --filename /tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv
 ```
 
 Variantes:
 
 ```bash
-.venv/bin/python loda_unsw.py \
+.venv/bin/python loda_detector.py \
   --filename /tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv \
   --n-random-cuts 200
 
-.venv/bin/python loda_unsw.py \
+.venv/bin/python loda_detector.py \
   --filename /tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv \
   --scaling-type MaxAbsScaler
 ```
 
 Dependencias: `river`, `pandas`, `numpy`, `scikit-learn`, `matplotlib` y `pyyaml`
-(las tres últimas porque `loda_unsw.py` reutiliza `hyperparameter_optimization.py`,
+(las tres últimas porque `loda_detector.py` reutiliza `hyperparameter_optimization.py`,
 que las importa a nivel de módulo).
 
 El script fija `np.random.seed(42)` antes de generar las particiones y usa

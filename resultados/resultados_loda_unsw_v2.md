@@ -11,8 +11,8 @@ scores de entrenamiento y evaluación con el detector congelado.
 |---|---|
 | Fecha de ejecución | 2026-10-27 |
 | Rama | `feature/more-models` |
-| Commit | `7d7e8a3` + cambios locales (`loda_unsw.py`, documentos de resultados) |
-| Script | `loda_unsw.py` |
+| Commit | `7d7e8a3` + cambios locales (`loda_detector.py`, documentos de resultados) |
+| Script | `loda_detector.py` |
 | Ejecuciones | 1 (configuración principal) |
 | Semilla | `42` (split y LODA) |
 | Python | 3.12.3 |
@@ -97,7 +97,7 @@ Tiempos:
 | NF-UNSW-NB15 | LODA | 100 cortes, 1 ejecución | 94,9175 % | 100,0000 % | 10,1649 % | 90,7730 % | 95,1634 % |
 | **NF-UNSW-NB15-v2** | **LODA** | **100 cortes, 1 ejecución** | **98,6829 %** | **100,0000 %** | **2,6343 %** | **97,4333 %** | **98,7000 %** |
 | NF-UNSW-NB15-v2 | One-Class SVM | `hyperparameter_optimization.py`, media de 12 ejecuciones | 99,7514 % | 99,5210 % | 0,0182 % | 99,9817 % | 99,7491 % |
-| NF-UNSW-NB15-v2 | SAD | `sad_unsw.py`, 1 ejecución, umbral 5,7σ | 99,8874 % | 100,0000 % | 0,2251 % | 99,7754 % | 99,8876 % |
+| NF-UNSW-NB15-v2 | SAD | `sad_detector.py`, 1 ejecución, umbral 5,7σ | 99,8874 % | 100,0000 % | 0,2251 % | 99,7754 % | 99,8876 % |
 
 Los valores de One-Class SVM proceden de
 `resultados_split_entrenamiento_validacion_test.md`; los de SAD, de
@@ -129,11 +129,11 @@ split y número de repeticiones, por lo que la comparación es orientativa.
 
 ```bash
 cd "/home/alberto/Online machine learning/codigo-paper-oml-computer-security"
-.venv/bin/python loda_unsw.py --filename ../NF-UNSW-NB15-v2.csv
+.venv/bin/python loda_detector.py --filename ../NF-UNSW-NB15-v2.csv
 ```
 
 Dependencias: `river`, `pandas`, `numpy`, `scikit-learn`, `matplotlib` y `pyyaml`
-(las tres últimas porque `loda_unsw.py` reutiliza `hyperparameter_optimization.py`,
+(las tres últimas porque `loda_detector.py` reutiliza `hyperparameter_optimization.py`,
 que las importa a nivel de módulo).
 
 El script fija `np.random.seed(42)` antes de generar las particiones y usa

@@ -11,8 +11,8 @@ protocolo de selección de umbral que la prueba de NF-UNSW-NB15
 |---|---|
 | Fecha de ejecución | 2026-10-26 |
 | Rama | `feature/more-models` |
-| Commit | `7857f76` + cambios locales en `sad_unsw.py` (`--threshold-step`) |
-| Script | `sad_unsw.py` |
+| Commit | `7857f76` + cambios locales en `sad_detector.py` (`--threshold-step`) |
+| Script | `sad_detector.py` |
 | Ejecuciones | 1 por protocolo de partición |
 | Python | 3.12.3 |
 | river | 0.26.1 |
@@ -35,7 +35,7 @@ comparación.
 
 ## Modelo y protocolo
 
-Se reutiliza `sad_unsw.py` con esta configuración:
+Se reutiliza `sad_detector.py` con esta configuración:
 
 | Parámetro | Valor |
 |---|---|
@@ -172,7 +172,7 @@ Split secuencial:
 
 ```bash
 cd "/home/alberto/Online machine learning/codigo-paper-oml-computer-security"
-.venv/bin/python sad_unsw.py \
+.venv/bin/python sad_detector.py \
   --filename ../NF-CSE-CIC-IDS2018.csv \
   --threshold-step 0.5
 ```
@@ -194,7 +194,7 @@ with open('/tmp/opencode/cic_shuffled_py42.csv', 'w', newline='') as f:
 EOF
 
 cd codigo-paper-oml-computer-security
-.venv/bin/python sad_unsw.py \
+.venv/bin/python sad_detector.py \
   --filename /tmp/opencode/cic_shuffled_py42.csv \
   --threshold-step 0.5
 ```

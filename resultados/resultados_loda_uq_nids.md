@@ -18,8 +18,8 @@ anómalos la mitad de los flujos benignos.
 |---|---|
 | Fecha de ejecución | 2026-10-28 |
 | Rama | `feature/more-models` |
-| Commit | `7d7e8a3` + cambios locales (`loda_unsw.py`, documentos de resultados) |
-| Script | `loda_unsw.py` |
+| Commit | `7d7e8a3` + cambios locales (`loda_detector.py`, documentos de resultados) |
+| Script | `loda_detector.py` |
 | Ejecuciones | 1 (StandardScaler, 100 cortes, split aleatorio) |
 | Semilla | `42` (barajado, split y LODA) |
 | Python | 3.12.3 |
@@ -214,12 +214,12 @@ cut -d, -f1,2,3,4,5,7,8,12,13 "../NF-UQ-NIDS.csv" \
 # 2. Limpiar IPs inválidas y barajar (ver script de Python arriba)
 
 # 3. Ejecutar LODA
-.venv/bin/python loda_unsw.py \
+.venv/bin/python loda_detector.py \
   --filename /tmp/opencode/NF-UQ-NIDS-reduced-clean-shuffled.csv
 ```
 
 Dependencias: `river`, `pandas`, `numpy`, `scikit-learn`, `matplotlib` y `pyyaml`
-(las tres últimas porque `loda_unsw.py` reutiliza `hyperparameter_optimization.py`,
+(las tres últimas porque `loda_detector.py` reutiliza `hyperparameter_optimization.py`,
 que las importa a nivel de módulo).
 
 El script fija `np.random.seed(42)` antes de generar las particiones y usa

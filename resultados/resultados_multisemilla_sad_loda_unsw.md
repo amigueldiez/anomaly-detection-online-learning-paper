@@ -18,7 +18,7 @@ pipeline principal con One-Class SVM.
 |---|---|
 | Fecha de ejecución | 2026-11-03 |
 | Rama | `feature/more-models` |
-| Commit | `dfde77c` + cambios locales (`sad_unsw.py`, `multiexecution_sad_loda.py`, este documento) |
+| Commit | `dfde77c` + cambios locales (`sad_detector.py`, `multiexecution_sad_loda.py`, este documento) |
 | Script | `multiexecution_sad_loda.py` |
 | Ejecuciones | 48 (12 semillas × 2 modelos × 2 datasets) |
 | Semillas | `0`–`11` |

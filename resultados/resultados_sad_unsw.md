@@ -10,8 +10,8 @@ del pipeline principal (`hyperparameter_optimization.py`).
 |---|---|
 | Fecha de ejecución | 2026-10-26 |
 | Rama | `feature/more-models` |
-| Commit | `990521e` (`sad_unsw.py`) |
-| Script | `sad_unsw.py` |
+| Commit | `990521e` (`sad_detector.py`) |
+| Script | `sad_detector.py` |
 | Ejecuciones | 1 por dataset, semilla fija `42` |
 | Python | 3.12.3 |
 | river | 0.26.1 |
@@ -128,10 +128,10 @@ Desde la raíz del repositorio (el script lee `config.yaml` y rutas relativas):
 
 ```bash
 # NF-UNSW-NB15 (config.yaml)
-.venv/bin/python sad_unsw.py
+.venv/bin/python sad_detector.py
 
 # NF-UNSW-NB15-v2
-.venv/bin/python sad_unsw.py --filename ../NF-UNSW-NB15-v2.csv
+.venv/bin/python sad_detector.py --filename ../NF-UNSW-NB15-v2.csv
 ```
 
 Opciones disponibles:
@@ -153,15 +153,15 @@ Ejemplos:
 
 ```bash
 # Cambiar la métrica de selección del umbral
-.venv/bin/python sad_unsw.py --filename ../NF-UNSW-NB15-v2.csv --selection-metric recall
+.venv/bin/python sad_detector.py --filename ../NF-UNSW-NB15-v2.csv --selection-metric recall
 
 # Comparar agregaciones
-.venv/bin/python sad_unsw.py --aggregation mean
+.venv/bin/python sad_detector.py --aggregation mean
 ```
 
 Dependencias que deben estar en el entorno virtual: `river`, `pandas`, `numpy`,
 `scikit-learn`, `matplotlib` y `pyyaml` (estas tres últimas porque
-`sad_unsw.py` reutiliza `hyperparameter_optimization.py`, que las importa a nivel
+`sad_detector.py` reutiliza `hyperparameter_optimization.py`, que las importa a nivel
 de módulo).
 
 Salida esperada: la partición, la búsqueda del umbral (con los 5 mejores
@@ -250,10 +250,10 @@ de umbral no son idénticos en ambos experimentos.
 cd "/home/alberto/Online machine learning/codigo-paper-oml-computer-security"
 
 # v1
-.venv/bin/python sad_unsw.py
+.venv/bin/python sad_detector.py
 
 # v2
-.venv/bin/python sad_unsw.py --filename ../NF-UNSW-NB15-v2.csv
+.venv/bin/python sad_detector.py --filename ../NF-UNSW-NB15-v2.csv
 ```
 
 Los ficheros de datos son:

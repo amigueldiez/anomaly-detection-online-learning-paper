@@ -17,8 +17,8 @@ las que permiten construir validación y test balanceados después de reservar
 |---|---|
 | Fecha de ejecución | 2026-10-28 |
 | Rama | `feature/more-models` |
-| Commit | `7d7e8a3` + cambios locales (`loda_unsw.py`, documentos de resultados) |
-| Script | `loda_unsw.py` |
+| Commit | `7d7e8a3` + cambios locales (`loda_detector.py`, documentos de resultados) |
+| Script | `loda_detector.py` |
 | Ejecuciones | 3: Standard 100 cortes, Standard 200 cortes y MaxAbs 100 cortes |
 | Semilla | `42` (subconjunto, split y LODA) |
 | Python | 3.12.3 |
@@ -200,20 +200,20 @@ Ejecutar:
 
 ```bash
 cd "/home/alberto/Online machine learning/codigo-paper-oml-computer-security"
-.venv/bin/python loda_unsw.py \
+.venv/bin/python loda_detector.py \
   --filename /tmp/opencode/NF-ToN-IoT-balanced-shuffled.csv
 
-.venv/bin/python loda_unsw.py \
+.venv/bin/python loda_detector.py \
   --filename /tmp/opencode/NF-ToN-IoT-balanced-shuffled.csv \
   --n-random-cuts 200
 
-.venv/bin/python loda_unsw.py \
+.venv/bin/python loda_detector.py \
   --filename /tmp/opencode/NF-ToN-IoT-balanced-shuffled.csv \
   --scaling-type MaxAbsScaler
 ```
 
 Dependencias: `river`, `pandas`, `numpy`, `scikit-learn`, `matplotlib` y `pyyaml`
-(las tres últimas porque `loda_unsw.py` reutiliza `hyperparameter_optimization.py`,
+(las tres últimas porque `loda_detector.py` reutiliza `hyperparameter_optimization.py`,
 que las importa a nivel de módulo).
 
 El script fija `np.random.seed(42)` antes de generar las particiones y usa

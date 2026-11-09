@@ -12,8 +12,8 @@ warm-up para no congelar el detector.
 |---|---|
 | Fecha de ejecución | 2026-10-27 |
 | Rama | `feature/more-models` |
-| Commit | `7d7e8a3` + cambios locales (`loda_unsw.py`, este documento) |
-| Script | `loda_unsw.py` |
+| Commit | `7d7e8a3` + cambios locales (`loda_detector.py`, este documento) |
+| Script | `loda_detector.py` |
 | Ejecuciones | 1 configuración principal + 3 variantes |
 | Semilla | `42` (split y LODA) |
 | Python | 3.12.3 |
@@ -103,12 +103,12 @@ Desde la raíz del repositorio:
 
 ```bash
 # Configuración principal (StandardScaler, 100 cortes)
-.venv/bin/python loda_unsw.py
+.venv/bin/python loda_detector.py
 
 # Variantes documentadas
-.venv/bin/python loda_unsw.py --n-random-cuts 200
-.venv/bin/python loda_unsw.py --n-random-cuts 500
-.venv/bin/python loda_unsw.py --scaling-type MaxAbsScaler --n-random-cuts 200
+.venv/bin/python loda_detector.py --n-random-cuts 200
+.venv/bin/python loda_detector.py --n-random-cuts 500
+.venv/bin/python loda_detector.py --scaling-type MaxAbsScaler --n-random-cuts 200
 ```
 
 Opciones disponibles:
@@ -194,8 +194,8 @@ split y número de repeticiones):
 | Modelo | Protocolo | Accuracy | Recall | FPR | F1 |
 |---|---|---:|---:|---:|---:|
 | One-Class SVM | `hyperparameter_optimization.py`, media de 12 ejecuciones | 97,7703 % | 99,5007 % | 3,9601 % | 97,8081 % |
-| SAD | `sad_unsw.py`, 1 ejecución, umbral 4,9σ | 97,2143 % | 100,0000 % | 5,5714 % | 97,2898 % |
-| **LODA** | `loda_unsw.py`, 1 ejecución, 100 cortes | 94,9175 % | **100,0000 %** | 10,1649 % | 95,1634 % |
+| SAD | `sad_detector.py`, 1 ejecución, umbral 4,9σ | 97,2143 % | 100,0000 % | 5,5714 % | 97,2898 % |
+| **LODA** | `loda_detector.py`, 1 ejecución, 100 cortes | 94,9175 % | **100,0000 %** | 10,1649 % | 95,1634 % |
 
 Los valores de One-Class SVM proceden de
 `resultados_split_entrenamiento_validacion_test.md`; los de SAD, de
@@ -233,17 +233,17 @@ Los valores de One-Class SVM proceden de
 cd "/home/alberto/Online machine learning/codigo-paper-oml-computer-security"
 
 # Configuración principal
-.venv/bin/python loda_unsw.py
+.venv/bin/python loda_detector.py
 
 # Variantes
-.venv/bin/python loda_unsw.py --n-random-cuts 200
-.venv/bin/python loda_unsw.py --n-random-cuts 500
-.venv/bin/python loda_unsw.py --scaling-type MaxAbsScaler --n-random-cuts 200
+.venv/bin/python loda_detector.py --n-random-cuts 200
+.venv/bin/python loda_detector.py --n-random-cuts 500
+.venv/bin/python loda_detector.py --scaling-type MaxAbsScaler --n-random-cuts 200
 ```
 
 Dependencias que deben estar en el entorno virtual: `river`, `pandas`, `numpy`,
 `scikit-learn`, `matplotlib` y `pyyaml` (estas tres últimas porque
-`loda_unsw.py` reutiliza `hyperparameter_optimization.py`, que las importa a nivel
+`loda_detector.py` reutiliza `hyperparameter_optimization.py`, que las importa a nivel
 de módulo).
 
 El script fija `np.random.seed(42)` antes de generar las particiones y usa
