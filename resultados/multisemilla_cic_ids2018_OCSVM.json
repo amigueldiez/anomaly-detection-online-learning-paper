@@ -1,0 +1,501 @@
+{
+  "protocol": {
+    "num_executions": 12,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "split": "Pre-shuffled CSV with random.seed(42), so partition membership is fixed. The seed only changes the order inside the scaler/training/validation/test sets (and LODA random projections). The standard deviation measures the effect of the online learning order, not the variability of the partition.",
+    "datasets": {
+      "NF-CSE-CIC-IDS2018": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv"
+    },
+    "models": {
+      "OCSVM": "StandardScaler, nu=0.5, q=0.9, learning_rate=0.3"
+    }
+  },
+  "results": {
+    "OCSVM": {
+      "NF-CSE-CIC-IDS2018": {
+        "script": "ocsvm_cic.py",
+        "configuration": "StandardScaler, nu=0.5, q=0.9, learning_rate=0.3",
+        "selected_key": "selected_q",
+        "selected_label": "q (fijo)",
+        "selected_parameter": {
+          "mean": 0.9,
+          "std": 0.0
+        },
+        "validation": {
+          "accuracy": {
+            "mean": 0.7809742537640485,
+            "std": 0.0005905955982024049
+          },
+          "recall": {
+            "mean": 0.6957156434498556,
+            "std": 0.002390184645408935
+          },
+          "false_positive": {
+            "mean": 0.13376713592175857,
+            "std": 0.0019841570882885924
+          },
+          "precision": {
+            "mean": 0.8387411896880024,
+            "std": 0.0016207539545026277
+          },
+          "f1": {
+            "mean": 0.7605582644694272,
+            "std": 0.0009891251631266682
+          }
+        },
+        "test": {
+          "accuracy": {
+            "mean": 0.7800015763966973,
+            "std": 0.0005241219931243011
+          },
+          "recall": {
+            "mean": 0.6978724531545267,
+            "std": 0.0017313754376922657
+          },
+          "false_positive": {
+            "mean": 0.1378693003611322,
+            "std": 0.0017353373963525675
+          },
+          "precision": {
+            "mean": 0.835038420836309,
+            "std": 0.0014683485898116216
+          },
+          "f1": {
+            "mean": 0.7603158799659955,
+            "std": 0.0007141021824592387
+          }
+        },
+        "timings": {
+          "test_ms_per_flow": {
+            "mean": 0.004791544187296807,
+            "std": 5.2500945543684605e-05
+          },
+          "test_seconds": {
+            "mean": 4.8835514187812805,
+            "std": 0.053509068700014484
+          },
+          "training_seconds": {
+            "mean": 0.5337340831756592,
+            "std": 0.008572879523617419
+          },
+          "validation_seconds": {
+            "mean": 4.788171052932739,
+            "std": 0.055795197523012686
+          }
+        },
+        "runs": [
+          {
+            "seed": 0,
+            "selected_parameter": 0.9,
+            "validation": {
+              "tp": 356196,
+              "tn": 440077,
+              "fp": 69525,
+              "fn": 153406,
+              "accuracy": 0.7812695005121644,
+              "precision": 0.8366888173240221,
+              "recall": 0.6989689993367373,
+              "false_positive": 0.1364299983124085,
+              "f1": 0.7616534608899813
+            },
+            "test": {
+              "tp": 356792,
+              "tn": 438848,
+              "fp": 70753,
+              "fn": 152809,
+              "accuracy": 0.7806499594781015,
+              "precision": 0.8345133260826346,
+              "recall": 0.7001399133832155,
+              "false_positive": 0.1388399944270125,
+              "f1": 0.7614437878409555
+            },
+            "timings": {
+              "training_seconds": 0.5250391960144043,
+              "validation_seconds": 4.753054857254028,
+              "test_seconds": 4.856729507446289,
+              "test_ms_per_flow": 0.004765227606937868
+            },
+            "run_seconds": 62.67481231689453
+          },
+          {
+            "seed": 1,
+            "selected_parameter": 0.9,
+            "validation": {
+              "tp": 354696,
+              "tn": 440951,
+              "fp": 68651,
+              "fn": 154906,
+              "accuracy": 0.7806552957013513,
+              "precision": 0.8378375186312883,
+              "recall": 0.696025525802489,
+              "false_positive": 0.1347149343997865,
+              "f1": 0.7603759691044205
+            },
+            "test": {
+              "tp": 355112,
+              "tn": 439694,
+              "fp": 69907,
+              "fn": 154489,
+              "accuracy": 0.7798316722298425,
+              "precision": 0.8355202943868392,
+              "recall": 0.6968432165556975,
+              "false_positive": 0.13717987209601237,
+              "f1": 0.7599067000492178
+            },
+            "timings": {
+              "training_seconds": 0.527073860168457,
+              "validation_seconds": 4.761345148086548,
+              "test_seconds": 4.8163087368011475,
+              "test_ms_per_flow": 0.004725568372904633
+            },
+            "run_seconds": 61.08244347572327
+          },
+          {
+            "seed": 2,
+            "selected_parameter": 0.9,
+            "validation": {
+              "tp": 355058,
+              "tn": 440949,
+              "fp": 68653,
+              "fn": 154544,
+              "accuracy": 0.781008512525461,
+              "precision": 0.837972108347435,
+              "recall": 0.6967358840820876,
+              "false_positive": 0.1347188590311655,
+              "f1": 0.7608551472014212
+            },
+            "test": {
+              "tp": 356680,
+              "tn": 438544,
+              "fp": 71057,
+              "fn": 152921,
+              "accuracy": 0.7802417970137421,
+              "precision": 0.833876891641359,
+              "recall": 0.6999201335947143,
+              "false_positive": 0.13943653956723004,
+              "f1": 0.76104884257333
+            },
+            "timings": {
+              "training_seconds": 0.5344827175140381,
+              "validation_seconds": 4.8071067333221436,
+              "test_seconds": 4.887526988983154,
+              "test_ms_per_flow": 0.004795444856842072
+            },
+            "run_seconds": 61.8795485496521
+          },
+          {
+            "seed": 3,
+            "selected_parameter": 0.9,
+            "validation": {
+              "tp": 354078,
+              "tn": 442068,
+              "fp": 67534,
+              "fn": 155524,
+              "accuracy": 0.7811448934658812,
+              "precision": 0.8398195497281861,
+              "recall": 0.6948128147063787,
+              "false_positive": 0.13252302777461628,
+              "f1": 0.7604653710103155
+            },
+            "test": {
+              "tp": 354937,
+              "tn": 440130,
+              "fp": 69471,
+              "fn": 154664,
+              "accuracy": 0.7800877549298373,
+              "precision": 0.8363108141222597,
+              "recall": 0.6964998106361644,
+              "false_positive": 0.13632430077648985,
+              "f1": 0.760029078948918
+            },
+            "timings": {
+              "training_seconds": 0.5223188400268555,
+              "validation_seconds": 4.709488153457642,
+              "test_seconds": 4.829678535461426,
+              "test_ms_per_flow": 0.004738686281484363
+            },
+            "run_seconds": 61.07881712913513
+          },
+          {
+            "seed": 4,
+            "selected_parameter": 0.9,
+            "validation": {
+              "tp": 355389,
+              "tn": 441491,
+              "fp": 68111,
+              "fn": 154213,
+              "accuracy": 0.7818650633239272,
+              "precision": 0.8391711924439197,
+              "recall": 0.6973854105753117,
+              "false_positive": 0.13365528392745712,
+              "f1": 0.76173665901477
+            },
+            "test": {
+              "tp": 355508,
+              "tn": 439128,
+              "fp": 70473,
+              "fn": 154093,
+              "accuracy": 0.7796648750689265,
+              "precision": 0.8345630438916289,
+              "recall": 0.6976202950936125,
+              "false_positive": 0.13829054495575951,
+              "f1": 0.7599718677785592
+            },
+            "timings": {
+              "training_seconds": 0.5232584476470947,
+              "validation_seconds": 4.759820938110352,
+              "test_seconds": 4.841362714767456,
+              "test_ms_per_flow": 0.0047501503281660125
+            },
+            "run_seconds": 60.98650598526001
+          },
+          {
+            "seed": 5,
+            "selected_parameter": 0.9,
+            "validation": {
+              "tp": 352844,
+              "tn": 442180,
+              "fp": 67422,
+              "fn": 156758,
+              "accuracy": 0.7800440343640723,
+              "precision": 0.8395730323176274,
+              "recall": 0.6923913171455371,
+              "false_positive": 0.13230324841739238,
+              "f1": 0.7589120176197052
+            },
+            "test": {
+              "tp": 354366,
+              "tn": 440194,
+              "fp": 69407,
+              "fn": 155235,
+              "accuracy": 0.7795903069263993,
+              "precision": 0.8362165593371923,
+              "recall": 0.6953793261787163,
+              "false_positive": 0.13619871232591774,
+              "f1": 0.7593226295139998
+            },
+            "timings": {
+              "training_seconds": 0.5423634052276611,
+              "validation_seconds": 4.870991945266724,
+              "test_seconds": 4.966726541519165,
+              "test_ms_per_flow": 0.0048731522715999035
+            },
+            "run_seconds": 61.41139245033264
+          },
+          {
+            "seed": 6,
+            "selected_parameter": 0.9,
+            "validation": {
+              "tp": 354768,
+              "tn": 440771,
+              "fp": 68831,
+              "fn": 154834,
+              "accuracy": 0.7805493306541184,
+              "precision": 0.8375090592753996,
+              "recall": 0.696166812532133,
+              "false_positive": 0.1350681512238963,
+              "f1": 0.7603249460727111
+            },
+            "test": {
+              "tp": 356245,
+              "tn": 438652,
+              "fp": 70949,
+              "fn": 153356,
+              "accuracy": 0.7799209577689212,
+              "precision": 0.8339185475451434,
+              "recall": 0.699066524594732,
+              "false_positive": 0.1392246090568896,
+              "f1": 0.7605612754124434
+            },
+            "timings": {
+              "training_seconds": 0.5374720096588135,
+              "validation_seconds": 4.7668914794921875,
+              "test_seconds": 4.859707593917847,
+              "test_ms_per_flow": 0.004768149585575624
+            },
+            "run_seconds": 60.915536642074585
+          },
+          {
+            "seed": 7,
+            "selected_parameter": 0.9,
+            "validation": {
+              "tp": 353361,
+              "tn": 443193,
+              "fp": 66409,
+              "fn": 156241,
+              "accuracy": 0.781545205866539,
+              "precision": 0.841796698191867,
+              "recall": 0.693405834357008,
+              "false_positive": 0.13031542262393006,
+              "f1": 0.7604296234446486
+            },
+            "test": {
+              "tp": 355991,
+              "tn": 439816,
+              "fp": 69785,
+              "fn": 153610,
+              "accuracy": 0.7808138131597073,
+              "precision": 0.8360992634624779,
+              "recall": 0.6985680954315239,
+              "false_positive": 0.13694046911210928,
+              "f1": 0.7611711641402342
+            },
+            "timings": {
+              "training_seconds": 0.5288634300231934,
+              "validation_seconds": 4.754870891571045,
+              "test_seconds": 4.838736534118652,
+              "test_ms_per_flow": 0.004747573625364405
+            },
+            "run_seconds": 61.134047985076904
+          },
+          {
+            "seed": 8,
+            "selected_parameter": 0.9,
+            "validation": {
+              "tp": 355729,
+              "tn": 440078,
+              "fp": 69524,
+              "fn": 153873,
+              "accuracy": 0.7808122809565111,
+              "precision": 0.8365114414242816,
+              "recall": 0.6980525979097413,
+              "false_positive": 0.13642803599671902,
+              "f1": 0.7610356686331036
+            },
+            "test": {
+              "tp": 356908,
+              "tn": 438017,
+              "fp": 71584,
+              "fn": 152693,
+              "accuracy": 0.7799484302424838,
+              "precision": 0.8329397048252943,
+              "recall": 0.7003675424498774,
+              "false_positive": 0.1404706819649098,
+              "f1": 0.7609224245357338
+            },
+            "timings": {
+              "training_seconds": 0.5412948131561279,
+              "validation_seconds": 4.743447303771973,
+              "test_seconds": 4.899028778076172,
+              "test_ms_per_flow": 0.004806729949584255
+            },
+            "run_seconds": 61.85946202278137
+          },
+          {
+            "seed": 9,
+            "selected_parameter": 0.9,
+            "validation": {
+              "tp": 352605,
+              "tn": 442943,
+              "fp": 66659,
+              "fn": 156997,
+              "accuracy": 0.7805581610747211,
+              "precision": 0.8410094832849947,
+              "recall": 0.6919223236957469,
+              "false_positive": 0.13080600154630476,
+              "f1": 0.7592160763770017
+            },
+            "test": {
+              "tp": 354750,
+              "tn": 440864,
+              "fp": 68737,
+              "fn": 154851,
+              "accuracy": 0.780624449324079,
+              "precision": 0.8376880518174111,
+              "recall": 0.696132856882149,
+              "false_positive": 0.1348839582339909,
+              "f1": 0.7603784423334135
+            },
+            "timings": {
+              "training_seconds": 0.537175178527832,
+              "validation_seconds": 4.832583427429199,
+              "test_seconds": 4.923043251037598,
+              "test_ms_per_flow": 0.004830291984354032
+            },
+            "run_seconds": 61.23174786567688
+          },
+          {
+            "seed": 10,
+            "selected_parameter": 0.9,
+            "validation": {
+              "tp": 356020,
+              "tn": 440893,
+              "fp": 68709,
+              "fn": 153582,
+              "accuracy": 0.781897441532804,
+              "precision": 0.8382286116559029,
+              "recall": 0.6986236317753854,
+              "false_positive": 0.13482874870977743,
+              "f1": 0.7620853851579364
+            },
+            "test": {
+              "tp": 355632,
+              "tn": 438298,
+              "fp": 71303,
+              "fn": 153969,
+              "accuracy": 0.7789721762712396,
+              "precision": 0.8329886282455174,
+              "recall": 0.697863622716596,
+              "false_positive": 0.13991927017411662,
+              "f1": 0.7594625300041857
+            },
+            "timings": {
+              "training_seconds": 0.5354974269866943,
+              "validation_seconds": 4.798782825469971,
+              "test_seconds": 4.900309085845947,
+              "test_ms_per_flow": 0.004807986136061298
+            },
+            "run_seconds": 60.72095060348511
+          },
+          {
+            "seed": 11,
+            "selected_parameter": 0.9,
+            "validation": {
+              "tp": 353713,
+              "tn": 441614,
+              "fp": 67988,
+              "fn": 155889,
+              "accuracy": 0.7803413251910314,
+              "precision": 0.8387767636311035,
+              "recall": 0.6940965694797117,
+              "false_positive": 0.13341391909764874,
+              "f1": 0.7596088491071111
+            },
+            "test": {
+              "tp": 354717,
+              "tn": 439927,
+              "fp": 69674,
+              "fn": 154884,
+              "accuracy": 0.7796727243470872,
+              "precision": 0.8358259246779502,
+              "recall": 0.6960681003373227,
+              "false_positive": 0.13672265164314826,
+              "f1": 0.7595718164609547
+            },
+            "timings": {
+              "training_seconds": 0.5499696731567383,
+              "validation_seconds": 4.89966893196106,
+              "test_seconds": 4.983458757400513,
+              "test_ms_per_flow": 0.004889569248687221
+            },
+            "run_seconds": 62.07801342010498
+          }
+        ]
+      }
+    }
+  },
+  "total_seconds": 737.0549757480621
+}
