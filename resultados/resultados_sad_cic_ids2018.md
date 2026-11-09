@@ -201,3 +201,18 @@ cd codigo-paper-oml-computer-security
 
 El resto de opciones se dejan en su valor por defecto, documentado en la tabla
 de parámetros.
+
+## Repeticiones multisemilla en CIC
+
+Los resultados de este documento corresponden a una sola ejecución. La
+evaluación con 12 semillas sobre el mismo CSV barajado (partición fija, solo
+cambia el orden interno de los conjuntos) está en
+`resultados_multisemilla_cic_ids2018.md`. Resumen de test (media ± desviación
+típica, n = 12):
+
+| Dataset | Accuracy | Recall | FPR | F1 |
+|---|---:|---:|---:|---:|
+| NF-CSE-CIC-IDS2018 | 91,1956 ± 0,0258 % | 89,1866 ± 0,0470 % | 6,7954 ± 0,0427 % | 91,0151 ± 0,0269 % |
+
+El umbral seleccionado fue 3,0σ en las 12 ejecuciones y la desviación es muy
+pequeña: la ejecución individual es representativa del rendimiento medio.

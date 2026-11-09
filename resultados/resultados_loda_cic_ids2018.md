@@ -262,3 +262,20 @@ quiere una copia JSON, usar `--output-json`.
 - NF-UNSW-NB15 v2: `resultados_loda_unsw_v2.md` (F1 98,70 %, FPR 2,63 %).
 - NF-ToN-IoT: `resultados_loda_ton_iot.md` (mejor F1 84,19 %, FPR 37,56 %).
 - NF-UQ-NIDS: `resultados_loda_uq_nids.md` (F1 70,61 %, FPR 50,19 %).
+
+## Repeticiones multisemilla en CIC
+
+Los resultados de este documento corresponden a una sola ejecución. La
+evaluación con 12 semillas sobre el mismo CSV barajado (partición fija, solo
+cambia el orden interno de los conjuntos y las proyecciones aleatorias de LODA)
+está en `resultados_multisemilla_cic_ids2018.md`. Resumen de test (media ±
+desviación típica, n = 12):
+
+| Dataset | Accuracy | Recall | FPR | F1 |
+|---|---:|---:|---:|---:|
+| NF-CSE-CIC-IDS2018 | 88,2820 ± 4,4433 % | 91,3883 ± 2,1025 % | 14,8243 ± 9,6527 % | 88,7913 ± 3,6597 % |
+
+La dispersión es muy alta: el cuantil elegido varía entre 0,70 y 0,95 según el
+orden, y el F1 de test va de 83,32 % a 93,65 %. La ejecución individual
+(F1 83,94 %) está en el extremo inferior del rango, así que subestimaba el
+rendimiento medio.

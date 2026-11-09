@@ -1,0 +1,39 @@
+{
+  "dataset": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+  "model": "OneClassSVM+QuantileFilter",
+  "scaling_type": "StandardScaler",
+  "nu": 0.5,
+  "q": 0.9,
+  "learning_rate": 0.3,
+  "seed": 6,
+  "flows_train_oml": 100000,
+  "selected_q": 0.9,
+  "validation": {
+    "tp": 354768,
+    "tn": 440771,
+    "fp": 68831,
+    "fn": 154834,
+    "accuracy": 0.7805493306541184,
+    "precision": 0.8375090592753996,
+    "recall": 0.696166812532133,
+    "false_positive": 0.1350681512238963,
+    "f1": 0.7603249460727111
+  },
+  "test": {
+    "tp": 356245,
+    "tn": 438652,
+    "fp": 70949,
+    "fn": 153356,
+    "accuracy": 0.7799209577689212,
+    "precision": 0.8339185475451434,
+    "recall": 0.699066524594732,
+    "false_positive": 0.1392246090568896,
+    "f1": 0.7605612754124434
+  },
+  "timings": {
+    "training_seconds": 0.5374720096588135,
+    "validation_seconds": 4.7668914794921875,
+    "test_seconds": 4.859707593917847,
+    "test_ms_per_flow": 0.004768149585575624
+  }
+}

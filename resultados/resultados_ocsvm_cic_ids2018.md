@@ -314,3 +314,19 @@ partición ya queda fijado por el CSV barajado.
 Artefactos de esta ejecución: `/tmp/opencode/run_cic_ocsvm/run.log` (configuración
 base), `/tmp/opencode/run_cic_ocsvm/grid.log` (rejilla) y los plots generados en
 ese mismo directorio.
+
+## Repeticiones multisemilla en CIC
+
+Los resultados de este documento corresponden a una sola ejecución. La
+evaluación con 12 semillas sobre el mismo CSV barajado (partición fija, solo
+cambia el orden interno de los conjuntos) y con la configuración fija
+`StandardScaler`, ν = 0.5, q = 0.9, lr = 0.3 está en
+`resultados_multisemilla_cic_ids2018.md`. Resumen de test (media ± desviación
+típica, n = 12):
+
+| Dataset | Accuracy | Recall | FPR | F1 |
+|---|---:|---:|---:|---:|
+| NF-CSE-CIC-IDS2018 | 78,0002 ± 0,0524 % | 69,7872 ± 0,1731 % | 13,7869 ± 0,1735 % | 76,0316 ± 0,0714 % |
+
+La desviación es muy pequeña: la ejecución individual (F1 76,04 %) es
+representativa del rendimiento medio con esta configuración.
