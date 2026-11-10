@@ -1,0 +1,133 @@
+{
+  "dataset": "NF-UNSW-NB15",
+  "filename": "../NF-UNSW-NB15.csv",
+  "model": "LODA",
+  "scaling_type": "Normalizer",
+  "n_bins": 5,
+  "n_random_cuts": 100,
+  "seed": 8,
+  "flows_train_oml": 100000,
+  "flows_validation": 72406,
+  "flows_test": 72406,
+  "selection_metric": "f1",
+  "quantile_grid": [
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    0.99
+  ],
+  "selected_q": 0.95,
+  "threshold": -10.430417716914405,
+  "validation": {
+    "tp": 36203,
+    "tn": 34630,
+    "fp": 1573,
+    "fn": 0,
+    "accuracy": 0.9782752810540563,
+    "precision": 0.958359805167302,
+    "recall": 1.0,
+    "false_positive": 0.04344943789188741,
+    "f1": 0.9787372092080185
+  },
+  "test": {
+    "tp": 36203,
+    "tn": 33785,
+    "fp": 2418,
+    "fn": 0,
+    "accuracy": 0.9666049774880535,
+    "precision": 0.9373915745319904,
+    "recall": 1.0,
+    "false_positive": 0.06679004502389305,
+    "f1": 0.9676841655083931
+  },
+  "validation_top5": [
+    {
+      "q": 0.95,
+      "threshold": -10.430417716914405,
+      "metrics": {
+        "tp": 36203,
+        "tn": 34630,
+        "fp": 1573,
+        "fn": 0,
+        "accuracy": 0.9782752810540563,
+        "precision": 0.958359805167302,
+        "recall": 1.0,
+        "false_positive": 0.04344943789188741,
+        "f1": 0.9787372092080185
+      }
+    },
+    {
+      "q": 0.9,
+      "threshold": -10.94036780256676,
+      "metrics": {
+        "tp": 36203,
+        "tn": 32958,
+        "fp": 3245,
+        "fn": 0,
+        "accuracy": 0.9551832721045217,
+        "precision": 0.9177398093692963,
+        "recall": 1.0,
+        "false_positive": 0.08963345579095655,
+        "f1": 0.9571056562371945
+      }
+    },
+    {
+      "q": 0.85,
+      "threshold": -10.945205758824097,
+      "metrics": {
+        "tp": 36203,
+        "tn": 31017,
+        "fp": 5186,
+        "fn": 0,
+        "accuracy": 0.9283761014280585,
+        "precision": 0.8747010075140738,
+        "recall": 1.0,
+        "false_positive": 0.1432477971438831,
+        "f1": 0.9331632127023405
+      }
+    },
+    {
+      "q": 0.8,
+      "threshold": -10.948551151184777,
+      "metrics": {
+        "tp": 36203,
+        "tn": 28374,
+        "fp": 7829,
+        "fn": 0,
+        "accuracy": 0.8918736016352236,
+        "precision": 0.8221974927325582,
+        "recall": 1.0,
+        "false_positive": 0.2162527967295528,
+        "f1": 0.9024241291207079
+      }
+    },
+    {
+      "q": 0.7,
+      "threshold": -10.958163331037865,
+      "metrics": {
+        "tp": 36203,
+        "tn": 24088,
+        "fp": 12115,
+        "fn": 0,
+        "accuracy": 0.8326796121868354,
+        "precision": 0.7492652841591125,
+        "recall": 1.0,
+        "false_positive": 0.3346407756263293,
+        "f1": 0.8566628411873972
+      }
+    }
+  ],
+  "timings": {
+    "warmup_training_seconds": 5.666822671890259,
+    "train_score_seconds": 6.539734363555908,
+    "threshold_selection_seconds": 53.81537079811096,
+    "training_seconds": 5.678456783294678,
+    "test_seconds": 6.664731502532959,
+    "test_ms_per_flow": 0.09204667434374167
+  },
+  "elapsed_seconds": 78.36532306671143
+}
