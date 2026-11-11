@@ -39,8 +39,23 @@ MODELS = {
     'LODA': {
         'script': 'loda_detector.py',
         'args': ['--scaling-type', 'StandardScaler', '--n-bins', '10', '--n-random-cuts', '100'],
+        'args_by_dataset': {
+            'NF-UNSW-NB15': [
+                '--scaling-type', 'Normalizer', '--n-bins', '5', '--n-random-cuts', '100',
+            ],
+            'NF-UNSW-NB15-v2': [
+                '--scaling-type', 'StandardScaler', '--n-bins', '20', '--n-random-cuts', '50',
+            ],
+        },
         'selected_key': 'selected_q',
-        'configuration': 'StandardScaler, n_bins=10, n_random_cuts=100',
+        'configuration': (
+            'Configuration selected per dataset: Normalizer (v1) and '
+            'StandardScaler (v2)'
+        ),
+        'configuration_by_dataset': {
+            'NF-UNSW-NB15': 'Normalizer, n_bins=5, n_random_cuts=100',
+            'NF-UNSW-NB15-v2': 'StandardScaler, n_bins=20, n_random_cuts=50',
+        },
     },
 }
 
@@ -74,6 +89,12 @@ def aggregate_timings(runs, keys):
     }
 
 
+def model_args(model, dataset):
+    """Return the script arguments for a model/dataset pair."""
+    config = MODELS[model]
+    return config.get('args_by_dataset', {}).get(dataset, config['args'])
+
+
 def run_one(model, dataset, seed, filename, raw_path, output_dir):
     config = MODELS[model]
     command = [
@@ -82,7 +103,7 @@ def run_one(model, dataset, seed, filename, raw_path, output_dir):
         '--filename', filename,
         '--seed', str(seed),
         '--output-json', str(raw_path),
-    ] + config['args']
+    ] + model_args(model, dataset)
 
     print(f'\n=== {model} | {dataset} | seed {seed} ===', flush=True)
     print(' '.join(command), flush=True)
@@ -181,7 +202,9 @@ def main():
             timing_keys = sorted(runs[0]['timings'])
             summary['results'][model][dataset] = {
                 'script': MODELS[model]['script'],
-                'configuration': MODELS[model]['configuration'],
+                'configuration': MODELS[model].get(
+                    'configuration_by_dataset', {},
+                ).get(dataset, MODELS[model]['configuration']),
                 'selected_key': MODELS[model]['selected_key'],
                 'selected_parameter': dict(zip(
                     ('mean', 'std'), mean_std(selected_values),

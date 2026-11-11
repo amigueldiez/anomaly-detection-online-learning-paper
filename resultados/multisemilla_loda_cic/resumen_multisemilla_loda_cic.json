@@ -1,0 +1,706 @@
+{
+  "protocol": {
+    "num_executions": 12,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "split": "Pre-shuffled CSV with random.seed(42), so partition membership is fixed. The seed only changes the order inside the scaler/training/validation/test sets and LODA random projections. The standard deviation measures the effect of the online learning order.",
+    "online": true,
+    "datasets": {
+      "NF-CSE-CIC-IDS2018": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv"
+    },
+    "models": {
+      "LODA": "Normalizer, n_bins=5, n_random_cuts=100"
+    },
+    "part_wall_seconds": {
+      "part1": 5915.647701025009,
+      "part2": 5981.0656180381775
+    }
+  },
+  "results": {
+    "LODA": {
+      "NF-CSE-CIC-IDS2018": {
+        "script": "loda_detector.py",
+        "configuration": "Normalizer, n_bins=5, n_random_cuts=100",
+        "selected_key": "selected_q",
+        "selected_label": "cuantil q",
+        "selected_parameter": {
+          "mean": 0.9166666666666666,
+          "std": 0.07177405625652733
+        },
+        "validation": {
+          "accuracy": {
+            "mean": 0.9040251019423001,
+            "std": 0.04202822531943714
+          },
+          "recall": {
+            "mean": 0.9192283062729999,
+            "std": 0.020001550679353837
+          },
+          "false_positive": {
+            "mean": 0.11117810238839983,
+            "std": 0.0955566037283568
+          },
+          "precision": {
+            "mean": 0.8984502352665734,
+            "std": 0.06584673520737673
+          },
+          "f1": {
+            "mean": 0.9069508456510906,
+            "std": 0.03247217377844601
+          }
+        },
+        "test": {
+          "accuracy": {
+            "mean": 0.9034421047054461,
+            "std": 0.04190020380407474
+          },
+          "recall": {
+            "mean": 0.9187970915807989,
+            "std": 0.01998480200055879
+          },
+          "false_positive": {
+            "mean": 0.11191288216990679,
+            "std": 0.09536305105576817
+          },
+          "precision": {
+            "mean": 0.8977591223603737,
+            "std": 0.06583914385261486
+          },
+          "f1": {
+            "mean": 0.9063848514850888,
+            "std": 0.032366409020090255
+          }
+        },
+        "timings": {
+          "test_ms_per_flow": {
+            "mean": 0.09560281601474573,
+            "std": 0.0036670610931703327
+          },
+          "test_seconds": {
+            "mean": 97.43858128786087,
+            "std": 3.7374760002813896
+          },
+          "threshold_selection_seconds": {
+            "mean": 822.2487314343452,
+            "std": 29.014578483315955
+          },
+          "train_score_seconds": {
+            "mean": 6.71927946805954,
+            "std": 0.13203449613843216
+          },
+          "training_seconds": {
+            "mean": 5.701777815818787,
+            "std": 0.07373218271766246
+          },
+          "warmup_training_seconds": {
+            "mean": 5.718047320842743,
+            "std": 0.08271034601385634
+          }
+        },
+        "runs": [
+          {
+            "seed": 0,
+            "scaling_type": "Normalizer",
+            "n_bins": 5,
+            "n_random_cuts": 100,
+            "flows_train_oml": 100000,
+            "quantile_grid": [
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.85,
+              0.9,
+              0.95,
+              0.99
+            ],
+            "selected_parameter": 0.95,
+            "threshold": -3.3167683098091163,
+            "validation": {
+              "tp": 472213,
+              "tn": 456940,
+              "fp": 52662,
+              "fn": 37389,
+              "accuracy": 0.9116457549224689,
+              "precision": 0.8996675398904501,
+              "recall": 0.926630978685327,
+              "false_positive": 0.10333946884038916,
+              "f1": 0.9129502154228659
+            },
+            "test": {
+              "tp": 471966,
+              "tn": 456936,
+              "fp": 52665,
+              "fn": 37635,
+              "accuracy": 0.9114012727604538,
+              "precision": 0.899615158082538,
+              "recall": 0.9261481041049763,
+              "false_positive": 0.10334555858406871,
+              "f1": 0.9126888357737917
+            },
+            "timings": {
+              "warmup_training_seconds": 5.672154426574707,
+              "train_score_seconds": 6.802078485488892,
+              "threshold_selection_seconds": 809.195915222168,
+              "training_seconds": 5.696486473083496,
+              "test_seconds": 97.14482092857361,
+              "test_ms_per_flow": 0.09531459016816451
+            }
+          },
+          {
+            "seed": 1,
+            "scaling_type": "Normalizer",
+            "n_bins": 5,
+            "n_random_cuts": 100,
+            "flows_train_oml": 100000,
+            "quantile_grid": [
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.85,
+              0.9,
+              0.95,
+              0.99
+            ],
+            "selected_parameter": 0.9,
+            "threshold": -3.00714580301117,
+            "validation": {
+              "tp": 472600,
+              "tn": 443027,
+              "fp": 66575,
+              "fn": 37002,
+              "accuracy": 0.8983746139143881,
+              "precision": 0.8765243195622943,
+              "recall": 0.927390394857163,
+              "false_positive": 0.13064116702838685,
+              "f1": 0.9012402064499889
+            },
+            "test": {
+              "tp": 472340,
+              "tn": 442841,
+              "fp": 66760,
+              "fn": 37261,
+              "accuracy": 0.8979387795549851,
+              "precision": 0.8761639769987015,
+              "recall": 0.926882011613007,
+              "false_positive": 0.1310044525030367,
+              "f1": 0.9008096683420728
+            },
+            "timings": {
+              "warmup_training_seconds": 5.774168491363525,
+              "train_score_seconds": 6.603163003921509,
+              "threshold_selection_seconds": 829.5588591098785,
+              "training_seconds": 5.748757600784302,
+              "test_seconds": 96.31910371780396,
+              "test_ms_per_flow": 0.09450442965948257
+            }
+          },
+          {
+            "seed": 2,
+            "scaling_type": "Normalizer",
+            "n_bins": 5,
+            "n_random_cuts": 100,
+            "flows_train_oml": 100000,
+            "quantile_grid": [
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.85,
+              0.9,
+              0.95,
+              0.99
+            ],
+            "selected_parameter": 0.9,
+            "threshold": -3.684185745714076,
+            "validation": {
+              "tp": 472421,
+              "tn": 449394,
+              "fp": 60208,
+              "fn": 37181,
+              "accuracy": 0.9044460186576976,
+              "precision": 0.8869607174975452,
+              "recall": 0.9270391403487428,
+              "false_positive": 0.11814710303334759,
+              "f1": 0.9065571835802236
+            },
+            "test": {
+              "tp": 472141,
+              "tn": 449454,
+              "fp": 60147,
+              "fn": 37460,
+              "accuracy": 0.9042319383203722,
+              "precision": 0.8870029006853433,
+              "recall": 0.9264915100245094,
+              "false_positive": 0.11802763338376494,
+              "f1": 0.9063172756406872
+            },
+            "timings": {
+              "warmup_training_seconds": 5.7480762004852295,
+              "train_score_seconds": 6.7778520584106445,
+              "threshold_selection_seconds": 831.9146168231964,
+              "training_seconds": 5.734405755996704,
+              "test_seconds": 97.51193571090698,
+              "test_ms_per_flow": 0.09567478842359707
+            }
+          },
+          {
+            "seed": 3,
+            "scaling_type": "Normalizer",
+            "n_bins": 5,
+            "n_random_cuts": 100,
+            "flows_train_oml": 100000,
+            "quantile_grid": [
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.85,
+              0.9,
+              0.95,
+              0.99
+            ],
+            "selected_parameter": 0.95,
+            "threshold": -2.7054865668822274,
+            "validation": {
+              "tp": 470991,
+              "tn": 481709,
+              "fp": 27893,
+              "fn": 38611,
+              "accuracy": 0.9347490786927838,
+              "precision": 0.9440892071102701,
+              "recall": 0.9242330289127594,
+              "false_positive": 0.05473487152719181,
+              "f1": 0.9340556041432404
+            },
+            "test": {
+              "tp": 470819,
+              "tn": 481833,
+              "fp": 27768,
+              "fn": 38782,
+              "accuracy": 0.9347038173002016,
+              "precision": 0.9443066104812199,
+              "recall": 0.9238973235923791,
+              "false_positive": 0.05448968899197607,
+              "f1": 0.933990485901439
+            },
+            "timings": {
+              "warmup_training_seconds": 5.569386720657349,
+              "train_score_seconds": 6.688796043395996,
+              "threshold_selection_seconds": 816.1935307979584,
+              "training_seconds": 5.696029424667358,
+              "test_seconds": 102.69429850578308,
+              "test_ms_per_flow": 0.10075951431196474
+            }
+          },
+          {
+            "seed": 4,
+            "scaling_type": "Normalizer",
+            "n_bins": 5,
+            "n_random_cuts": 100,
+            "flows_train_oml": 100000,
+            "quantile_grid": [
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.85,
+              0.9,
+              0.95,
+              0.99
+            ],
+            "selected_parameter": 0.95,
+            "threshold": -3.677107574304707,
+            "validation": {
+              "tp": 451365,
+              "tn": 478104,
+              "fp": 31498,
+              "fn": 58237,
+              "accuracy": 0.9119558008014097,
+              "precision": 0.9347682468940466,
+              "recall": 0.8857206211906546,
+              "false_positive": 0.06180901958783521,
+              "f1": 0.9095837132795616
+            },
+            "test": {
+              "tp": 451452,
+              "tn": 478284,
+              "fp": 31317,
+              "fn": 58149,
+              "accuracy": 0.9122195600087127,
+              "precision": 0.9351304661235498,
+              "recall": 0.8858930810575333,
+              "false_positive": 0.06145396104010785,
+              "f1": 0.9098461259409293
+            },
+            "timings": {
+              "warmup_training_seconds": 5.767180919647217,
+              "train_score_seconds": 6.545513391494751,
+              "threshold_selection_seconds": 797.3131532669067,
+              "training_seconds": 5.663722038269043,
+              "test_seconds": 98.89734649658203,
+              "test_ms_per_flow": 0.09703409775155664
+            }
+          },
+          {
+            "seed": 5,
+            "scaling_type": "Normalizer",
+            "n_bins": 5,
+            "n_random_cuts": 100,
+            "flows_train_oml": 100000,
+            "quantile_grid": [
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.85,
+              0.9,
+              0.95,
+              0.99
+            ],
+            "selected_parameter": 0.95,
+            "threshold": -3.292766062290242,
+            "validation": {
+              "tp": 471595,
+              "tn": 474322,
+              "fp": 35280,
+              "fn": 38007,
+              "accuracy": 0.9280938850318484,
+              "precision": 0.9303970406905056,
+              "recall": 0.9254182675892166,
+              "false_positive": 0.06923049752551992,
+              "f1": 0.9279009756246329
+            },
+            "test": {
+              "tp": 471379,
+              "tn": 474384,
+              "fp": 35217,
+              "fn": 38222,
+              "accuracy": 0.9279446076440195,
+              "precision": 0.9304830673751865,
+              "recall": 0.9249962225348851,
+              "false_positive": 0.06910700724684606,
+              "f1": 0.9277315323701999
+            },
+            "timings": {
+              "warmup_training_seconds": 5.613949298858643,
+              "train_score_seconds": 6.583696126937866,
+              "threshold_selection_seconds": 811.7796897888184,
+              "training_seconds": 5.655224800109863,
+              "test_seconds": 97.64956474304199,
+              "test_ms_per_flow": 0.095809824493125
+            }
+          },
+          {
+            "seed": 6,
+            "scaling_type": "Normalizer",
+            "n_bins": 5,
+            "n_random_cuts": 100,
+            "flows_train_oml": 100000,
+            "quantile_grid": [
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.85,
+              0.9,
+              0.95,
+              0.99
+            ],
+            "selected_parameter": 0.95,
+            "threshold": -3.1892141877240663,
+            "validation": {
+              "tp": 457654,
+              "tn": 458970,
+              "fp": 50632,
+              "fn": 51948,
+              "accuracy": 0.8993528282856033,
+              "precision": 0.9003867901142271,
+              "recall": 0.8980616245619131,
+              "false_positive": 0.09935596799070648,
+              "f1": 0.8992227042660882
+            },
+            "test": {
+              "tp": 456458,
+              "tn": 460675,
+              "fp": 48926,
+              "fn": 53143,
+              "accuracy": 0.8998540034262099,
+              "precision": 0.9031904452851693,
+              "recall": 0.8957164526757209,
+              "false_positive": 0.09600844582330098,
+              "f1": 0.8994379227279221
+            },
+            "timings": {
+              "warmup_training_seconds": 5.679788112640381,
+              "train_score_seconds": 6.733098268508911,
+              "threshold_selection_seconds": 800.0414967536926,
+              "training_seconds": 5.573126792907715,
+              "test_seconds": 96.7647693157196,
+              "test_ms_per_flow": 0.09494169881507258
+            }
+          },
+          {
+            "seed": 7,
+            "scaling_type": "Normalizer",
+            "n_bins": 5,
+            "n_random_cuts": 100,
+            "flows_train_oml": 100000,
+            "quantile_grid": [
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.85,
+              0.9,
+              0.95,
+              0.99
+            ],
+            "selected_parameter": 0.95,
+            "threshold": -2.8084529060797676,
+            "validation": {
+              "tp": 471935,
+              "tn": 466015,
+              "fp": 43587,
+              "fn": 37667,
+              "accuracy": 0.9202770004827296,
+              "precision": 0.915450747009827,
+              "recall": 0.9260854549236462,
+              "false_positive": 0.08553145395818698,
+              "f1": 0.9207373937201744
+            },
+            "test": {
+              "tp": 471760,
+              "tn": 465966,
+              "fp": 43635,
+              "fn": 37841,
+              "accuracy": 0.9200590265717689,
+              "precision": 0.9153367805275565,
+              "recall": 0.9257438662796973,
+              "false_positive": 0.08562581313615947,
+              "f1": 0.9205109093108657
+            },
+            "timings": {
+              "warmup_training_seconds": 5.711093187332153,
+              "train_score_seconds": 6.73814845085144,
+              "threshold_selection_seconds": 787.8448929786682,
+              "training_seconds": 5.643348217010498,
+              "test_seconds": 98.46972489356995,
+              "test_ms_per_flow": 0.0966145326378578
+            }
+          },
+          {
+            "seed": 8,
+            "scaling_type": "Normalizer",
+            "n_bins": 5,
+            "n_random_cuts": 100,
+            "flows_train_oml": 100000,
+            "quantile_grid": [
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.85,
+              0.9,
+              0.95,
+              0.99
+            ],
+            "selected_parameter": 0.7,
+            "threshold": -3.5246845488233434,
+            "validation": {
+              "tp": 486046,
+              "tn": 304261,
+              "fp": 205341,
+              "fn": 23556,
+              "accuracy": 0.7754159128103892,
+              "precision": 0.7030013581395079,
+              "recall": 0.9537756916181648,
+              "false_positive": 0.4029438659973862,
+              "f1": 0.8094095782725736
+            },
+            "test": {
+              "tp": 485656,
+              "tn": 304556,
+              "fp": 205045,
+              "fn": 23945,
+              "accuracy": 0.7753242242460278,
+              "precision": 0.7031349310338337,
+              "recall": 0.9530122586101676,
+              "false_positive": 0.402363810118112,
+              "f1": 0.8092230122085942
+            },
+            "timings": {
+              "warmup_training_seconds": 5.75862717628479,
+              "train_score_seconds": 6.6260669231414795,
+              "threshold_selection_seconds": 885.5578453540802,
+              "training_seconds": 5.67113184928894,
+              "test_seconds": 86.94426369667053,
+              "test_ms_per_flow": 0.08530621377967325
+            }
+          },
+          {
+            "seed": 9,
+            "scaling_type": "Normalizer",
+            "n_bins": 5,
+            "n_random_cuts": 100,
+            "flows_train_oml": 100000,
+            "quantile_grid": [
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.85,
+              0.9,
+              0.95,
+              0.99
+            ],
+            "selected_parameter": 0.95,
+            "threshold": -2.233785092089612,
+            "validation": {
+              "tp": 450455,
+              "tn": 489254,
+              "fp": 20348,
+              "fn": 59147,
+              "accuracy": 0.9220028571316439,
+              "precision": 0.956780224425078,
+              "recall": 0.8839349139132107,
+              "false_positive": 0.03992919964992288,
+              "f1": 0.9189161621982752
+            },
+            "test": {
+              "tp": 450554,
+              "tn": 489635,
+              "fp": 19966,
+              "fn": 59047,
+              "accuracy": 0.922475623085512,
+              "precision": 0.9575660970840771,
+              "recall": 0.8841309181104433,
+              "false_positive": 0.03917967193941927,
+              "f1": 0.9193844433493416
+            },
+            "timings": {
+              "warmup_training_seconds": 5.71929931640625,
+              "train_score_seconds": 6.75519323348999,
+              "threshold_selection_seconds": 794.4801847934723,
+              "training_seconds": 5.684967279434204,
+              "test_seconds": 100.5147635936737,
+              "test_ms_per_flow": 0.09862104233868625
+            }
+          },
+          {
+            "seed": 10,
+            "scaling_type": "Normalizer",
+            "n_bins": 5,
+            "n_random_cuts": 100,
+            "flows_train_oml": 100000,
+            "quantile_grid": [
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.85,
+              0.9,
+              0.95,
+              0.99
+            ],
+            "selected_parameter": 0.9,
+            "threshold": -3.1518701602847425,
+            "validation": {
+              "tp": 472069,
+              "tn": 462771,
+              "fp": 46831,
+              "fn": 37533,
+              "accuracy": 0.9172255995855589,
+              "precision": 0.9097494700327616,
+              "recall": 0.9263484052260391,
+              "false_positive": 0.09189720605492128,
+              "f1": 0.9179739076832132
+            },
+            "test": {
+              "tp": 472381,
+              "tn": 455683,
+              "fp": 53918,
+              "fn": 37220,
+              "accuracy": 0.9105790608731145,
+              "precision": 0.8975525319257684,
+              "recall": 0.9269624667141548,
+              "false_positive": 0.10580434496792589,
+              "f1": 0.912020465295878
+            },
+            "timings": {
+              "warmup_training_seconds": 5.710098505020142,
+              "train_score_seconds": 6.730068683624268,
+              "threshold_selection_seconds": 850.6326565742493,
+              "training_seconds": 5.838709592819214,
+              "test_seconds": 97.77807259559631,
+              "test_ms_per_flow": 0.09593591122819256
+            }
+          },
+          {
+            "seed": 11,
+            "scaling_type": "Normalizer",
+            "n_bins": 5,
+            "n_random_cuts": 100,
+            "flows_train_oml": 100000,
+            "quantile_grid": [
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.85,
+              0.9,
+              0.95,
+              0.99
+            ],
+            "selected_parameter": 0.95,
+            "threshold": -3.2028618733373038,
+            "validation": {
+              "tp": 471943,
+              "tn": 470578,
+              "fp": 39024,
+              "fn": 37659,
+              "accuracy": 0.9247618729910793,
+              "precision": 0.9236271618323688,
+              "recall": 0.9261011534491623,
+              "false_positive": 0.07657740746700366,
+              "f1": 0.9248625031722499
+            },
+            "test": {
+              "tp": 471733,
+              "tn": 470594,
+              "fp": 39007,
+              "fn": 37868,
+              "accuracy": 0.9245733426739744,
+              "precision": 0.9236265027215413,
+              "recall": 0.9256908836521122,
+              "false_positive": 0.07654419830416345,
+              "f1": 0.9246575409593459
+            },
+            "timings": {
+              "warmup_training_seconds": 5.892745494842529,
+              "train_score_seconds": 7.0476789474487305,
+              "threshold_selection_seconds": 852.471935749054,
+              "training_seconds": 5.815423965454102,
+              "test_seconds": 98.57431125640869,
+              "test_ms_per_flow": 0.0967171485695757
+            }
+          }
+        ]
+      }
+    }
+  },
+  "total_seconds": 5981.0656180381775
+}

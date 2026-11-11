@@ -204,6 +204,13 @@ recall (41,71 %). No hay un punto de operación con recall alto y FPR bajo.
 Todos los valores de CIC corresponden al mismo fichero barajado (semilla 42) y
 al mismo esquema de particiones.
 
+> **Nota (2026-11-10).** Los valores de SAD y LODA de esta tabla corresponden al
+> protocolo anterior. SAD se considera inválido y sus artefactos se eliminaron.
+> LODA se ha reevaluado con el protocolo online y `Normalizer`, `n_bins=5`,
+> `n_random_cuts=100`: F1 90,64 ± 3,24 %, FPR 11,19 ± 9,54 %
+> (`resultados_loda_cic_ids2018.md`). La comparación con One-Class SVM debe
+> interpretarse con esa cautela.
+
 | Dataset | Modelo | Accuracy | Recall | FPR | Precision | F1 |
 |---|---|---:|---:|---:|---:|---:|
 | NF-CSE-CIC-IDS2018 | **SAD** (MaxAbs, 100 cortes) | 91,1695 % | 89,1384 % | 6,7994 % | 92,9127 % | **90,9864 %** |
