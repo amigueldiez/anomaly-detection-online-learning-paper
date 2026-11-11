@@ -45,11 +45,11 @@ MODELS = {
     },
     'LODA': {
         'script': 'loda_detector.py',
-        'args': ['--scaling-type', 'StandardScaler', '--n-bins', '10',
+        'args': ['--scaling-type', 'Normalizer', '--n-bins', '5',
                  '--n-random-cuts', '100'],
         'selected_key': 'selected_q',
         'selected_label': 'cuantil q',
-        'configuration': 'StandardScaler, n_bins=10, n_random_cuts=100',
+        'configuration': 'Normalizer, n_bins=5, n_random_cuts=100',
     },
     'OCSVM': {
         'script': 'ocsvm_cic.py',

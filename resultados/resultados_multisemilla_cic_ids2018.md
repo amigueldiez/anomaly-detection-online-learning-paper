@@ -1,5 +1,12 @@
 # Repeticiones multisemilla de SAD, LODA y One-Class SVM sobre NF-CSE-CIC-IDS2018
 
+> **Aviso (2026-11-10).** Este documento describe el protocolo anterior. Los
+> resultados de **SAD** se consideran inválidos y sus artefactos se eliminaron.
+> Los de **LODA** han sido reemplazados por el protocolo online con
+> `Normalizer`, `n_bins=5`, `n_random_cuts=100`; véase
+> `resultados/resultados_loda_cic_ids2018.md`. Los resultados de **One-Class
+> SVM** siguen vigentes.
+
 Evaluación de `river.anomaly.StandardAbsoluteDeviation` (SAD),
 `river.anomaly.LODA` y el pipeline One-Class SVM de
 `hyperparameter_optimization.py` con **12 ejecuciones por modelo** sobre

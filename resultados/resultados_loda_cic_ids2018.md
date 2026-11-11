@@ -1,31 +1,30 @@
-# Modelo LODA sobre NF-CSE-CIC-IDS2018 (entrenamiento directo con benignos)
+# LODA sobre NF-CSE-CIC-IDS2018 (protocolo online)
 
-Prueba de `river.anomaly.LODA` sobre NF-CSE-CIC-IDS2018 v1 con el mismo
-protocolo que en NF-UNSW-NB15: entrenamiento directo con 100.000 flujos
-benignos, umbral calibrado con cuantiles de los scores de entrenamiento y
-evaluación con el detector congelado.
+Evaluación de `river.anomaly.LODA` sobre NF-CSE-CIC-IDS2018 v1 con el
+protocolo online: el modelo aprende de los flujos benignos de warm-up, el
+umbral se selecciona en validación y, durante la evaluación, el detector se
+reentrena con cada flujo que no marca como anómalo. El test se evalúa una
+sola vez.
 
-El resultado es **negativo**: LODA no generaliza bien a este dataset. Se
-documentan tanto el split secuencial del pipeline como un split aleatorio, para
-separar el efecto del modelo del efecto del particionado.
+Antes de las repeticiones se hizo un barrido de hiperparámetros sobre el
+dataset. Este documento sustituye a los resultados anteriores de LODA en CIC,
+obtenidos con el detector congelado y ya no comparables.
 
 ## Metadatos
 
 | Campo | Valor |
 |---|---|
-| Fecha de ejecución | 2026-10-27 |
-| Rama | `feature/more-models` |
-| Commit | `7d7e8a3` + cambios locales (`loda_detector.py`, documentos de resultados) |
-| Script | `loda_detector.py` |
-| Ejecuciones | 4: split secuencial + split aleatorio (100 cortes) + 200 cortes + MaxAbsScaler |
-| Semilla | `42` (split y LODA) |
+| Fecha de ejecución | 2026-11-10 |
+| Rama | `loda-online-evaluation` |
+| Commit base | `303f735` |
+| Scripts | `loda_detector.py`, `multiexecution_cic.py` |
+| Barrido | 45 configuraciones (5 scalers × 3 `n_bins` × 3 `n_random_cuts`), semilla 42 |
+| Multisemilla | 12 ejecuciones (semillas 0-11) con la mejor configuración |
 | Python | 3.12.3 |
 | river | 0.26.1 |
 | pandas | 3.1.0 |
 | numpy | 2.5.4 |
 | scikit-learn | 1.9.1 |
-| matplotlib | 3.11.2 |
-| PyYAML | 6.0.3 |
 
 ## Dataset y particiones
 
@@ -36,7 +35,7 @@ separar el efecto del modelo del efecto del particionado.
 | Conjunto | Flujos |
 |---|---:|
 | Escalador | 1.000 benignos |
-| Entrenamiento | 100.000 benignos |
+| Entrenamiento (warm-up) | 100.000 benignos |
 | Validación | 509.602 benignos + 509.602 anomalías |
 | Test | 509.601 benignos + 509.601 anomalías |
 
@@ -49,233 +48,114 @@ IN_BYTES, OUT_BYTES, FLOW_DURATION_MILLISECONDS, Label
 
 La columna `Attack` se descarta antes de construir las particiones.
 
-## Configuración
+## Protocolo
 
 | Parámetro | Valor |
 |---|---|
-| `FILENAME` | `../NF-CSE-CIC-IDS2018.csv` (secuencial) o CSV barajado (aleatorio) |
-| `TYPE_IP` | `IPv4` |
-| `SIGNIFICANT_PORT` | `False` |
-| `BENIGN_FLOWS_ADDITIONAL` | `0` |
-| `VALIDATION_RATIO` | `0.5` |
-| `FLOWS_TRAIN_SCALER` | `1000` |
-| `FLOWS_TRAIN_OML` | `100000` |
-| `scaling_type` | `StandardScaler` |
-| `n_bins` | `10` |
-| `n_random_cuts` | `100` (y `200` en una variante) |
-| `seed` | `42` |
-| `SELECTION_METRIC` | `f1` |
+| `FILENAME` | `/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv` |
+| Barajado del CSV | `random.seed(42)` |
+| `FLOWS_TRAIN_SCALER` | 1.000 |
+| `FLOWS_TRAIN_OML` | 100.000 |
+| `SELECTION_METRIC` | F1 |
 | Rejilla de cuantiles | `0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95, 0.99` |
 | Umbral | cuantil `q` de los scores de entrenamiento |
-| Evaluación | detector congelado; test evaluado una sola vez |
+| Actualización | online con los flujos que no se marcan como anómalos |
 
-## Dos formas de partir el dataset
+El CSV se baraja una sola vez, de modo que la pertenencia de cada flujo a los
+conjuntos es fija. Cada semilla cambia el orden interno de los conjuntos y las
+proyecciones aleatorias de LODA, así que la desviación típica mide la
+sensibilidad al orden de aprendizaje online, no la variabilidad del
+particionado.
 
-El pipeline (`generate_dataset`) construye validación y test con **bloques
-consecutivos** del CSV. En CIC-IDS2018 los flujos están agrupados por capturas
-y tipos de ataque, así que los bloques pueden tener distribuciones distintas.
-Por eso se repiten los experimentos con dos particiones:
+## Barrido de hiperparámetros
 
-1. **Split secuencial**: comportamiento por defecto del pipeline.
-2. **Split aleatorio**: se baraja el CSV completo con `random.seed(42)` y se
-   aplica el mismo `generate_dataset` sobre el fichero barajado.
+Rejilla completa de 45 configuraciones con la semilla 42:
 
-Para reproducir el split aleatorio:
+- 5 scalers: `MaxAbsScaler`, `MinMaxScaler`, `Normalizer`, `RobustScaler`,
+  `StandardScaler`.
+- 3 valores de `n_bins`: 5, 10, 20.
+- 3 valores de `n_random_cuts`: 50, 100, 200.
 
-```python
-import random
-from pathlib import Path
+Mejor configuración por scaler según F1 de validación:
 
-src = Path('../NF-CSE-CIC-IDS2018.csv')
-dst = Path('/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv')
-
-with src.open('r', newline='') as f:
-    header = f.readline()
-    rows = f.readlines()
-
-random.seed(42)
-random.shuffle(rows)
-
-with dst.open('w', newline='') as f:
-    f.write(header)
-    f.writelines(rows)
-```
-
-El fichero barajado ocupa ~591 MB y no se guarda en el repositorio.
-
-## Resultados
-
-### Split secuencial (por defecto)
-
-Cuantil seleccionado en validación: **q = 0,70** (umbral `1,302942`).
-
-| Conjunto | Accuracy | Recall | FPR | Precision | F1 | TP / TN / FP / FN |
+| Scaler | Bins | Cuts | q | F1 val | F1 test | FPR test |
 |---|---:|---:|---:|---:|---:|---:|
-| Validación | 70,9746 % | 92,2534 % | 50,3042 % | 64,7131 % | 76,0672 % | 470.125 / 253.251 / 256.351 / 39.477 |
-| **Test (held-out)** | **71,8578 %** | **100,0000 %** | **56,2844 %** | **63,9859 %** | **78,0383 %** | 509.601 / 222.775 / 286.826 / 0 |
+| **Normalizer** | **5** | **100** | **0.90** | **90.2930 %** | **90.2535 %** | **12.6707 %** |
+| Normalizer | 5 | 200 | 0.85 | 88.5799 % | 88.5396 % | 17.1754 % |
+| RobustScaler | 5 | 200 | 0.70 | 84.6949 % | 84.6487 % | 29.0357 % |
+| StandardScaler | 20 | 50 | 0.70 | 84.2154 % | 84.1552 % | 29.6304 % |
+| MinMaxScaler | 10 | 200 | 0.70 | 83.1539 % | 83.1084 % | 30.2474 % |
+| MaxAbsScaler | 20 | 200 | 0.60 | 81.8964 % | 81.8377 % | 36.3504 % |
 
-Top 5 cuantiles en validación:
+Las siete mejores configuraciones por F1 de validación son todas `Normalizer`,
+así que la elección no depende de un empate afortunado. El resto de scalers se
+queda en ~82-85 % de F1 con ~29-36 % de FPR.
 
-| q | Umbral | Accuracy | Recall | FPR | Precision | F1 |
+Configuración seleccionada: **`Normalizer`, `n_bins=5`, `n_random_cuts=100`**.
+
+El barrido completo está en `resultados/barrido_loda_cic/`:
+
+- `resumen_barrido_loda_cic.json`
+- `resultados_barrido_loda_cic.md` (las 45 configuraciones)
+- `part1/raw/` y `part2/raw/` (JSON por configuración)
+
+## Resultados con 12 semillas
+
+| Split | Accuracy | Recall | FPR | Precision | F1 |
+|---|---:|---:|---:|---:|---:|
+| Validación | 90.4025 ± 4.2028 % | 91.9228 ± 2.0002 % | 11.1178 ± 9.5557 % | 89.8450 ± 6.5847 % | 90.6951 ± 3.2472 % |
+| Test | 90.3442 ± 4.1900 % | 91.8797 ± 1.9985 % | 11.1913 ± 9.5363 % | 89.7759 ± 6.5839 % | 90.6385 ± 3.2366 % |
+
+Umbral seleccionado: q = 0.9167 ± 0.0718. Tiempo de test: 0.0956 ± 0.0037
+ms/flujo.
+
+### Resultados por semilla
+
+| Semilla | q | Umbral | F1 val | FPR val | F1 test | FPR test |
 |---:|---:|---:|---:|---:|---:|---:|
-| **0,70** | **1,302942** | **70,9746 %** | **92,2534 %** | **50,3042 %** | **64,7131 %** | **76,0672 %** |
-| 0,60 | 1,032170 | 65,1156 % | 93,7993 % | 63,5680 % | 59,6053 % | 72,8914 % |
-| 0,50 | 0,904307 | 52,5894 % | 99,1491 % | 93,9704 % | 51,3408 % | 67,6510 % |
-| 0,80 | 1,574377 | 58,9613 % | 47,3101 % | 29,3874 % | 61,6840 % | 53,5492 % |
-| 0,85 | 1,629650 | 58,4603 % | 36,5014 % | 19,5808 % | 65,0856 % | 46,7721 % |
+| 0 | 0.95 | -3.316768 | 91.2950 % | 10.3339 % | 91.2689 % | 10.3346 % |
+| 1 | 0.90 | -3.007146 | 90.1240 % | 13.0641 % | 90.0810 % | 13.1004 % |
+| 2 | 0.90 | -3.684186 | 90.6557 % | 11.8147 % | 90.6317 % | 11.8028 % |
+| 3 | 0.95 | -2.705487 | 93.4056 % | 5.4735 % | 93.3990 % | 5.4490 % |
+| 4 | 0.95 | -3.677108 | 90.9584 % | 6.1809 % | 90.9846 % | 6.1454 % |
+| 5 | 0.95 | -3.292766 | 92.7901 % | 6.9230 % | 92.7732 % | 6.9107 % |
+| 6 | 0.95 | -3.189214 | 89.9223 % | 9.9356 % | 89.9438 % | 9.6008 % |
+| 7 | 0.95 | -2.808453 | 92.0737 % | 8.5531 % | 92.0511 % | 8.5626 % |
+| 8 | 0.70 | -3.524685 | 80.9410 % | 40.2944 % | 80.9223 % | 40.2364 % |
+| 9 | 0.95 | -2.233785 | 91.8916 % | 3.9929 % | 91.9384 % | 3.9180 % |
+| 10 | 0.90 | -3.151870 | 91.7974 % | 9.1897 % | 91.2020 % | 10.5804 % |
+| 11 | 0.95 | -3.202862 | 92.4863 % | 7.6577 % | 92.4658 % | 7.6544 % |
 
-Tiempos: entrenamiento 6,62 s; scoring de validación 72,86 s; búsqueda del
-umbral 0,44 s; scoring de test 72,46 s; **0,07 ms/flujo**.
+### La semilla 8 es un caso atípico
 
-La diferencia entre validación y test (el recall sube de 92,25 % a 100 % y el
-FPR de 50,30 % a 56,28 %) indica que los bloques no representan la misma
-distribución.
+Once de las doce semillas eligen q ≥ 0,90 y quedan en un rango estrecho:
 
-### Split aleatorio (`random.seed(42)`)
+- F1 de test: 89,94-93,40 %.
+- FPR de test: 3,92-13,10 %.
 
-Cuantil seleccionado en validación: **q = 0,70** (umbral `1,222079`).
+La semilla 8 elige q = 0,70 en validación y se desvía por completo: F1 80,92 %,
+FPR 40,24 %. Excluyéndola, el resto de semillas da F1 **91,52 ± 1,11 %** y FPR
+**8,55 ± 2,83 %**.
 
-| Conjunto | Accuracy | Recall | FPR | Precision | F1 | TP / TN / FP / FN |
-|---|---:|---:|---:|---:|---:|---:|
-| Validación | 82,0375 % | 94,1915 % | 30,1166 % | 75,7726 % | 83,9840 % | 480.002 / 356.127 / 153.475 / 29.600 |
-| **Test (held-out)** | **81,9831 %** | **94,1362 %** | **30,1701 %** | **75,7292 %** | **83,9354 %** | 479.719 / 355.854 / 153.747 / 29.882 |
+El modelo es estable; lo que varía es qué cuantil gana la selección en
+validación. Es el mismo patrón observado en NF-UNSW-NB15-v2. Fijar q en la zona
+0,90-0,95 reduciría buena parte de la dispersión, pero se deja como análisis
+pendiente para no cambiar el protocolo principal.
 
-Top 5 cuantiles en validación:
+## Comparación con el protocolo anterior
 
-| q | Umbral | Accuracy | Recall | FPR | Precision | F1 |
-|---:|---:|---:|---:|---:|---:|---:|
-| **0,70** | **1,222079** | **82,0375 %** | **94,1915 %** | **30,1166 %** | **75,7726 %** | **83,9840 %** |
-| 0,60 | 1,114059 | 77,5120 % | 94,8982 % | 39,8743 % | 70,4136 % | 80,8427 % |
-| 0,50 | 1,051132 | 72,5081 % | 95,8240 % | 50,8079 % | 65,3500 % | 77,7061 % |
-| 0,80 | 1,423173 | 55,6097 % | 31,3604 % | 20,1410 % | 60,8923 % | 41,3994 % |
-| 0,85 | 1,468968 | 54,4436 % | 24,7689 % | 15,8818 % | 60,9311 % | 35,2205 % |
+Los resultados públicos anteriores de LODA en CIC (F1 ≈ 83,94 %,
+FPR ≈ 30,17 %) se obtuvieron con el detector congelado en validación y la
+configuración `StandardScaler`, `n_bins=10`, `n_random_cuts=100`. Con el
+protocolo online y `Normalizer`, `n_bins=5`, `n_random_cuts=100` el F1 sube a
+90,64 % y el FPR baja a 11,19 % de media, a costa de una mayor dispersión.
 
-Tiempos: entrenamiento 6,24 s; scoring de validación 72,92 s; búsqueda del
-umbral 0,38 s; scoring de test 73,14 s; **0,07 ms/flujo**.
+## Ficheros
 
-Con el split aleatorio validación y test coinciden (F1 83,9840 % vs 83,9354 %),
-lo que confirma que la diferencia anterior era del particionado. El resultado
-sigue siendo malo: el modelo no separa bien benignos y anomalías en CIC.
-
-### Variantes sobre el split aleatorio
-
-| Configuración | q | Umbral | Accuracy | Recall | FPR | Precision | F1 |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Standard, 100 cortes | 0,70 | 1,222079 | 81,9831 % | 94,1362 % | 30,1701 % | 75,7292 % | 83,9354 % |
-| Standard, 200 cortes | 0,70 | 1,200262 | 82,0942 % | 94,1376 % | 29,9491 % | 75,8644 % | 84,0189 % |
-| MaxAbs, 100 cortes | 0,60 | −1,017878 | 77,7288 % | 94,5807 % | 39,1232 % | 70,7389 % | 80,9406 % |
-
-Tiempos de las variantes:
-
-| Configuración | Entrenamiento | Scoring de test | Coste por flujo |
-|---|---:|---:|---:|
-| Standard, 100 cortes | 6,24 s | 73,14 s | 0,07 ms |
-| Standard, 200 cortes | 11,95 s | 146,12 s | 0,14 ms |
-| MaxAbs, 100 cortes | 6,12 s | 72,52 s | 0,07 ms |
-
-Duplicar los cortes apenas cambia el F1 (83,94 % → 84,02 %) y duplica el coste.
-`MaxAbsScaler` empeora el resultado (80,94 %) y dispara el FPR al 39,12 %.
-
-## Comparación con SAD y con UNSW
-
-| Dataset | Split | Modelo | Accuracy | Recall | FPR | Precision | F1 |
-|---|---|---|---:|---:|---:|---:|---:|
-| NF-CSE-CIC-IDS2018 | Secuencial | LODA | 71,8578 % | 100,0000 % | 56,2844 % | 63,9859 % | 78,0383 % |
-| NF-CSE-CIC-IDS2018 | Aleatorio | LODA | 81,9831 % | 94,1362 % | 30,1701 % | 75,7292 % | 83,9354 % |
-| NF-CSE-CIC-IDS2018 | Secuencial | SAD | 89,8337 % | 96,7247 % | 17,0573 % | 85,0088 % | 90,4891 % |
-| NF-CSE-CIC-IDS2018 | Aleatorio | SAD | 91,1695 % | 89,1384 % | 6,7994 % | 92,9127 % | 90,9864 % |
-| NF-UNSW-NB15 | Secuencial | LODA | 94,9175 % | 100,0000 % | 10,1649 % | 90,7730 % | 95,1634 % |
-| NF-UNSW-NB15-v2 | Secuencial | LODA | 98,6829 % | 100,0000 % | 2,6343 % | 97,4333 % | 98,7000 % |
-
-Los valores de SAD proceden de `resultados_sad_cic_ids2018.md`; los de UNSW,
-de `resultados_loda_unsw.md` y `resultados_loda_unsw_v2.md`. No son ejecuciones
-idénticas: distinto modelo, protocolo y número de repeticiones.
-
-## Observaciones
-
-1. **LODA no funciona bien en CIC-IDS2018.** Incluso con el split aleatorio,
-   el mejor resultado es ~82 % de accuracy, ~84 % de F1 y ~30 % de FPR. No
-   cumple los objetivos del paper (accuracy > 98 %, FPR < 3,1 %, recall 100 %).
-2. **El split secuencial engaña.** El test secuencial tiene recall 100 % y F1
-   78,04 %, pero el FPR es 56,28 %: el modelo marca como anómalos más de la
-   mitad de los benignos. La subida de recall entre validación y test confirma
-   el cambio de distribución.
-3. **El split aleatorio mejora el F1 respecto al secuencial (78,04 % → 83,94 %)
-   y reduce el FPR (56,28 % → 30,17 %), pero sigue siendo malo.** Además es más
-   honesto: validación y test coinciden, así que el ~84 % de F1 es una
-   estimación estable del rendimiento de LODA en CIC con estas características.
-4. **Más cortes no arreglan el problema.** Pasar de 100 a 200 cortes mejora el
-   F1 solo 0,08 puntos y duplica el tiempo de scoring. `MaxAbsScaler` es peor
-   que `StandardScaler`.
-5. **CIC-IDS2018 es un dataset difícil para este tipo de detectores.** SAD
-   tampoco cumple los objetivos (F1 ~91 %, FPR ~6,8 % con split aleatorio),
-   aunque queda muy por encima de LODA.
-6. **La diferencia con UNSW es grande.** LODA pasa de F1 95,16 % en UNSW v1 y
-   98,70 % en v2 a 83,94 % en CIC. El buen resultado en UNSW no se generaliza a
-   CIC con las mismas características y el mismo entrenamiento.
-7. **Una sola ejecución por configuración.** Los resultados corresponden a una
-   partición fija (semilla 42); no se reporta media ± desviación típica.
-8. **Validación y test están balanceados al 50 %.** El FPR y el recall deben
-   interpretarse con esa proporción; en tráfico real, mucho más desbalanceado,
-   la precisión sería menor.
-
-## Reproducibilidad
-
-Split secuencial:
-
-```bash
-cd "/home/alberto/Online machine learning/codigo-paper-oml-computer-security"
-.venv/bin/python loda_detector.py --filename ../NF-CSE-CIC-IDS2018.csv
-```
-
-Split aleatorio (crear antes el CSV barajado con el fragmento de Python de
-arriba):
-
-```bash
-.venv/bin/python loda_detector.py \
-  --filename /tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv
-```
-
-Variantes:
-
-```bash
-.venv/bin/python loda_detector.py \
-  --filename /tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv \
-  --n-random-cuts 200
-
-.venv/bin/python loda_detector.py \
-  --filename /tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv \
-  --scaling-type MaxAbsScaler
-```
-
-Dependencias: `river`, `pandas`, `numpy`, `scikit-learn`, `matplotlib` y `pyyaml`
-(las tres últimas porque `loda_detector.py` reutiliza `hyperparameter_optimization.py`,
-que las importa a nivel de módulo).
-
-El script fija `np.random.seed(42)` antes de generar las particiones y usa
-`seed=42` en LODA. Por defecto no escribe ningún fichero de métricas; si se
-quiere una copia JSON, usar `--output-json`.
-
-## Otros datasets
-
-- NF-UNSW-NB15 v1: `resultados_loda_unsw.md` (F1 95,16 %, FPR 10,16 %).
-- NF-UNSW-NB15 v2: `resultados_loda_unsw_v2.md` (F1 98,70 %, FPR 2,63 %).
-- NF-ToN-IoT: `resultados_loda_ton_iot.md` (mejor F1 84,19 %, FPR 37,56 %).
-- NF-UQ-NIDS: `resultados_loda_uq_nids.md` (F1 70,61 %, FPR 50,19 %).
-
-## Repeticiones multisemilla en CIC
-
-Los resultados de este documento corresponden a una sola ejecución. La
-evaluación con 12 semillas sobre el mismo CSV barajado (partición fija, solo
-cambia el orden interno de los conjuntos y las proyecciones aleatorias de LODA)
-está en `resultados_multisemilla_cic_ids2018.md`. Resumen de test (media ±
-desviación típica, n = 12):
-
-| Dataset | Accuracy | Recall | FPR | F1 |
-|---|---:|---:|---:|---:|
-| NF-CSE-CIC-IDS2018 | 88,2820 ± 4,4433 % | 91,3883 ± 2,1025 % | 14,8243 ± 9,6527 % | 88,7913 ± 3,6597 % |
-
-La dispersión es muy alta: el cuantil elegido varía entre 0,70 y 0,95 según el
-orden, y el F1 de test va de 83,32 % a 93,65 %. La ejecución individual
-(F1 83,94 %) está en el extremo inferior del rango, así que subestimaba el
-rendimiento medio.
+- `resultados/multisemilla_loda_cic/`: resultados definitivos.
+  - `raw/`: un JSON por semilla.
+  - `resumen_multisemilla_loda_cic.json`: resumen agregado completo.
+  - `resultados_multisemilla_loda_cic.md`: tablas de este documento.
+- `resultados/barrido_loda_cic/`: barrido de hiperparámetros.
+- `loda_detector.py`: implementación del protocolo online.
+- `multiexecution_cic.py`: driver multisemilla; LODA usa `Normalizer`, 5, 100.
