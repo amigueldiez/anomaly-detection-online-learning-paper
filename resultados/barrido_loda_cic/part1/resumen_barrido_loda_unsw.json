@@ -1,0 +1,3769 @@
+{
+  "protocol": {
+    "model": "LODA",
+    "seed": 42,
+    "flows_train_oml": 100000,
+    "quantile_grid": [
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      0.99
+    ],
+    "selection_metric": "f1",
+    "scalers": [
+      "MaxAbsScaler",
+      "MinMaxScaler",
+      "Normalizer"
+    ],
+    "n_bins": [
+      5,
+      10,
+      20
+    ],
+    "n_random_cuts": [
+      50,
+      100,
+      200
+    ],
+    "num_configurations_per_dataset": 27,
+    "datasets": {
+      "NF-CSE-CIC-IDS2018": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv"
+    },
+    "note": "Single-seed exploratory sweep; not final multi-seed results."
+  },
+  "results": {
+    "NF-CSE-CIC-IDS2018": [
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MaxAbsScaler",
+        "n_bins": 5,
+        "n_random_cuts": 50,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.6,
+        "threshold": -0.7022394740811887,
+        "validation": {
+          "tp": 65308,
+          "tn": 187573,
+          "fp": 322029,
+          "fn": 444294,
+          "accuracy": 0.24811617693808108,
+          "precision": 0.16860769820595503,
+          "recall": 0.1281549130497918,
+          "false_positive": 0.6319225591736296,
+          "f1": 0.14562417288132193
+        },
+        "test": {
+          "tp": 65489,
+          "tn": 188011,
+          "fp": 321590,
+          "fn": 444112,
+          "accuracy": 0.24872400171899192,
+          "precision": 0.16918768520121216,
+          "recall": 0.12851034436745612,
+          "false_positive": 0.6310623409294722,
+          "f1": 0.1460699469152875
+        },
+        "validation_top5": [
+          {
+            "q": 0.6,
+            "threshold": -0.7022394740811887,
+            "metrics": {
+              "tp": 65308,
+              "tn": 187573,
+              "fp": 322029,
+              "fn": 444294,
+              "accuracy": 0.24811617693808108,
+              "precision": 0.16860769820595503,
+              "recall": 0.1281549130497918,
+              "false_positive": 0.6319225591736296,
+              "f1": 0.14562417288132193
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -0.7205631936932757,
+            "metrics": {
+              "tp": 67362,
+              "tn": 159927,
+              "fp": 349675,
+              "fn": 442240,
+              "accuracy": 0.22300638537525364,
+              "precision": 0.16152523636991442,
+              "recall": 0.13218550947602248,
+              "false_positive": 0.6861727387255152,
+              "f1": 0.14538995228994248
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -0.6396689610902665,
+            "metrics": {
+              "tp": 42478,
+              "tn": 224125,
+              "fp": 285477,
+              "fn": 467124,
+              "accuracy": 0.2615796248837328,
+              "precision": 0.12952386760378712,
+              "recall": 0.08335524585853274,
+              "false_positive": 0.5601959960910672,
+              "f1": 0.10143309649373118
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -0.5172221982417474,
+            "metrics": {
+              "tp": 14754,
+              "tn": 359674,
+              "fp": 149928,
+              "fn": 494848,
+              "accuracy": 0.3673729694938403,
+              "precision": 0.08959084781579044,
+              "recall": 0.028952005682866235,
+              "false_positive": 0.2942060666951857,
+              "f1": 0.04376197566603983
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -0.40524907626401613,
+            "metrics": {
+              "tp": 10553,
+              "tn": 405015,
+              "fp": 104587,
+              "fn": 499049,
+              "accuracy": 0.4077378032268319,
+              "precision": 0.09165363904811534,
+              "recall": 0.02070831747128151,
+              "false_positive": 0.20523271101761767,
+              "f1": 0.03378354584772594
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 2.8748350143432617,
+          "train_score_seconds": 3.3588528633117676,
+          "threshold_selection_seconds": 481.88349294662476,
+          "training_seconds": 2.8549137115478516,
+          "test_seconds": 52.399550914764404,
+          "test_ms_per_flow": 0.05141233132859276
+        },
+        "elapsed_seconds": 543.3717646598816
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MaxAbsScaler",
+        "n_bins": 5,
+        "n_random_cuts": 100,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.5,
+        "threshold": -0.6505968502160023,
+        "validation": {
+          "tp": 488352,
+          "tn": 245926,
+          "fp": 263676,
+          "fn": 21250,
+          "accuracy": 0.7204426199269234,
+          "precision": 0.6493800762737557,
+          "recall": 0.9583007915981492,
+          "false_positive": 0.5174155517443024,
+          "f1": 0.7741604115311145
+        },
+        "test": {
+          "tp": 487711,
+          "tn": 250728,
+          "fp": 258873,
+          "fn": 21890,
+          "accuracy": 0.7245266394689178,
+          "precision": 0.6532566998489119,
+          "recall": 0.9570448252652566,
+          "false_positive": 0.5079915463274208,
+          "f1": 0.7764955002646904
+        },
+        "validation_top5": [
+          {
+            "q": 0.5,
+            "threshold": -0.6505968502160023,
+            "metrics": {
+              "tp": 488352,
+              "tn": 245926,
+              "fp": 263676,
+              "fn": 21250,
+              "accuracy": 0.7204426199269234,
+              "precision": 0.6493800762737557,
+              "recall": 0.9583007915981492,
+              "false_positive": 0.5174155517443024,
+              "f1": 0.7741604115311145
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -0.5881709694821948,
+            "metrics": {
+              "tp": 86548,
+              "tn": 305922,
+              "fp": 203680,
+              "fn": 423054,
+              "accuracy": 0.38507501932880955,
+              "precision": 0.2982069269677633,
+              "recall": 0.16983449829474767,
+              "false_positive": 0.39968445963712856,
+              "f1": 0.21641598839753448
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -0.5436570738727768,
+            "metrics": {
+              "tp": 46283,
+              "tn": 319963,
+              "fp": 189639,
+              "fn": 463319,
+              "accuracy": 0.3593451360081004,
+              "precision": 0.1961792456828952,
+              "recall": 0.09082185705707592,
+              "false_positive": 0.372131585040875,
+              "f1": 0.12416233414350177
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -0.3570964578720291,
+            "metrics": {
+              "tp": 12148,
+              "tn": 390091,
+              "fp": 119511,
+              "fn": 497454,
+              "accuracy": 0.39465995031416673,
+              "precision": 0.09226866374497755,
+              "recall": 0.023838210996032196,
+              "false_positive": 0.2345183103676987,
+              "f1": 0.03788784909732542
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -0.2456150217329904,
+            "metrics": {
+              "tp": 9052,
+              "tn": 406518,
+              "fp": 103084,
+              "fn": 500550,
+              "accuracy": 0.4077397655425214,
+              "precision": 0.08072340729114647,
+              "recall": 0.017762881621343714,
+              "false_positive": 0.20228335053630087,
+              "f1": 0.02911837462082099
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 5.832170248031616,
+          "train_score_seconds": 6.878774642944336,
+          "threshold_selection_seconds": 955.8369598388672,
+          "training_seconds": 5.704767465591431,
+          "test_seconds": 83.866459608078,
+          "test_ms_per_flow": 0.08228639622771344
+        },
+        "elapsed_seconds": 1058.1193363666534
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MaxAbsScaler",
+        "n_bins": 5,
+        "n_random_cuts": 200,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.5,
+        "threshold": -0.7275502537911568,
+        "validation": {
+          "tp": 486084,
+          "tn": 258083,
+          "fp": 251519,
+          "fn": 23518,
+          "accuracy": 0.7301452898536505,
+          "precision": 0.659004911856378,
+          "recall": 0.9538502596143658,
+          "false_positive": 0.49355967990706473,
+          "f1": 0.7794773112679952
+        },
+        "test": {
+          "tp": 485680,
+          "tn": 258401,
+          "fp": 251200,
+          "fn": 23921,
+          "accuracy": 0.7300623428917918,
+          "precision": 0.659103246118771,
+          "recall": 0.9530593542791321,
+          "false_positive": 0.49293466849554846,
+          "f1": 0.7792818342196953
+        },
+        "validation_top5": [
+          {
+            "q": 0.5,
+            "threshold": -0.7275502537911568,
+            "metrics": {
+              "tp": 486084,
+              "tn": 258083,
+              "fp": 251519,
+              "fn": 23518,
+              "accuracy": 0.7301452898536505,
+              "precision": 0.659004911856378,
+              "recall": 0.9538502596143658,
+              "false_positive": 0.49355967990706473,
+              "f1": 0.7794773112679952
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -0.6691262223944974,
+            "metrics": {
+              "tp": 43671,
+              "tn": 307763,
+              "fp": 201839,
+              "fn": 465931,
+              "accuracy": 0.34481222601167183,
+              "precision": 0.17787870147855483,
+              "recall": 0.08569628847610489,
+              "false_positive": 0.3960718364527612,
+              "f1": 0.11566760957314942
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -0.5941665397402044,
+            "metrics": {
+              "tp": 25658,
+              "tn": 324182,
+              "fp": 185420,
+              "fn": 483944,
+              "accuracy": 0.34324826040714124,
+              "precision": 0.12155695998635575,
+              "recall": 0.05034909596116185,
+              "false_positive": 0.36385257514687935,
+              "f1": 0.07120497308097908
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -0.4607235853464974,
+            "metrics": {
+              "tp": 13220,
+              "tn": 377362,
+              "fp": 132240,
+              "fn": 496382,
+              "accuracy": 0.38322259331792263,
+              "precision": 0.09088409184655576,
+              "recall": 0.02594181341517498,
+              "false_positive": 0.2594966267793298,
+              "f1": 0.04036259163254776
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -0.3985069319571722,
+            "metrics": {
+              "tp": 8683,
+              "tn": 404510,
+              "fp": 105092,
+              "fn": 500919,
+              "accuracy": 0.405407553345552,
+              "precision": 0.07631729290265876,
+              "recall": 0.017038787131918635,
+              "false_positive": 0.2062236804408146,
+              "f1": 0.027857941502493676
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 11.632123947143555,
+          "train_score_seconds": 13.36656379699707,
+          "threshold_selection_seconds": 1920.1546807289124,
+          "training_seconds": 11.475674390792847,
+          "test_seconds": 168.18189430236816,
+          "test_ms_per_flow": 0.16501330874779305
+        },
+        "elapsed_seconds": 2124.8113038539886
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MaxAbsScaler",
+        "n_bins": 10,
+        "n_random_cuts": 50,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.5,
+        "threshold": -1.2404728089081132,
+        "validation": {
+          "tp": 485815,
+          "tn": 258530,
+          "fp": 251072,
+          "fn": 23787,
+          "accuracy": 0.7303199359500159,
+          "precision": 0.6592801881428224,
+          "recall": 0.9533223966938905,
+          "false_positive": 0.4926825247938587,
+          "f1": 0.7794934411775796
+        },
+        "test": {
+          "tp": 485734,
+          "tn": 256605,
+          "fp": 252996,
+          "fn": 23867,
+          "accuracy": 0.728353162572287,
+          "precision": 0.6575257536583055,
+          "recall": 0.9531653195343023,
+          "false_positive": 0.49645899438972846,
+          "f1": 0.7782134706259798
+        },
+        "validation_top5": [
+          {
+            "q": 0.5,
+            "threshold": -1.2404728089081132,
+            "metrics": {
+              "tp": 485815,
+              "tn": 258530,
+              "fp": 251072,
+              "fn": 23787,
+              "accuracy": 0.7303199359500159,
+              "precision": 0.6592801881428224,
+              "recall": 0.9533223966938905,
+              "false_positive": 0.4926825247938587,
+              "f1": 0.7794934411775796
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -1.1196735644394418,
+            "metrics": {
+              "tp": 45682,
+              "tn": 264803,
+              "fp": 244799,
+              "fn": 463920,
+              "accuracy": 0.3046347934270274,
+              "precision": 0.15726329777162706,
+              "recall": 0.0896425053276871,
+              "false_positive": 0.48037291847363234,
+              "f1": 0.11419315246043224
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -1.0287497251341913,
+            "metrics": {
+              "tp": 23725,
+              "tn": 308677,
+              "fp": 200925,
+              "fn": 485877,
+              "accuracy": 0.32613882991040066,
+              "precision": 0.10560872468283998,
+              "recall": 0.046555939733360543,
+              "false_positive": 0.3942782799125592,
+              "f1": 0.06462358972124012
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -0.9199119299728293,
+            "metrics": {
+              "tp": 13696,
+              "tn": 355983,
+              "fp": 153619,
+              "fn": 495906,
+              "accuracy": 0.36271345088912527,
+              "precision": 0.08185757403699609,
+              "recall": 0.02687587568337644,
+              "false_positive": 0.301448973905126,
+              "f1": 0.04046581781813723
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -0.8340278205762763,
+            "metrics": {
+              "tp": 6395,
+              "tn": 378220,
+              "fp": 131382,
+              "fn": 503207,
+              "accuracy": 0.37736802445830275,
+              "precision": 0.046415584604106636,
+              "recall": 0.012549008834345234,
+              "false_positive": 0.2578129599177397,
+              "f1": 0.019756587717550306
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 3.0580060482025146,
+          "train_score_seconds": 3.672553062438965,
+          "threshold_selection_seconds": 507.450722694397,
+          "training_seconds": 3.0809359550476074,
+          "test_seconds": 44.95833492279053,
+          "test_ms_per_flow": 0.0441113095566831
+        },
+        "elapsed_seconds": 562.2207140922546
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MaxAbsScaler",
+        "n_bins": 10,
+        "n_random_cuts": 100,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.6,
+        "threshold": -1.0178778787854807,
+        "validation": {
+          "tp": 482224,
+          "tn": 313146,
+          "fp": 196456,
+          "fn": 27378,
+          "accuracy": 0.7803835149783557,
+          "precision": 0.7105322095833088,
+          "recall": 0.9462757210529001,
+          "false_positive": 0.3855086910961888,
+          "f1": 0.8116322556430208
+        },
+        "test": {
+          "tp": 481969,
+          "tn": 312661,
+          "fp": 196940,
+          "fn": 27632,
+          "accuracy": 0.7796589881103059,
+          "precision": 0.7099169402673996,
+          "recall": 0.9457771864654897,
+          "false_positive": 0.38645921024487784,
+          "f1": 0.8110474459617504
+        },
+        "validation_top5": [
+          {
+            "q": 0.6,
+            "threshold": -1.0178778787854807,
+            "metrics": {
+              "tp": 482224,
+              "tn": 313146,
+              "fp": 196456,
+              "fn": 27378,
+              "accuracy": 0.7803835149783557,
+              "precision": 0.7105322095833088,
+              "recall": 0.9462757210529001,
+              "false_positive": 0.3855086910961888,
+              "f1": 0.8116322556430208
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -1.1417267642271318,
+            "metrics": {
+              "tp": 484354,
+              "tn": 279892,
+              "fp": 229710,
+              "fn": 25248,
+              "accuracy": 0.7498459582183743,
+              "precision": 0.6783061462277891,
+              "recall": 0.9504554534715327,
+              "false_positive": 0.450763537034784,
+              "f1": 0.7916441251125715
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -0.8591112826623735,
+            "metrics": {
+              "tp": 36263,
+              "tn": 352809,
+              "fp": 156793,
+              "fn": 473339,
+              "accuracy": 0.38174104497235095,
+              "precision": 0.18783668987236865,
+              "recall": 0.0711594538482973,
+              "false_positive": 0.30767736390359535,
+              "f1": 0.1032166430895258
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -0.6540348966854156,
+            "metrics": {
+              "tp": 11484,
+              "tn": 377163,
+              "fp": 132439,
+              "fn": 498118,
+              "accuracy": 0.3813240528883325,
+              "precision": 0.07979266691216831,
+              "recall": 0.02253523337820495,
+              "false_positive": 0.25988712760154004,
+              "f1": 0.03514479170651467
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -0.6096885713600586,
+            "metrics": {
+              "tp": 8469,
+              "tn": 382405,
+              "fp": 127197,
+              "fn": 501133,
+              "accuracy": 0.38350909140858946,
+              "precision": 0.062425368183627435,
+              "recall": 0.016618851574365878,
+              "false_positive": 0.24960066875718698,
+              "f1": 0.02624955832305337
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 6.14198637008667,
+          "train_score_seconds": 7.063275575637817,
+          "threshold_selection_seconds": 993.7508556842804,
+          "training_seconds": 6.176407814025879,
+          "test_seconds": 93.72406697273254,
+          "test_ms_per_flow": 0.09195828400330115
+        },
+        "elapsed_seconds": 1106.8569023609161
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MaxAbsScaler",
+        "n_bins": 10,
+        "n_random_cuts": 200,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.6,
+        "threshold": -1.0899061576356035,
+        "validation": {
+          "tp": 482064,
+          "tn": 316732,
+          "fp": 192870,
+          "fn": 27538,
+          "accuracy": 0.7837449617544672,
+          "precision": 0.7142387255642774,
+          "recall": 0.9459617505425802,
+          "false_positive": 0.37847182703364585,
+          "f1": 0.8139288295163675
+        },
+        "test": {
+          "tp": 481780,
+          "tn": 316958,
+          "fp": 192643,
+          "fn": 27821,
+          "accuracy": 0.7836895924458547,
+          "precision": 0.714358792627179,
+          "recall": 0.9454063080723939,
+          "false_positive": 0.3780271231806845,
+          "f1": 0.8138010715999
+        },
+        "validation_top5": [
+          {
+            "q": 0.6,
+            "threshold": -1.0899061576356035,
+            "metrics": {
+              "tp": 482064,
+              "tn": 316732,
+              "fp": 192870,
+              "fn": 27538,
+              "accuracy": 0.7837449617544672,
+              "precision": 0.7142387255642774,
+              "recall": 0.9459617505425802,
+              "false_positive": 0.37847182703364585,
+              "f1": 0.8139288295163675
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -1.189088817199767,
+            "metrics": {
+              "tp": 484737,
+              "tn": 275823,
+              "fp": 233779,
+              "fn": 24865,
+              "accuracy": 0.7462294104026279,
+              "precision": 0.6746363337768401,
+              "recall": 0.9512070203806108,
+              "false_positive": 0.4587481995753549,
+              "f1": 0.7893980871544917
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -0.9689049292671537,
+            "metrics": {
+              "tp": 27299,
+              "tn": 315361,
+              "fp": 194241,
+              "fn": 482303,
+              "accuracy": 0.33620354708184036,
+              "precision": 0.12322379705696489,
+              "recall": 0.05356925600762948,
+              "false_positive": 0.3811621618439488,
+              "f1": 0.07467496054118078
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -0.7687863374157794,
+            "metrics": {
+              "tp": 10958,
+              "tn": 378795,
+              "fp": 130807,
+              "fn": 498644,
+              "accuracy": 0.3824092134646253,
+              "precision": 0.07729693506859944,
+              "recall": 0.02150305532552855,
+              "false_positive": 0.25668462839627787,
+              "f1": 0.033646162608790435
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -0.6903828762888726,
+            "metrics": {
+              "tp": 6039,
+              "tn": 391950,
+              "fp": 117652,
+              "fn": 503563,
+              "accuracy": 0.39049002947398165,
+              "precision": 0.048823277360519356,
+              "recall": 0.011850424448883639,
+              "false_positive": 0.23087036550092033,
+              "f1": 0.019071740884551068
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 12.111791849136353,
+          "train_score_seconds": 14.193653106689453,
+          "threshold_selection_seconds": 1969.7021148204803,
+          "training_seconds": 12.214689254760742,
+          "test_seconds": 188.3213028907776,
+          "test_ms_per_flow": 0.1847732862482389
+        },
+        "elapsed_seconds": 2196.544162750244
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MaxAbsScaler",
+        "n_bins": 20,
+        "n_random_cuts": 50,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.5,
+        "threshold": -1.8715462916390357,
+        "validation": {
+          "tp": 483909,
+          "tn": 268693,
+          "fp": 240909,
+          "fn": 25693,
+          "accuracy": 0.738421356274112,
+          "precision": 0.6676282873769691,
+          "recall": 0.9495822229897057,
+          "false_positive": 0.47273951044148177,
+          "f1": 0.7840265063754638
+        },
+        "test": {
+          "tp": 483674,
+          "tn": 268669,
+          "fp": 240932,
+          "fn": 25927,
+          "accuracy": 0.7381686849123138,
+          "precision": 0.6674993030695302,
+          "recall": 0.9491229412815124,
+          "false_positive": 0.4727855714568849,
+          "f1": 0.7837810027005195
+        },
+        "validation_top5": [
+          {
+            "q": 0.5,
+            "threshold": -1.8715462916390357,
+            "metrics": {
+              "tp": 483909,
+              "tn": 268693,
+              "fp": 240909,
+              "fn": 25693,
+              "accuracy": 0.738421356274112,
+              "precision": 0.6676282873769691,
+              "recall": 0.9495822229897057,
+              "false_positive": 0.47273951044148177,
+              "f1": 0.7840265063754638
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -1.7458190983836246,
+            "metrics": {
+              "tp": 32546,
+              "tn": 277722,
+              "fp": 231880,
+              "fn": 477056,
+              "accuracy": 0.3044218821747167,
+              "precision": 0.12308169393327434,
+              "recall": 0.06386552643043002,
+              "false_positive": 0.45502176208099654,
+              "f1": 0.0840951490126972
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -1.5987436026888642,
+            "metrics": {
+              "tp": 19416,
+              "tn": 336167,
+              "fp": 173435,
+              "fn": 490186,
+              "accuracy": 0.3488830499095372,
+              "precision": 0.10067876236057889,
+              "recall": 0.03810032142730994,
+              "false_positive": 0.34033422160823545,
+              "f1": 0.055280566813722766
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -1.4042176211271222,
+            "metrics": {
+              "tp": 11507,
+              "tn": 369769,
+              "fp": 139833,
+              "fn": 498095,
+              "accuracy": 0.3740919384146844,
+              "precision": 0.07603409541429892,
+              "recall": 0.022580366639063425,
+              "false_positive": 0.2743964898096946,
+              "f1": 0.03481999933428349
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -1.2904762800480325,
+            "metrics": {
+              "tp": 5366,
+              "tn": 385041,
+              "fp": 124561,
+              "fn": 504236,
+              "accuracy": 0.38305089069509146,
+              "precision": 0.04130011467978172,
+              "recall": 0.010529785989850902,
+              "false_positive": 0.244428004599668,
+              "f1": 0.016781099840663987
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 3.2574284076690674,
+          "train_score_seconds": 4.005432844161987,
+          "threshold_selection_seconds": 557.8344211578369,
+          "training_seconds": 3.299757719039917,
+          "test_seconds": 50.73593187332153,
+          "test_ms_per_flow": 0.04978005525236561
+        },
+        "elapsed_seconds": 619.1331996917725
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MaxAbsScaler",
+        "n_bins": 20,
+        "n_random_cuts": 100,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.6,
+        "threshold": -1.5205145584891955,
+        "validation": {
+          "tp": 481590,
+          "tn": 319108,
+          "fp": 190494,
+          "fn": 28012,
+          "accuracy": 0.7856111239751806,
+          "precision": 0.7165622154373561,
+          "recall": 0.9450316129057579,
+          "false_positive": 0.3738093649553966,
+          "f1": 0.8150896261781896
+        },
+        "test": {
+          "tp": 481383,
+          "tn": 318453,
+          "fp": 191148,
+          "fn": 28218,
+          "accuracy": 0.7847669058734186,
+          "precision": 0.7157781574380958,
+          "recall": 0.9446272672149387,
+          "false_positive": 0.3750934554681015,
+          "f1": 0.8144318908548285
+        },
+        "validation_top5": [
+          {
+            "q": 0.6,
+            "threshold": -1.5205145584891955,
+            "metrics": {
+              "tp": 481590,
+              "tn": 319108,
+              "fp": 190494,
+              "fn": 28012,
+              "accuracy": 0.7856111239751806,
+              "precision": 0.7165622154373561,
+              "recall": 0.9450316129057579,
+              "false_positive": 0.3738093649553966,
+              "f1": 0.8150896261781896
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -1.6850843130555844,
+            "metrics": {
+              "tp": 484049,
+              "tn": 278515,
+              "fp": 231087,
+              "fn": 25553,
+              "accuracy": 0.7481956507235058,
+              "precision": 0.6768628624485412,
+              "recall": 0.9498569471862355,
+              "false_positive": 0.45346564573922393,
+              "f1": 0.7904531418148207
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -1.3049004871860874,
+            "metrics": {
+              "tp": 21357,
+              "tn": 356914,
+              "fp": 152688,
+              "fn": 488245,
+              "accuracy": 0.3711435590912124,
+              "precision": 0.12270964405757132,
+              "recall": 0.041909176180627235,
+              "false_positive": 0.2996220579982025,
+              "f1": 0.062479613016659184
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -1.1373665698813504,
+            "metrics": {
+              "tp": 13763,
+              "tn": 370709,
+              "fp": 138893,
+              "fn": 495839,
+              "accuracy": 0.3772277188865036,
+              "precision": 0.0901569541976732,
+              "recall": 0.02700735083457286,
+              "false_positive": 0.2725519130615657,
+              "f1": 0.041563861818203776
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -1.032828351977246,
+            "metrics": {
+              "tp": 10137,
+              "tn": 379942,
+              "fp": 129660,
+              "fn": 499465,
+              "accuracy": 0.38272907092201364,
+              "precision": 0.07251228567136633,
+              "recall": 0.019891994144449983,
+              "false_positive": 0.2544338523004227,
+              "f1": 0.031219635385949164
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 6.506015777587891,
+          "train_score_seconds": 8.041141033172607,
+          "threshold_selection_seconds": 1082.9678936004639,
+          "training_seconds": 6.521996021270752,
+          "test_seconds": 103.47732949256897,
+          "test_ms_per_flow": 0.10152779281493655
+        },
+        "elapsed_seconds": 1207.5148668289185
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MaxAbsScaler",
+        "n_bins": 20,
+        "n_random_cuts": 200,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.6,
+        "threshold": -1.5869068278600977,
+        "validation": {
+          "tp": 481403,
+          "tn": 324968,
+          "fp": 184634,
+          "fn": 28199,
+          "accuracy": 0.7911772324284442,
+          "precision": 0.7227871724844115,
+          "recall": 0.9446646598718216,
+          "false_positive": 0.3623101950149332,
+          "f1": 0.8189639846925799
+        },
+        "test": {
+          "tp": 481239,
+          "tn": 324359,
+          "fp": 185242,
+          "fn": 28362,
+          "accuracy": 0.7904203484687039,
+          "precision": 0.7220595935968167,
+          "recall": 0.9443446932011514,
+          "false_positive": 0.3635039962637436,
+          "f1": 0.818376609794215
+        },
+        "validation_top5": [
+          {
+            "q": 0.6,
+            "threshold": -1.5869068278600977,
+            "metrics": {
+              "tp": 481403,
+              "tn": 324968,
+              "fp": 184634,
+              "fn": 28199,
+              "accuracy": 0.7911772324284442,
+              "precision": 0.7227871724844115,
+              "recall": 0.9446646598718216,
+              "false_positive": 0.3623101950149332,
+              "f1": 0.8189639846925799
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -1.72921416270119,
+            "metrics": {
+              "tp": 484100,
+              "tn": 278582,
+              "fp": 231020,
+              "fn": 25502,
+              "accuracy": 0.7483114273491862,
+              "precision": 0.6769493231905135,
+              "recall": 0.9499570252864,
+              "false_positive": 0.4533341705880275,
+              "f1": 0.7905467526508057
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -1.4240007831123058,
+            "metrics": {
+              "tp": 21698,
+              "tn": 342660,
+              "fp": 166942,
+              "fn": 487904,
+              "accuracy": 0.3574927099972135,
+              "precision": 0.11502332485156913,
+              "recall": 0.04257832583074635,
+              "false_positive": 0.32759290583631934,
+              "f1": 0.062150371934085895
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -1.2600457169878523,
+            "metrics": {
+              "tp": 14145,
+              "tn": 367795,
+              "fp": 141807,
+              "fn": 495457,
+              "accuracy": 0.37474342722359805,
+              "precision": 0.09070098491843644,
+              "recall": 0.02775695542796143,
+              "false_positive": 0.2782701009807654,
+              "f1": 0.04250594241789547
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -1.1710659811380835,
+            "metrics": {
+              "tp": 12001,
+              "tn": 377163,
+              "fp": 132439,
+              "fn": 497601,
+              "accuracy": 0.3818313114940679,
+              "precision": 0.08308640265854333,
+              "recall": 0.023549750589675865,
+              "false_positive": 0.25988712760154004,
+              "f1": 0.036697949061375267
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 13.14095687866211,
+          "train_score_seconds": 16.358843088150024,
+          "threshold_selection_seconds": 2190.8551063537598,
+          "training_seconds": 13.008756399154663,
+          "test_seconds": 208.89782571792603,
+          "test_ms_per_flow": 0.20496214265467103
+        },
+        "elapsed_seconds": 2442.262428998947
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MinMaxScaler",
+        "n_bins": 5,
+        "n_random_cuts": 50,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.5,
+        "threshold": -0.7089456935592122,
+        "validation": {
+          "tp": 70350,
+          "tn": 194435,
+          "fp": 315167,
+          "fn": 439252,
+          "accuracy": 0.25979587992197833,
+          "precision": 0.18248222516776172,
+          "recall": 0.13804890875624506,
+          "false_positive": 0.6184571489122884,
+          "f1": 0.15718580434556745
+        },
+        "test": {
+          "tp": 70608,
+          "tn": 194940,
+          "fp": 314661,
+          "fn": 438993,
+          "accuracy": 0.2605450146290922,
+          "precision": 0.18326935206310396,
+          "recall": 0.13855545809368505,
+          "false_positive": 0.6174654288355007,
+          "f1": 0.1578061617888632
+        },
+        "validation_top5": [
+          {
+            "q": 0.5,
+            "threshold": -0.7089456935592122,
+            "metrics": {
+              "tp": 70350,
+              "tn": 194435,
+              "fp": 315167,
+              "fn": 439252,
+              "accuracy": 0.25979587992197833,
+              "precision": 0.18248222516776172,
+              "recall": 0.13804890875624506,
+              "false_positive": 0.6184571489122884,
+              "f1": 0.15718580434556745
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -0.6759034559458417,
+            "metrics": {
+              "tp": 53508,
+              "tn": 228283,
+              "fp": 281319,
+              "fn": 456094,
+              "accuracy": 0.27648145022978715,
+              "precision": 0.15980790079653073,
+              "recall": 0.1049995879137052,
+              "false_positive": 0.5520366874541309,
+              "f1": 0.12673179154197686
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -0.6081633303602403,
+            "metrics": {
+              "tp": 27029,
+              "tn": 320384,
+              "fp": 189218,
+              "fn": 482573,
+              "accuracy": 0.3408669903179344,
+              "precision": 0.12499132935948244,
+              "recall": 0.05303943077146479,
+              "false_positive": 0.371305450135596,
+              "f1": 0.07447554518915092
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -0.47046707033075497,
+            "metrics": {
+              "tp": 13921,
+              "tn": 361376,
+              "fp": 148226,
+              "fn": 495681,
+              "accuracy": 0.36822559566092755,
+              "precision": 0.08585419403380883,
+              "recall": 0.027317396713513683,
+              "false_positive": 0.2908662053916586,
+              "f1": 0.04144702857763838
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -0.3892087460071578,
+            "metrics": {
+              "tp": 9659,
+              "tn": 404387,
+              "fp": 105215,
+              "fn": 499943,
+              "accuracy": 0.4062444809871233,
+              "precision": 0.08408343054128872,
+              "recall": 0.018954007244869526,
+              "false_positive": 0.20646504527062295,
+              "f1": 0.030934735682396124
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 2.8574166297912598,
+          "train_score_seconds": 3.414961814880371,
+          "threshold_selection_seconds": 484.1348326206207,
+          "training_seconds": 2.933758020401001,
+          "test_seconds": 53.16854524612427,
+          "test_ms_per_flow": 0.052166837629953895
+        },
+        "elapsed_seconds": 546.5096297264099
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MinMaxScaler",
+        "n_bins": 5,
+        "n_random_cuts": 100,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.5,
+        "threshold": -0.6224767439808292,
+        "validation": {
+          "tp": 488337,
+          "tn": 246028,
+          "fp": 263574,
+          "fn": 21265,
+          "accuracy": 0.7205279806594166,
+          "precision": 0.6494611729313708,
+          "recall": 0.9582713568628066,
+          "false_positive": 0.5172153955439736,
+          "f1": 0.7742084306701557
+        },
+        "test": {
+          "tp": 488009,
+          "tn": 246232,
+          "fp": 263369,
+          "fn": 21592,
+          "accuracy": 0.7204077307540605,
+          "precision": 0.6494853455916996,
+          "recall": 0.957629596488233,
+          "false_positive": 0.5168141349801119,
+          "f1": 0.77401606212316
+        },
+        "validation_top5": [
+          {
+            "q": 0.5,
+            "threshold": -0.6224767439808292,
+            "metrics": {
+              "tp": 488337,
+              "tn": 246028,
+              "fp": 263574,
+              "fn": 21265,
+              "accuracy": 0.7205279806594166,
+              "precision": 0.6494611729313708,
+              "recall": 0.9582713568628066,
+              "false_positive": 0.5172153955439736,
+              "f1": 0.7742084306701557
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -0.5739142459523289,
+            "metrics": {
+              "tp": 71915,
+              "tn": 308168,
+              "fp": 201434,
+              "fn": 437687,
+              "accuracy": 0.3729214171058983,
+              "precision": 0.2630885790692485,
+              "recall": 0.1411199328103108,
+              "false_positive": 0.3952770985985141,
+              "f1": 0.1837024283767439
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -0.5311669593023278,
+            "metrics": {
+              "tp": 44347,
+              "tn": 316438,
+              "fp": 193164,
+              "fn": 465255,
+              "accuracy": 0.3539870330179238,
+              "precision": 0.18671556264762473,
+              "recall": 0.08702281388220612,
+              "false_positive": 0.37904874784635856,
+              "f1": 0.11871564274748266
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -0.3231253807257797,
+            "metrics": {
+              "tp": 10937,
+              "tn": 392479,
+              "fp": 117123,
+              "fn": 498665,
+              "accuracy": 0.39581477309743685,
+              "precision": 0.08540527877557395,
+              "recall": 0.021461846696049072,
+              "false_positive": 0.22983230050117542,
+              "f1": 0.03430343975334895
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -0.2463587101274657,
+            "metrics": {
+              "tp": 7467,
+              "tn": 403953,
+              "fp": 105649,
+              "fn": 502135,
+              "accuracy": 0.40366796048681125,
+              "precision": 0.06601188160826055,
+              "recall": 0.014652611253488016,
+              "false_positive": 0.20731669027986546,
+              "f1": 0.02398196294309784
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 5.869002103805542,
+          "train_score_seconds": 6.663589954376221,
+          "threshold_selection_seconds": 951.0682065486908,
+          "training_seconds": 5.774774074554443,
+          "test_seconds": 84.21469807624817,
+          "test_ms_per_flow": 0.0826280738030814
+        },
+        "elapsed_seconds": 1053.5904796123505
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MinMaxScaler",
+        "n_bins": 5,
+        "n_random_cuts": 200,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.7,
+        "threshold": -0.5954078818361505,
+        "validation": {
+          "tp": 476419,
+          "tn": 342761,
+          "fp": 166841,
+          "fn": 33183,
+          "accuracy": 0.8037448832618397,
+          "precision": 0.740632092777415,
+          "recall": 0.9348844784753592,
+          "false_positive": 0.32739471195167996,
+          "f1": 0.8264978809259044
+        },
+        "test": {
+          "tp": 476136,
+          "tn": 342160,
+          "fp": 167441,
+          "fn": 33465,
+          "accuracy": 0.8028791152293657,
+          "precision": 0.7398275575416772,
+          "recall": 0.9343309765875656,
+          "false_positive": 0.32857274612883414,
+          "f1": 0.825780582009022
+        },
+        "validation_top5": [
+          {
+            "q": 0.7,
+            "threshold": -0.5954078818361505,
+            "metrics": {
+              "tp": 476419,
+              "tn": 342761,
+              "fp": 166841,
+              "fn": 33183,
+              "accuracy": 0.8037448832618397,
+              "precision": 0.740632092777415,
+              "recall": 0.9348844784753592,
+              "false_positive": 0.32739471195167996,
+              "f1": 0.8264978809259044
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -0.6450159411903493,
+            "metrics": {
+              "tp": 483540,
+              "tn": 309705,
+              "fp": 199897,
+              "fn": 26062,
+              "accuracy": 0.7782985545582631,
+              "precision": 0.7075121774208888,
+              "recall": 0.9488581285002806,
+              "false_positive": 0.3922610193837544,
+              "f1": 0.8106021680766513
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -0.6783924923269353,
+            "metrics": {
+              "tp": 488100,
+              "tn": 248683,
+              "fp": 260919,
+              "fn": 21502,
+              "accuracy": 0.7229004203280207,
+              "precision": 0.6516523612885654,
+              "recall": 0.9578062880443954,
+              "false_positive": 0.5120054473883541,
+              "f1": 0.7756107676576188
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -0.3762761077207791,
+            "metrics": {
+              "tp": 9121,
+              "tn": 398002,
+              "fp": 111600,
+              "fn": 500481,
+              "accuracy": 0.39945192522792294,
+              "precision": 0.07555437744882829,
+              "recall": 0.017898281403919136,
+              "false_positive": 0.2189944309480732,
+              "f1": 0.0289407176955307
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -0.27636587610144486,
+            "metrics": {
+              "tp": 2457,
+              "tn": 410614,
+              "fp": 98988,
+              "fn": 507145,
+              "accuracy": 0.4052878520884926,
+              "precision": 0.024220020700872393,
+              "recall": 0.004821409649098708,
+              "false_positive": 0.19424570547211353,
+              "f1": 0.008041934581136967
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 11.623431205749512,
+          "train_score_seconds": 13.387216567993164,
+          "threshold_selection_seconds": 1802.7930912971497,
+          "training_seconds": 11.49076223373413,
+          "test_seconds": 179.67111086845398,
+          "test_ms_per_flow": 0.17628606583234135
+        },
+        "elapsed_seconds": 2018.965982913971
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MinMaxScaler",
+        "n_bins": 10,
+        "n_random_cuts": 50,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.5,
+        "threshold": -1.2602807151506392,
+        "validation": {
+          "tp": 487245,
+          "tn": 240871,
+          "fp": 268731,
+          "fn": 22357,
+          "accuracy": 0.7143967252875774,
+          "precision": 0.6445244293469634,
+          "recall": 0.9561285081298739,
+          "false_positive": 0.5273350575547192,
+          "f1": 0.7699960018268333
+        },
+        "test": {
+          "tp": 486996,
+          "tn": 240822,
+          "fp": 268779,
+          "fn": 22605,
+          "accuracy": 0.7141057415507427,
+          "precision": 0.644366378882604,
+          "recall": 0.9556417667940212,
+          "false_positive": 0.527430283692536,
+          "f1": 0.7697253622638647
+        },
+        "validation_top5": [
+          {
+            "q": 0.5,
+            "threshold": -1.2602807151506392,
+            "metrics": {
+              "tp": 487245,
+              "tn": 240871,
+              "fp": 268731,
+              "fn": 22357,
+              "accuracy": 0.7143967252875774,
+              "precision": 0.6445244293469634,
+              "recall": 0.9561285081298739,
+              "false_positive": 0.5273350575547192,
+              "f1": 0.7699960018268333
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -1.1655201889912425,
+            "metrics": {
+              "tp": 60189,
+              "tn": 252120,
+              "fp": 257482,
+              "fn": 449413,
+              "accuracy": 0.30642442533585035,
+              "precision": 0.18946960849432273,
+              "recall": 0.11810981903524712,
+              "false_positive": 0.5052609683635465,
+              "f1": 0.14551182016093842
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -1.0719483190753283,
+            "metrics": {
+              "tp": 30798,
+              "tn": 302335,
+              "fp": 207267,
+              "fn": 478804,
+              "accuracy": 0.3268560562949125,
+              "precision": 0.12936802973977696,
+              "recall": 0.06043539860518601,
+              "false_positive": 0.406723286015361,
+              "f1": 0.0823842700025546
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -0.9258566233205944,
+            "metrics": {
+              "tp": 13284,
+              "tn": 359857,
+              "fp": 149745,
+              "fn": 496318,
+              "accuracy": 0.36611021934764776,
+              "precision": 0.08148243564028486,
+              "recall": 0.026067401619302908,
+              "false_positive": 0.29384696292400736,
+              "f1": 0.03949862554654781
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -0.8357326898953695,
+            "metrics": {
+              "tp": 6299,
+              "tn": 384820,
+              "fp": 124782,
+              "fn": 503303,
+              "accuracy": 0.38374947508055307,
+              "precision": 0.0480542565284061,
+              "recall": 0.012360626528153344,
+              "false_positive": 0.24486167636704723,
+              "f1": 0.019663390475476952
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 3.0451743602752686,
+          "train_score_seconds": 3.6307532787323,
+          "threshold_selection_seconds": 506.72169947624207,
+          "training_seconds": 3.020777702331543,
+          "test_seconds": 44.16111731529236,
+          "test_ms_per_flow": 0.04332911171219479
+        },
+        "elapsed_seconds": 560.5796782970428
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MinMaxScaler",
+        "n_bins": 10,
+        "n_random_cuts": 100,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.6,
+        "threshold": -1.0359458249549163,
+        "validation": {
+          "tp": 481755,
+          "tn": 320416,
+          "fp": 189186,
+          "fn": 27847,
+          "accuracy": 0.7870563694804965,
+          "precision": 0.7180288579770799,
+          "recall": 0.9453553949945251,
+          "false_positive": 0.37124265603353207,
+          "f1": 0.8161583271426792
+        },
+        "test": {
+          "tp": 481490,
+          "tn": 320305,
+          "fp": 189296,
+          "fn": 28111,
+          "accuracy": 0.786688997863034,
+          "precision": 0.7177997155575698,
+          "recall": 0.944837235405739,
+          "false_positive": 0.371459239679671,
+          "f1": 0.8158171853807268
+        },
+        "validation_top5": [
+          {
+            "q": 0.6,
+            "threshold": -1.0359458249549163,
+            "metrics": {
+              "tp": 481755,
+              "tn": 320416,
+              "fp": 189186,
+              "fn": 27847,
+              "accuracy": 0.7870563694804965,
+              "precision": 0.7180288579770799,
+              "recall": 0.9453553949945251,
+              "false_positive": 0.37124265603353207,
+              "f1": 0.8161583271426792
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -1.1603123087806926,
+            "metrics": {
+              "tp": 484544,
+              "tn": 274474,
+              "fp": 235128,
+              "fn": 25058,
+              "accuracy": 0.7447164650060243,
+              "precision": 0.6732844962705232,
+              "recall": 0.9508282934525375,
+              "false_positive": 0.46139536344048887,
+              "f1": 0.7883417366673338
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -0.8979674916647653,
+            "metrics": {
+              "tp": 56619,
+              "tn": 350848,
+              "fp": 158754,
+              "fn": 452983,
+              "accuracy": 0.3997894435265168,
+              "precision": 0.2628881057514173,
+              "recall": 0.11110435202373617,
+              "false_positive": 0.3115254649707026,
+              "f1": 0.15619573088727198
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -0.6689998087654111,
+            "metrics": {
+              "tp": 11340,
+              "tn": 377593,
+              "fp": 132009,
+              "fn": 498262,
+              "accuracy": 0.3816046640319308,
+              "precision": 0.07910763242157252,
+              "recall": 0.022252659918917117,
+              "false_positive": 0.2590433318550555,
+              "f1": 0.03473461255132468
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -0.6234951833249144,
+            "metrics": {
+              "tp": 8396,
+              "tn": 383097,
+              "fp": 126505,
+              "fn": 501206,
+              "accuracy": 0.38411642811448937,
+              "precision": 0.06223823396416631,
+              "recall": 0.01647560252903246,
+              "false_positive": 0.24824274630005377,
+              "f1": 0.026054184387039315
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 6.161587953567505,
+          "train_score_seconds": 7.334767818450928,
+          "threshold_selection_seconds": 980.2166233062744,
+          "training_seconds": 6.155297756195068,
+          "test_seconds": 93.5449149608612,
+          "test_ms_per_flow": 0.09178250725652148
+        },
+        "elapsed_seconds": 1093.4135100841522
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MinMaxScaler",
+        "n_bins": 10,
+        "n_random_cuts": 200,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.7,
+        "threshold": -0.9743891012074276,
+        "validation": {
+          "tp": 472087,
+          "tn": 355838,
+          "fp": 153764,
+          "fn": 37515,
+          "accuracy": 0.8123251086141734,
+          "precision": 0.7543121286056905,
+          "recall": 0.9263837269084502,
+          "false_positive": 0.3017335096801033,
+          "f1": 0.8315394824796799
+        },
+        "test": {
+          "tp": 471912,
+          "tn": 355460,
+          "fp": 154141,
+          "fn": 37689,
+          "accuracy": 0.8117841213027447,
+          "precision": 0.7537892159290028,
+          "recall": 0.926042138849806,
+          "false_positive": 0.30247389624431664,
+          "f1": 0.8310841154083902
+        },
+        "validation_top5": [
+          {
+            "q": 0.7,
+            "threshold": -0.9743891012074276,
+            "metrics": {
+              "tp": 472087,
+              "tn": 355838,
+              "fp": 153764,
+              "fn": 37515,
+              "accuracy": 0.8123251086141734,
+              "precision": 0.7543121286056905,
+              "recall": 0.9263837269084502,
+              "false_positive": 0.3017335096801033,
+              "f1": 0.8315394824796799
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -1.1013284164583594,
+            "metrics": {
+              "tp": 481671,
+              "tn": 321385,
+              "fp": 188217,
+              "fn": 27931,
+              "accuracy": 0.7879246941730997,
+              "precision": 0.7190321367153912,
+              "recall": 0.9451905604766072,
+              "false_positive": 0.3693411721304076,
+              "f1": 0.8167445251761355
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -1.2064868868270624,
+            "metrics": {
+              "tp": 484642,
+              "tn": 272567,
+              "fp": 237035,
+              "fn": 24960,
+              "accuracy": 0.7429415504648725,
+              "precision": 0.671549737625004,
+              "recall": 0.9510206003901084,
+              "false_positive": 0.4651374994603632,
+              "f1": 0.7872171944782621
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -0.7479365062102434,
+            "metrics": {
+              "tp": 8614,
+              "tn": 380293,
+              "fp": 129309,
+              "fn": 500988,
+              "accuracy": 0.3815791539279673,
+              "precision": 0.06245513801178919,
+              "recall": 0.016903387349343213,
+              "false_positive": 0.2537450794934086,
+              "f1": 0.02660592255125285
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -0.6982883850337491,
+            "metrics": {
+              "tp": 5429,
+              "tn": 388528,
+              "fp": 121074,
+              "fn": 504173,
+              "accuracy": 0.38653400104395197,
+              "precision": 0.04291597827719501,
+              "recall": 0.010653411878289332,
+              "false_positive": 0.23758540979038545,
+              "f1": 0.017069508964714944
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 12.20838212966919,
+          "train_score_seconds": 14.168639659881592,
+          "threshold_selection_seconds": 1920.6996326446533,
+          "training_seconds": 12.150130271911621,
+          "test_seconds": 193.9010283946991,
+          "test_ms_per_flow": 0.19024788844085774
+        },
+        "elapsed_seconds": 2153.128967523575
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MinMaxScaler",
+        "n_bins": 20,
+        "n_random_cuts": 50,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.5,
+        "threshold": -1.80583665640044,
+        "validation": {
+          "tp": 484174,
+          "tn": 264693,
+          "fp": 244909,
+          "fn": 25428,
+          "accuracy": 0.7347567317239728,
+          "precision": 0.664086256297294,
+          "recall": 0.9501022366474229,
+          "false_positive": 0.48058877319947724,
+          "f1": 0.7817548448556332
+        },
+        "test": {
+          "tp": 483961,
+          "tn": 264478,
+          "fp": 245123,
+          "fn": 25640,
+          "accuracy": 0.7343382371698642,
+          "precision": 0.6637931980402807,
+          "recall": 0.9496861269895467,
+          "false_positive": 0.4810096526498182,
+          "f1": 0.7814109317542394
+        },
+        "validation_top5": [
+          {
+            "q": 0.5,
+            "threshold": -1.80583665640044,
+            "metrics": {
+              "tp": 484174,
+              "tn": 264693,
+              "fp": 244909,
+              "fn": 25428,
+              "accuracy": 0.7347567317239728,
+              "precision": 0.664086256297294,
+              "recall": 0.9501022366474229,
+              "false_positive": 0.48058877319947724,
+              "f1": 0.7817548448556332
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -1.6407507030226116,
+            "metrics": {
+              "tp": 66257,
+              "tn": 287535,
+              "fp": 222067,
+              "fn": 443345,
+              "accuracy": 0.347125796209591,
+              "precision": 0.2298005022127884,
+              "recall": 0.13001715063912622,
+              "false_positive": 0.43576555821994417,
+              "f1": 0.16607304436752282
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -1.503593341595546,
+            "metrics": {
+              "tp": 55763,
+              "tn": 336397,
+              "fp": 173205,
+              "fn": 453839,
+              "accuracy": 0.3847708603969372,
+              "precision": 0.24354058209007373,
+              "recall": 0.10942460979352514,
+              "false_positive": 0.3398828889996507,
+              "f1": 0.1510026131578591
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -1.3717604335576867,
+            "metrics": {
+              "tp": 43050,
+              "tn": 362846,
+              "fp": 146756,
+              "fn": 466552,
+              "accuracy": 0.3982480445524154,
+              "precision": 0.22681053285986744,
+              "recall": 0.08447769043292609,
+              "false_positive": 0.28798160132809525,
+              "f1": 0.1231041109052227
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -1.2091083241731615,
+            "metrics": {
+              "tp": 14011,
+              "tn": 383160,
+              "fp": 126442,
+              "fn": 495591,
+              "accuracy": 0.3896874423569766,
+              "precision": 0.0997557901931607,
+              "recall": 0.027494005125568582,
+              "false_positive": 0.24811912041161535,
+              "f1": 0.043107121705086494
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 3.305814027786255,
+          "train_score_seconds": 4.025511026382446,
+          "threshold_selection_seconds": 559.94677901268,
+          "training_seconds": 3.2683632373809814,
+          "test_seconds": 50.23964238166809,
+          "test_ms_per_flow": 0.04929311596883453
+        },
+        "elapsed_seconds": 620.7863624095917
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MinMaxScaler",
+        "n_bins": 20,
+        "n_random_cuts": 100,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.6,
+        "threshold": -1.4938367806565267,
+        "validation": {
+          "tp": 482034,
+          "tn": 309911,
+          "fp": 199691,
+          "fn": 27568,
+          "accuracy": 0.7770230493600888,
+          "precision": 0.7070798342440133,
+          "recall": 0.9459028810718954,
+          "false_positive": 0.3918567823517176,
+          "f1": 0.8092387732335454
+        },
+        "test": {
+          "tp": 481783,
+          "tn": 309842,
+          "fp": 199759,
+          "fn": 27818,
+          "accuracy": 0.7767106030011715,
+          "precision": 0.7069014088640172,
+          "recall": 0.9454121950310145,
+          "false_positive": 0.39199098902867147,
+          "f1": 0.8089423352191971
+        },
+        "validation_top5": [
+          {
+            "q": 0.6,
+            "threshold": -1.4938367806565267,
+            "metrics": {
+              "tp": 482034,
+              "tn": 309911,
+              "fp": 199691,
+              "fn": 27568,
+              "accuracy": 0.7770230493600888,
+              "precision": 0.7070798342440133,
+              "recall": 0.9459028810718954,
+              "false_positive": 0.3918567823517176,
+              "f1": 0.8092387732335454
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -1.6705609680376985,
+            "metrics": {
+              "tp": 484090,
+              "tn": 275478,
+              "fp": 234124,
+              "fn": 25512,
+              "accuracy": 0.7452561018206365,
+              "precision": 0.6740191642045407,
+              "recall": 0.949937402129505,
+              "false_positive": 0.459425198488232,
+              "f1": 0.7885383477654632
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -1.2850178206301597,
+            "metrics": {
+              "tp": 25364,
+              "tn": 356246,
+              "fp": 153356,
+              "fn": 484238,
+              "accuracy": 0.3744196451348307,
+              "precision": 0.14192032229185317,
+              "recall": 0.049772175148449185,
+              "false_positive": 0.3009328848787878,
+              "f1": 0.07369806573086432
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -1.1168406398365718,
+            "metrics": {
+              "tp": 15793,
+              "tn": 370650,
+              "fp": 138952,
+              "fn": 493809,
+              "accuracy": 0.3791615809985047,
+              "precision": 0.1020582248214805,
+              "recall": 0.030990851684255555,
+              "false_positive": 0.27266768968724614,
+              "f1": 0.0475444308471326
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -1.014723637607424,
+            "metrics": {
+              "tp": 12544,
+              "tn": 379144,
+              "fp": 130458,
+              "fn": 497058,
+              "accuracy": 0.3843077538942155,
+              "precision": 0.08771905288037929,
+              "recall": 0.024615288009073748,
+              "false_positive": 0.2559997802206428,
+              "f1": 0.03844291484575638
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 6.7103376388549805,
+          "train_score_seconds": 7.920679807662964,
+          "threshold_selection_seconds": 1086.4439034461975,
+          "training_seconds": 6.633695840835571,
+          "test_seconds": 104.65578770637512,
+          "test_ms_per_flow": 0.10268404860506075
+        },
+        "elapsed_seconds": 1212.3649051189423
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "MinMaxScaler",
+        "n_bins": 20,
+        "n_random_cuts": 200,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.6,
+        "threshold": -1.5761650732708974,
+        "validation": {
+          "tp": 481945,
+          "tn": 317990,
+          "fp": 191612,
+          "fn": 27657,
+          "accuracy": 0.7848625005396368,
+          "precision": 0.7155222200942162,
+          "recall": 0.9457282349755299,
+          "false_positive": 0.3760032338962563,
+          "f1": 0.8146749507040051
+        },
+        "test": {
+          "tp": 481783,
+          "tn": 317960,
+          "fp": 191641,
+          "fn": 27818,
+          "accuracy": 0.7846756580147998,
+          "precision": 0.715422972748224,
+          "recall": 0.9454121950310145,
+          "false_positive": 0.3760608790014148,
+          "f1": 0.814493353902073
+        },
+        "validation_top5": [
+          {
+            "q": 0.6,
+            "threshold": -1.5761650732708974,
+            "metrics": {
+              "tp": 481945,
+              "tn": 317990,
+              "fp": 191612,
+              "fn": 27657,
+              "accuracy": 0.7848625005396368,
+              "precision": 0.7155222200942162,
+              "recall": 0.9457282349755299,
+              "false_positive": 0.3760032338962563,
+              "f1": 0.8146749507040051
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -1.7287939576913427,
+            "metrics": {
+              "tp": 484644,
+              "tn": 272953,
+              "fp": 236649,
+              "fn": 24958,
+              "accuracy": 0.7433222397086353,
+              "precision": 0.6719100282409506,
+              "recall": 0.9510245250214874,
+              "false_positive": 0.46438004560421664,
+              "f1": 0.787466030814976
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -1.400507924877023,
+            "metrics": {
+              "tp": 23981,
+              "tn": 346616,
+              "fp": 162986,
+              "fn": 485621,
+              "accuracy": 0.36361415379060524,
+              "precision": 0.1282632764070665,
+              "recall": 0.04705829254987225,
+              "false_positive": 0.31982998496866183,
+              "f1": 0.06885462890252078
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -1.2375468396504457,
+            "metrics": {
+              "tp": 14492,
+              "tn": 368717,
+              "fp": 140885,
+              "fn": 495110,
+              "accuracy": 0.37598851652858506,
+              "precision": 0.09326991768408452,
+              "recall": 0.028437878972217535,
+              "false_positive": 0.27646084591504744,
+              "f1": 0.04358633881671452
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -1.154391831926092,
+            "metrics": {
+              "tp": 11927,
+              "tn": 376523,
+              "fp": 133079,
+              "fn": 497675,
+              "accuracy": 0.3811307647929168,
+              "precision": 0.08225176889232169,
+              "recall": 0.02340453922865295,
+              "false_positive": 0.2611430096428193,
+              "f1": 0.03644012905433481
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 13.298766374588013,
+          "train_score_seconds": 16.05809497833252,
+          "threshold_selection_seconds": 2184.2583825588226,
+          "training_seconds": 12.876134157180786,
+          "test_seconds": 207.3665292263031,
+          "test_ms_per_flow": 0.20345969614100354
+        },
+        "elapsed_seconds": 2433.8588569164276
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "Normalizer",
+        "n_bins": 5,
+        "n_random_cuts": 50,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.8,
+        "threshold": -3.842765218581155,
+        "validation": {
+          "tp": 476019,
+          "tn": 400950,
+          "fp": 108652,
+          "fn": 33583,
+          "accuracy": 0.8604450139520645,
+          "precision": 0.8141655734592617,
+          "recall": 0.9340995521995596,
+          "false_positive": 0.21320952429543055,
+          "f1": 0.8700187247606401
+        },
+        "test": {
+          "tp": 476097,
+          "tn": 386031,
+          "fp": 123570,
+          "fn": 33504,
+          "accuracy": 0.8458853102721541,
+          "precision": 0.7939356342770237,
+          "recall": 0.9342544461254982,
+          "false_positive": 0.24248382558119,
+          "f1": 0.8583985114507945
+        },
+        "validation_top5": [
+          {
+            "q": 0.8,
+            "threshold": -3.842765218581155,
+            "metrics": {
+              "tp": 476019,
+              "tn": 400950,
+              "fp": 108652,
+              "fn": 33583,
+              "accuracy": 0.8604450139520645,
+              "precision": 0.8141655734592617,
+              "recall": 0.9340995521995596,
+              "false_positive": 0.21320952429543055,
+              "f1": 0.8700187247606401
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -3.898202086338914,
+            "metrics": {
+              "tp": 487110,
+              "tn": 349438,
+              "fp": 160164,
+              "fn": 22492,
+              "accuracy": 0.8207856327094477,
+              "precision": 0.7525561045245136,
+              "recall": 0.9558635955117916,
+              "false_positive": 0.31429233009289603,
+              "f1": 0.8421127242677695
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -3.944258267664408,
+            "metrics": {
+              "tp": 487116,
+              "tn": 324774,
+              "fp": 184828,
+              "fn": 22486,
+              "accuracy": 0.7965922425736163,
+              "precision": 0.7249354112842736,
+              "recall": 0.9558753694059285,
+              "false_positive": 0.362690884258696,
+              "f1": 0.8245400517626906
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -3.973897038618714,
+            "metrics": {
+              "tp": 488911,
+              "tn": 247468,
+              "fp": 262134,
+              "fn": 20691,
+              "accuracy": 0.722504032558742,
+              "precision": 0.6509743091292799,
+              "recall": 0.959397726068579,
+              "false_positive": 0.5143896609510952,
+              "f1": 0.7756509157599233
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -3.7113868250102477,
+            "metrics": {
+              "tp": 13378,
+              "tn": 390594,
+              "fp": 119008,
+              "fn": 496224,
+              "accuracy": 0.3963602968591175,
+              "precision": 0.10105298143308204,
+              "recall": 0.0262518592941158,
+              "false_positive": 0.23353126557588078,
+              "f1": 0.041676791466507164
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 2.8074634075164795,
+          "train_score_seconds": 3.332818031311035,
+          "threshold_selection_seconds": 426.17570209503174,
+          "training_seconds": 2.8145034313201904,
+          "test_seconds": 45.9059362411499,
+          "test_ms_per_flow": 0.045041057848345965
+        },
+        "elapsed_seconds": 481.0365421772003
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "Normalizer",
+        "n_bins": 5,
+        "n_random_cuts": 100,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.9,
+        "threshold": -3.333787588615466,
+        "validation": {
+          "tp": 472465,
+          "tn": 445154,
+          "fp": 64448,
+          "fn": 37137,
+          "accuracy": 0.9003290803411289,
+          "precision": 0.8799656555158843,
+          "recall": 0.9271254822390806,
+          "false_positive": 0.12646732155682278,
+          "f1": 0.9029302016693502
+        },
+        "test": {
+          "tp": 472188,
+          "tn": 445031,
+          "fp": 64570,
+          "fn": 37413,
+          "accuracy": 0.899938383166438,
+          "precision": 0.8797037025996818,
+          "recall": 0.9265837390428983,
+          "false_positive": 0.12670697271002215,
+          "f1": 0.9025353631019564
+        },
+        "validation_top5": [
+          {
+            "q": 0.9,
+            "threshold": -3.333787588615466,
+            "metrics": {
+              "tp": 472465,
+              "tn": 445154,
+              "fp": 64448,
+              "fn": 37137,
+              "accuracy": 0.9003290803411289,
+              "precision": 0.8799656555158843,
+              "recall": 0.9271254822390806,
+              "false_positive": 0.12646732155682278,
+              "f1": 0.9029302016693502
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -3.3499132107725047,
+            "metrics": {
+              "tp": 474584,
+              "tn": 422397,
+              "fp": 87205,
+              "fn": 35018,
+              "accuracy": 0.8800799447411902,
+              "precision": 0.8447726815583787,
+              "recall": 0.9312836291851287,
+              "false_positive": 0.1711237397027484,
+              "f1": 0.8859211996367339
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -3.477078330158454,
+            "metrics": {
+              "tp": 475245,
+              "tn": 410165,
+              "fp": 99437,
+              "fn": 34357,
+              "accuracy": 0.8687269673195945,
+              "precision": 0.8269703940614114,
+              "recall": 0.9325807198558875,
+              "false_positive": 0.19512678521669852,
+              "f1": 0.876606129021548
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -3.5232140696451326,
+            "metrics": {
+              "tp": 485942,
+              "tn": 339965,
+              "fp": 169637,
+              "fn": 23660,
+              "accuracy": 0.810345132083469,
+              "precision": 0.7412409488406432,
+              "recall": 0.9535716107864569,
+              "false_positive": 0.33288134661951874,
+              "f1": 0.8341056024772117
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -3.5532038689816416,
+            "metrics": {
+              "tp": 487124,
+              "tn": 272242,
+              "fp": 237360,
+              "fn": 22478,
+              "accuracy": 0.7450579079359971,
+              "precision": 0.6723737170179052,
+              "recall": 0.9558910679314445,
+              "false_positive": 0.4657752520594503,
+              "f1": 0.7894490335357504
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 5.673511028289795,
+          "train_score_seconds": 6.6588850021362305,
+          "threshold_selection_seconds": 803.309700012207,
+          "training_seconds": 5.6446826457977295,
+          "test_seconds": 94.43970155715942,
+          "test_ms_per_flow": 0.0926604358676292
+        },
+        "elapsed_seconds": 915.7266864776611
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "Normalizer",
+        "n_bins": 5,
+        "n_random_cuts": 200,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.85,
+        "threshold": -3.366455501054242,
+        "validation": {
+          "tp": 474645,
+          "tn": 422172,
+          "fp": 87430,
+          "fn": 34957,
+          "accuracy": 0.8799190348546513,
+          "precision": 0.844451363252235,
+          "recall": 0.9314033304421883,
+          "false_positive": 0.17156526073288567,
+          "f1": 0.8857986128283055
+        },
+        "test": {
+          "tp": 474333,
+          "tn": 422075,
+          "fp": 87526,
+          "fn": 35268,
+          "accuracy": 0.8795194671909985,
+          "precision": 0.8442207030589525,
+          "recall": 0.9307929144566043,
+          "false_positive": 0.17175398007460738,
+          "f1": 0.8853956283949003
+        },
+        "validation_top5": [
+          {
+            "q": 0.85,
+            "threshold": -3.366455501054242,
+            "metrics": {
+              "tp": 474645,
+              "tn": 422172,
+              "fp": 87430,
+              "fn": 34957,
+              "accuracy": 0.8799190348546513,
+              "precision": 0.844451363252235,
+              "recall": 0.9314033304421883,
+              "false_positive": 0.17156526073288567,
+              "f1": 0.8857986128283055
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -3.4488367637674413,
+            "metrics": {
+              "tp": 476164,
+              "tn": 394009,
+              "fp": 115593,
+              "fn": 33438,
+              "accuracy": 0.8537770652391474,
+              "precision": 0.8046613728270219,
+              "recall": 0.934384087974537,
+              "false_positive": 0.22682995749624216,
+              "f1": 0.8646844489399006
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -3.5161065087395436,
+            "metrics": {
+              "tp": 487114,
+              "tn": 348539,
+              "fp": 161063,
+              "fn": 22488,
+              "accuracy": 0.819907496438397,
+              "precision": 0.7515138611829794,
+              "recall": 0.9558714447745496,
+              "false_positive": 0.3160564518977555,
+              "f1": 0.8414628353079473
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -3.5627872971052326,
+            "metrics": {
+              "tp": 487126,
+              "tn": 272007,
+              "fp": 237595,
+              "fn": 22476,
+              "accuracy": 0.7448292981581704,
+              "precision": 0.6721565954346569,
+              "recall": 0.9558949925628235,
+              "false_positive": 0.46623639624648255,
+              "f1": 0.7893006935785852
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -3.636412956087236,
+            "metrics": {
+              "tp": 487193,
+              "tn": 270756,
+              "fp": 238846,
+              "fn": 22409,
+              "accuracy": 0.7436676072699872,
+              "precision": 0.6710286912961976,
+              "recall": 0.95602646771402,
+              "false_positive": 0.46869125317404564,
+              "f1": 0.788567229478465
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 11.511460781097412,
+          "train_score_seconds": 13.305234432220459,
+          "threshold_selection_seconds": 1650.7835915088654,
+          "training_seconds": 11.18600058555603,
+          "test_seconds": 183.1548924446106,
+          "test_ms_per_flow": 0.17970421216266314
+        },
+        "elapsed_seconds": 1869.9415373802185
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "Normalizer",
+        "n_bins": 10,
+        "n_random_cuts": 50,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.7,
+        "threshold": -5.213667268983951,
+        "validation": {
+          "tp": 486170,
+          "tn": 369059,
+          "fp": 140543,
+          "fn": 23432,
+          "accuracy": 0.8391146424072119,
+          "precision": 0.7757458358132032,
+          "recall": 0.9540190187636626,
+          "false_positive": 0.27578973394923884,
+          "f1": 0.8556958237812579
+        },
+        "test": {
+          "tp": 485796,
+          "tn": 369154,
+          "fp": 140447,
+          "fn": 23805,
+          "accuracy": 0.8388425454424148,
+          "precision": 0.7757308265321928,
+          "recall": 0.9532869833457941,
+          "false_positive": 0.27560189246096456,
+          "f1": 0.8553921137057554
+        },
+        "validation_top5": [
+          {
+            "q": 0.7,
+            "threshold": -5.213667268983951,
+            "metrics": {
+              "tp": 486170,
+              "tn": 369059,
+              "fp": 140543,
+              "fn": 23432,
+              "accuracy": 0.8391146424072119,
+              "precision": 0.7757458358132032,
+              "recall": 0.9540190187636626,
+              "false_positive": 0.27578973394923884,
+              "f1": 0.8556958237812579
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -5.389384943259237,
+            "metrics": {
+              "tp": 487794,
+              "tn": 307386,
+              "fp": 202216,
+              "fn": 21808,
+              "accuracy": 0.7801970949878533,
+              "precision": 0.7069375806147737,
+              "recall": 0.9572058194434088,
+              "false_positive": 0.39681162946770226,
+              "f1": 0.8132529517877447
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -5.419035048927161,
+            "metrics": {
+              "tp": 488540,
+              "tn": 269905,
+              "fp": 239697,
+              "fn": 21062,
+              "accuracy": 0.7441542615609829,
+              "precision": 0.6708530327352222,
+              "recall": 0.958669706947775,
+              "false_positive": 0.47036118382580916,
+              "f1": 0.7893433637169293
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -4.920439402505281,
+            "metrics": {
+              "tp": 14924,
+              "tn": 397313,
+              "fp": 112289,
+              "fn": 494678,
+              "accuracy": 0.40446956644597154,
+              "precision": 0.1173150542790438,
+              "recall": 0.029285599350081043,
+              "false_positive": 0.2203464664581379,
+              "f1": 0.04687075524288844
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -4.8465078114028906,
+            "metrics": {
+              "tp": 13317,
+              "tn": 406112,
+              "fp": 103490,
+              "fn": 496285,
+              "accuracy": 0.41152605366540945,
+              "precision": 0.11400857825301566,
+              "recall": 0.02613215803705637,
+              "false_positive": 0.2030800507062374,
+              "f1": 0.04251854618947046
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 2.9149038791656494,
+          "train_score_seconds": 3.453738212585449,
+          "threshold_selection_seconds": 474.90208888053894,
+          "training_seconds": 3.0080018043518066,
+          "test_seconds": 47.43355870246887,
+          "test_ms_per_flow": 0.0465398995512851
+        },
+        "elapsed_seconds": 531.7124416828156
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "Normalizer",
+        "n_bins": 10,
+        "n_random_cuts": 100,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.7,
+        "threshold": -4.893286880242689,
+        "validation": {
+          "tp": 486150,
+          "tn": 370513,
+          "fp": 139089,
+          "fn": 23452,
+          "accuracy": 0.8405216227565826,
+          "precision": 0.7775426676838777,
+          "recall": 0.9539797724498726,
+          "false_positive": 0.27293652693670745,
+          "f1": 0.8567720059462075
+        },
+        "test": {
+          "tp": 485773,
+          "tn": 370583,
+          "fp": 139018,
+          "fn": 23828,
+          "accuracy": 0.8402220560791678,
+          "precision": 0.777496794928224,
+          "recall": 0.9532418499963697,
+          "false_positive": 0.27279773783803407,
+          "f1": 0.8564464488466067
+        },
+        "validation_top5": [
+          {
+            "q": 0.7,
+            "threshold": -4.893286880242689,
+            "metrics": {
+              "tp": 486150,
+              "tn": 370513,
+              "fp": 139089,
+              "fn": 23452,
+              "accuracy": 0.8405216227565826,
+              "precision": 0.7775426676838777,
+              "recall": 0.9539797724498726,
+              "false_positive": 0.27293652693670745,
+              "f1": 0.8567720059462075
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -5.064305951313566,
+            "metrics": {
+              "tp": 487762,
+              "tn": 297037,
+              "fp": 212565,
+              "fn": 21840,
+              "accuracy": 0.7700116954015094,
+              "precision": 0.6964775026523324,
+              "recall": 0.9571430253413448,
+              "false_positive": 0.417119634538326,
+              "f1": 0.8062654916114912
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -5.098246738401082,
+            "metrics": {
+              "tp": 488510,
+              "tn": 268899,
+              "fp": 240703,
+              "fn": 21092,
+              "accuracy": 0.7431377820338225,
+              "precision": 0.6699140031787695,
+              "recall": 0.95861083747709,
+              "false_positive": 0.47233527340944503,
+              "f1": 0.7886730464193605
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -4.58575124795208,
+            "metrics": {
+              "tp": 15294,
+              "tn": 396861,
+              "fp": 112741,
+              "fn": 494308,
+              "accuracy": 0.4043891115027021,
+              "precision": 0.1194517124223845,
+              "recall": 0.030011656155195625,
+              "false_positive": 0.2212334331497914,
+              "f1": 0.047970867437115476
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -4.479289497142262,
+            "metrics": {
+              "tp": 13473,
+              "tn": 407751,
+              "fp": 101851,
+              "fn": 496129,
+              "accuracy": 0.4132872319967347,
+              "precision": 0.11682737331344734,
+              "recall": 0.026438279284618192,
+              "false_positive": 0.19986381529114877,
+              "f1": 0.043118705254702155
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 5.909603834152222,
+          "train_score_seconds": 6.943007946014404,
+          "threshold_selection_seconds": 932.7976443767548,
+          "training_seconds": 6.087334156036377,
+          "test_seconds": 94.22919487953186,
+          "test_ms_per_flow": 0.09245389518420476
+        },
+        "elapsed_seconds": 1045.967113494873
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "Normalizer",
+        "n_bins": 10,
+        "n_random_cuts": 200,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.7,
+        "threshold": -4.812269735826941,
+        "validation": {
+          "tp": 486698,
+          "tn": 357318,
+          "fp": 152284,
+          "fn": 22904,
+          "accuracy": 0.8281129194940365,
+          "precision": 0.7616771677449443,
+          "recall": 0.955055121447718,
+          "false_positive": 0.29882928245964496,
+          "f1": 0.8474748037583669
+        },
+        "test": {
+          "tp": 486335,
+          "tn": 357224,
+          "fp": 152377,
+          "fn": 23266,
+          "accuracy": 0.8276661545012667,
+          "precision": 0.7614308170192512,
+          "recall": 0.954344673577956,
+          "false_positive": 0.29901236457542274,
+          "f1": 0.8470425746290428
+        },
+        "validation_top5": [
+          {
+            "q": 0.7,
+            "threshold": -4.812269735826941,
+            "metrics": {
+              "tp": 486698,
+              "tn": 357318,
+              "fp": 152284,
+              "fn": 22904,
+              "accuracy": 0.8281129194940365,
+              "precision": 0.7616771677449443,
+              "recall": 0.955055121447718,
+              "false_positive": 0.29882928245964496,
+              "f1": 0.8474748037583669
+            }
+          },
+          {
+            "q": 0.6,
+            "threshold": -5.031822883298698,
+            "metrics": {
+              "tp": 487769,
+              "tn": 280603,
+              "fp": 228999,
+              "fn": 21833,
+              "accuracy": 0.7538942154858105,
+              "precision": 0.6805116857895441,
+              "recall": 0.9571567615511714,
+              "false_positive": 0.44936833057955033,
+              "f1": 0.7954679256668052
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -5.050231300176192,
+            "metrics": {
+              "tp": 487807,
+              "tn": 270800,
+              "fp": 238802,
+              "fn": 21795,
+              "accuracy": 0.7443132091318323,
+              "precision": 0.6713473133418386,
+              "recall": 0.9572313295473722,
+              "false_positive": 0.4686049112837077,
+              "f1": 0.7891969898342597
+            }
+          },
+          {
+            "q": 0.8,
+            "threshold": -4.521718872981213,
+            "metrics": {
+              "tp": 15148,
+              "tn": 396915,
+              "fp": 112687,
+              "fn": 494454,
+              "accuracy": 0.4042988449809852,
+              "precision": 0.11849649939374976,
+              "recall": 0.02972515806452879,
+              "false_positive": 0.22112746810255846,
+              "f1": 0.04752783412321531
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -4.437769395333547,
+            "metrics": {
+              "tp": 13561,
+              "tn": 405609,
+              "fp": 103993,
+              "fn": 496041,
+              "accuracy": 0.41127193378361937,
+              "precision": 0.11535974956190347,
+              "recall": 0.02661096306529409,
+              "false_positive": 0.20406709549805535,
+              "f1": 0.043246018534463505
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 11.996388673782349,
+          "train_score_seconds": 13.903166055679321,
+          "threshold_selection_seconds": 1881.9112341403961,
+          "training_seconds": 11.897181034088135,
+          "test_seconds": 186.74695825576782,
+          "test_ms_per_flow": 0.18322860262810298
+        },
+        "elapsed_seconds": 2106.455499649048
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "Normalizer",
+        "n_bins": 20,
+        "n_random_cuts": 50,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.6,
+        "threshold": -6.186104778889598,
+        "validation": {
+          "tp": 480006,
+          "tn": 280628,
+          "fp": 228974,
+          "fn": 29596,
+          "accuracy": 0.7463020160831394,
+          "precision": 0.6770374340601991,
+          "recall": 0.9419233048535917,
+          "false_positive": 0.44931927268731287,
+          "f1": 0.7878107505280727
+        },
+        "test": {
+          "tp": 479818,
+          "tn": 280147,
+          "fp": 229454,
+          "fn": 29783,
+          "accuracy": 0.7456470846799751,
+          "precision": 0.6764936441872793,
+          "recall": 0.9415562371345425,
+          "false_positive": 0.45026206777459227,
+          "f1": 0.787314182855802
+        },
+        "validation_top5": [
+          {
+            "q": 0.6,
+            "threshold": -6.186104778889598,
+            "metrics": {
+              "tp": 480006,
+              "tn": 280628,
+              "fp": 228974,
+              "fn": 29596,
+              "accuracy": 0.7463020160831394,
+              "precision": 0.6770374340601991,
+              "recall": 0.9419233048535917,
+              "false_positive": 0.44931927268731287,
+              "f1": 0.7878107505280727
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -6.312566975027346,
+            "metrics": {
+              "tp": 488009,
+              "tn": 244329,
+              "fp": 265273,
+              "fn": 21593,
+              "accuracy": 0.7185391737081095,
+              "precision": 0.6478437026239842,
+              "recall": 0.9576277173166511,
+              "false_positive": 0.5205493699004321,
+              "f1": 0.7728484959822122
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -5.996525960143366,
+            "metrics": {
+              "tp": 142034,
+              "tn": 318610,
+              "fp": 190992,
+              "fn": 367568,
+              "accuracy": 0.4519644742367573,
+              "precision": 0.4264952286007699,
+              "recall": 0.2787155466422816,
+              "false_positive": 0.37478659816876697,
+              "f1": 0.33712148184014773
+            }
+          },
+          {
+            "q": 0.99,
+            "threshold": -5.050593836809276,
+            "metrics": {
+              "tp": 100160,
+              "tn": 478729,
+              "fp": 30873,
+              "fn": 409442,
+              "accuracy": 0.5679814835891539,
+              "precision": 0.7643875970175452,
+              "recall": 0.1965455394602062,
+              "false_positive": 0.06058257228189842,
+              "f1": 0.31268975313556086
+            }
+          },
+          {
+            "q": 0.95,
+            "threshold": -5.269574146917382,
+            "metrics": {
+              "tp": 101403,
+              "tn": 458717,
+              "fp": 50885,
+              "fn": 408199,
+              "accuracy": 0.5495661320010518,
+              "precision": 0.6658633641521328,
+              "recall": 0.19898469786225328,
+              "false_positive": 0.09985243386014969,
+              "f1": 0.3064043874359788
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 3.1976475715637207,
+          "train_score_seconds": 3.9919397830963135,
+          "threshold_selection_seconds": 507.2374839782715,
+          "training_seconds": 3.184452533721924,
+          "test_seconds": 49.27845573425293,
+          "test_ms_per_flow": 0.04835003829883863
+        },
+        "elapsed_seconds": 566.8902342319489
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "Normalizer",
+        "n_bins": 20,
+        "n_random_cuts": 100,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.6,
+        "threshold": -5.707615174734707,
+        "validation": {
+          "tp": 479937,
+          "tn": 280664,
+          "fp": 228938,
+          "fn": 29665,
+          "accuracy": 0.7462696378742627,
+          "precision": 0.6770403808852055,
+          "recall": 0.9417879050710162,
+          "false_positive": 0.4492486293224909,
+          "f1": 0.7877653825226081
+        },
+        "test": {
+          "tp": 479730,
+          "tn": 281201,
+          "fp": 228400,
+          "fn": 29871,
+          "accuracy": 0.7465948850178865,
+          "precision": 0.6774603533249545,
+          "recall": 0.9413835530150059,
+          "false_positive": 0.4481937829792328,
+          "f1": 0.7879080026705405
+        },
+        "validation_top5": [
+          {
+            "q": 0.6,
+            "threshold": -5.707615174734707,
+            "metrics": {
+              "tp": 479937,
+              "tn": 280664,
+              "fp": 228938,
+              "fn": 29665,
+              "accuracy": 0.7462696378742627,
+              "precision": 0.6770403808852055,
+              "recall": 0.9417879050710162,
+              "false_positive": 0.4492486293224909,
+              "f1": 0.7877653825226081
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -5.824604999540818,
+            "metrics": {
+              "tp": 488771,
+              "tn": 244103,
+              "fp": 265499,
+              "fn": 20831,
+              "accuracy": 0.7190650743128951,
+              "precision": 0.648005356172193,
+              "recall": 0.9591230018720491,
+              "false_positive": 0.5209928532462589,
+              "f1": 0.7734501595098238
+            }
+          },
+          {
+            "q": 0.7,
+            "threshold": -5.514353818179287,
+            "metrics": {
+              "tp": 169387,
+              "tn": 315978,
+              "fp": 193624,
+              "fn": 340215,
+              "accuracy": 0.47621967731680803,
+              "precision": 0.46661671409406325,
+              "recall": 0.33239076769714404,
+              "false_positive": 0.37995141306352803,
+              "f1": 0.3882293754505147
+            }
+          },
+          {
+            "q": 0.85,
+            "threshold": -5.179247033160699,
+            "metrics": {
+              "tp": 141308,
+              "tn": 413474,
+              "fp": 96128,
+              "fn": 368294,
+              "accuracy": 0.5443287114257793,
+              "precision": 0.5951414275846965,
+              "recall": 0.2772909054517054,
+              "false_positive": 0.18863348260014678,
+              "f1": 0.37831542705993537
+            }
+          },
+          {
+            "q": 0.9,
+            "threshold": -4.925088998691792,
+            "metrics": {
+              "tp": 126744,
+              "tn": 446498,
+              "fp": 63104,
+              "fn": 382858,
+              "accuracy": 0.5624408852398538,
+              "precision": 0.6676077704268678,
+              "recall": 0.248711739749844,
+              "false_positive": 0.1238299692701363,
+              "f1": 0.3624104653656444
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 6.342912435531616,
+          "train_score_seconds": 7.638073682785034,
+          "threshold_selection_seconds": 995.1019241809845,
+          "training_seconds": 6.420300483703613,
+          "test_seconds": 98.94523811340332,
+          "test_ms_per_flow": 0.09708108707930647
+        },
+        "elapsed_seconds": 1114.4489352703094
+      },
+      {
+        "dataset": "NF-CSE-CIC-IDS2018",
+        "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+        "model": "LODA",
+        "scaling_type": "Normalizer",
+        "n_bins": 20,
+        "n_random_cuts": 200,
+        "seed": 42,
+        "flows_train_oml": 100000,
+        "flows_validation": 1019204,
+        "flows_test": 1019202,
+        "selection_metric": "f1",
+        "quantile_grid": [
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.85,
+          0.9,
+          0.95,
+          0.99
+        ],
+        "selected_q": 0.6,
+        "threshold": -5.6516654737980865,
+        "validation": {
+          "tp": 479880,
+          "tn": 289014,
+          "fp": 220588,
+          "fn": 29722,
+          "accuracy": 0.7544063798807698,
+          "precision": 0.68508482900004,
+          "recall": 0.9416760530767148,
+          "false_positive": 0.43286329331517537,
+          "f1": 0.7931441982695215
+        },
+        "test": {
+          "tp": 479673,
+          "tn": 288260,
+          "fp": 221341,
+          "fn": 29928,
+          "accuracy": 0.7534649657280892,
+          "precision": 0.6842559492392448,
+          "recall": 0.941271700801215,
+          "false_positive": 0.4343417693450366,
+          "f1": 0.792445162169641
+        },
+        "validation_top5": [
+          {
+            "q": 0.6,
+            "threshold": -5.6516654737980865,
+            "metrics": {
+              "tp": 479880,
+              "tn": 289014,
+              "fp": 220588,
+              "fn": 29722,
+              "accuracy": 0.7544063798807698,
+              "precision": 0.68508482900004,
+              "recall": 0.9416760530767148,
+              "false_positive": 0.43286329331517537,
+              "f1": 0.7931441982695215
+            }
+          },
+          {
+            "q": 0.5,
+            "threshold": -5.762440528319296,
+            "metrics": {
+              "tp": 488780,
+              "tn": 235369,
+              "fp": 274233,
+              "fn": 20822,
+              "accuracy": 0.7105044721174564,
+              "precision": 0.6405919689441727,
+              "recall": 0.9591406627132547,
+              "false_positive": 0.538131718478342,
+              "f1": 0.7681506190010334
+            }
+          },
+          {
+            "q": 0.99,
+            "threshold": -4.488263764891811,
+            "metrics": {
+              "tp": 137315,
+              "tn": 480896,
+              "fp": 28706,
+              "fn": 372287,
+              "accuracy": 0.606562572360391,
+              "precision": 0.8270941627866354,
+              "recall": 0.2694553789035365,
+              "false_positive": 0.05633023418275439,
+              "f1": 0.4064840894996174
+            }
+          },
+          {
+            "q": 0.95,
+            "threshold": -4.713249065679122,
+            "metrics": {
+              "tp": 139100,
+              "tn": 457937,
+              "fp": 51665,
+              "fn": 370502,
+              "accuracy": 0.5857875361556666,
+              "precision": 0.7291693969019474,
+              "recall": 0.27295811240929196,
+              "false_positive": 0.1013830400979588,
+              "f1": 0.39722031449225903
+            }
+          },
+          {
+            "q": 0.9,
+            "threshold": -4.8818778103545135,
+            "metrics": {
+              "tp": 139567,
+              "tn": 448361,
+              "fp": 61241,
+              "fn": 370035,
+              "accuracy": 0.576850169347844,
+              "precision": 0.6950270905541612,
+              "recall": 0.2738745138362879,
+              "false_positive": 0.12017417514059991,
+              "f1": 0.3929195816500331
+            }
+          }
+        ],
+        "timings": {
+          "warmup_training_seconds": 12.7879319190979,
+          "train_score_seconds": 15.612337589263916,
+          "threshold_selection_seconds": 2021.6495134830475,
+          "training_seconds": 12.533093214035034,
+          "test_seconds": 199.48174858093262,
+          "test_ms_per_flow": 0.19572346657574516
+        },
+        "elapsed_seconds": 2262.0655088424683
+      }
+    ]
+  },
+  "best_by_validation_f1": {
+    "NF-CSE-CIC-IDS2018": {
+      "dataset": "NF-CSE-CIC-IDS2018",
+      "filename": "/tmp/opencode/NF-CSE-CIC-IDS2018-shuffled.csv",
+      "model": "LODA",
+      "scaling_type": "Normalizer",
+      "n_bins": 5,
+      "n_random_cuts": 100,
+      "seed": 42,
+      "flows_train_oml": 100000,
+      "flows_validation": 1019204,
+      "flows_test": 1019202,
+      "selection_metric": "f1",
+      "quantile_grid": [
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.85,
+        0.9,
+        0.95,
+        0.99
+      ],
+      "selected_q": 0.9,
+      "threshold": -3.333787588615466,
+      "validation": {
+        "tp": 472465,
+        "tn": 445154,
+        "fp": 64448,
+        "fn": 37137,
+        "accuracy": 0.9003290803411289,
+        "precision": 0.8799656555158843,
+        "recall": 0.9271254822390806,
+        "false_positive": 0.12646732155682278,
+        "f1": 0.9029302016693502
+      },
+      "test": {
+        "tp": 472188,
+        "tn": 445031,
+        "fp": 64570,
+        "fn": 37413,
+        "accuracy": 0.899938383166438,
+        "precision": 0.8797037025996818,
+        "recall": 0.9265837390428983,
+        "false_positive": 0.12670697271002215,
+        "f1": 0.9025353631019564
+      },
+      "validation_top5": [
+        {
+          "q": 0.9,
+          "threshold": -3.333787588615466,
+          "metrics": {
+            "tp": 472465,
+            "tn": 445154,
+            "fp": 64448,
+            "fn": 37137,
+            "accuracy": 0.9003290803411289,
+            "precision": 0.8799656555158843,
+            "recall": 0.9271254822390806,
+            "false_positive": 0.12646732155682278,
+            "f1": 0.9029302016693502
+          }
+        },
+        {
+          "q": 0.85,
+          "threshold": -3.3499132107725047,
+          "metrics": {
+            "tp": 474584,
+            "tn": 422397,
+            "fp": 87205,
+            "fn": 35018,
+            "accuracy": 0.8800799447411902,
+            "precision": 0.8447726815583787,
+            "recall": 0.9312836291851287,
+            "false_positive": 0.1711237397027484,
+            "f1": 0.8859211996367339
+          }
+        },
+        {
+          "q": 0.8,
+          "threshold": -3.477078330158454,
+          "metrics": {
+            "tp": 475245,
+            "tn": 410165,
+            "fp": 99437,
+            "fn": 34357,
+            "accuracy": 0.8687269673195945,
+            "precision": 0.8269703940614114,
+            "recall": 0.9325807198558875,
+            "false_positive": 0.19512678521669852,
+            "f1": 0.876606129021548
+          }
+        },
+        {
+          "q": 0.7,
+          "threshold": -3.5232140696451326,
+          "metrics": {
+            "tp": 485942,
+            "tn": 339965,
+            "fp": 169637,
+            "fn": 23660,
+            "accuracy": 0.810345132083469,
+            "precision": 0.7412409488406432,
+            "recall": 0.9535716107864569,
+            "false_positive": 0.33288134661951874,
+            "f1": 0.8341056024772117
+          }
+        },
+        {
+          "q": 0.6,
+          "threshold": -3.5532038689816416,
+          "metrics": {
+            "tp": 487124,
+            "tn": 272242,
+            "fp": 237360,
+            "fn": 22478,
+            "accuracy": 0.7450579079359971,
+            "precision": 0.6723737170179052,
+            "recall": 0.9558910679314445,
+            "false_positive": 0.4657752520594503,
+            "f1": 0.7894490335357504
+          }
+        }
+      ],
+      "timings": {
+        "warmup_training_seconds": 5.673511028289795,
+        "train_score_seconds": 6.6588850021362305,
+        "threshold_selection_seconds": 803.309700012207,
+        "training_seconds": 5.6446826457977295,
+        "test_seconds": 94.43970155715942,
+        "test_ms_per_flow": 0.0926604358676292
+      },
+      "elapsed_seconds": 915.7266864776611
+    }
+  },
+  "total_seconds": 34550.08178830147
+}
