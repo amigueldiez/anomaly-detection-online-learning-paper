@@ -26,6 +26,23 @@ class TestModelArgs(unittest.TestCase):
         for dataset in ms.DATASETS:
             self.assertEqual(ms.model_args('SAD', dataset), ms.MODELS['SAD']['args'])
 
+    def test_ocsvm_uses_the_unsw_v1_configuration(self):
+        self.assertEqual(
+            ms.model_args('OCSVM', 'NF-UNSW-NB15'),
+            ['--scaling-type', 'MaxAbsScaler', '--nu', '0.05', '--q', '0.99',
+             '--learning-rate', '0.1'],
+        )
+
+    def test_ocsvm_uses_the_unsw_v2_configuration(self):
+        self.assertEqual(
+            ms.model_args('OCSVM', 'NF-UNSW-NB15-v2'),
+            ['--scaling-type', 'MaxAbsScaler', '--nu', '0.05', '--q', '0.99',
+             '--learning-rate', '0.3'],
+        )
+
+    def test_ocsvm_runs_the_shared_detector_script(self):
+        self.assertEqual(ms.MODELS['OCSVM']['script'], 'ocsvm_cic.py')
+
 
 if __name__ == '__main__':
     unittest.main()

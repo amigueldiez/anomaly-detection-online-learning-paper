@@ -1,0 +1,50 @@
+{
+  "dataset": "../NF-UNSW-NB15.csv",
+  "model": "OneClassSVM+QuantileFilter",
+  "scaling_type": "MaxAbsScaler",
+  "nu": 0.05,
+  "q": 0.99,
+  "learning_rate": 0.1,
+  "seed": 1,
+  "flows_train_oml": 100000,
+  "selected_q": 0.99,
+  "validation": {
+    "tp": 35973,
+    "tn": 35259,
+    "fp": 944,
+    "fn": 230,
+    "accuracy": 0.9837858740988316,
+    "precision": 0.9744291247934556,
+    "recall": 0.9936469353368506,
+    "false_positive": 0.02607518713918736,
+    "f1": 0.9839442013129103
+  },
+  "test": {
+    "tp": 36203,
+    "tn": 34747,
+    "fp": 1456,
+    "fn": 0,
+    "accuracy": 0.9798911692401182,
+    "precision": 0.9613372633367854,
+    "recall": 1.0,
+    "false_positive": 0.04021766151976355,
+    "f1": 0.9802875632937099
+  },
+  "timings": {
+    "training_seconds": 0.5366518497467041,
+    "validation_seconds": 0.3118469715118408,
+    "total_training_seconds": 0.5366518497467041,
+    "evaluation_seconds": 0.32047224044799805,
+    "evaluation_ms_per_flow": 0.004426045361544596,
+    "evaluation_latency_ms": {
+      "count": 72406,
+      "mean_ms": 0.0020811661188299313,
+      "std_ms": 0.0016840739293579612,
+      "min_ms": 0.000421,
+      "median_ms": 0.000501,
+      "p95_ms": 0.003908,
+      "p99_ms": 0.004127,
+      "max_ms": 0.021471
+    }
+  }
+}

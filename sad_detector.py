@@ -31,6 +31,7 @@ from pathlib import Path
 import numpy as np
 
 import hyperparameter_optimization as hp
+import timing_utils as tu
 from river import anomaly
 
 
@@ -67,18 +68,26 @@ def train_model(n_features, aggregation, train_rows):
     return model
 
 
-def evaluate_stream(model, dataset_no_labels, labels, threshold):
+def evaluate_stream(model, dataset_no_labels, labels, threshold, collect_latency=False):
     """Online evaluation: score, classify, and update when not anomalous."""
     predictions = []
     scores = []
+    latencies_ns = [] if collect_latency else None
     for row, label in zip(dataset_no_labels, labels):
+        if collect_latency:
+            start = time.perf_counter_ns()
         score = model.score_one(row)
         anomalous = score > threshold
         predictions.append(anomalous)
         scores.append(score)
         if not anomalous:
             model.learn_one(row)
-    return hp.classification_metrics(labels, predictions), scores
+        if collect_latency:
+            latencies_ns.append(time.perf_counter_ns() - start)
+    metrics = hp.classification_metrics(labels, predictions)
+    if collect_latency:
+        return metrics, scores, latencies_ns
+    return metrics, scores
 
 
 def candidate_thresholds(upper=10.0, step=0.1):
@@ -211,10 +220,18 @@ def main():
     print(f'Training time: {training_time:.2f} s')
 
     start = time.time()
-    test_metrics, _ = evaluate_stream(model, scaled['test'], test_labels, threshold)
+    test_metrics, _, latencies_ns = evaluate_stream(
+        model, scaled['test'], test_labels, threshold, collect_latency=True,
+    )
     test_time = time.time() - start
+    latency = tu.summarize_latencies_ns(latencies_ns)
     print_metrics('Test (held out, threshold fixed on validation)', test_metrics, test_time)
+    print(f'Per-flow latency: mean {latency["mean_ms"]:.6f} ms '
+          f'± {latency["std_ms"]:.6f} | median {latency["median_ms"]:.6f} | '
+          f'p95 {latency["p95_ms"]:.6f} | p99 {latency["p99_ms"]:.6f} | '
+          f'max {latency["max_ms"]:.6f} ms')
 
+    total_training_time = selection_time + training_time
     payload = {
         'dataset': args.filename,
         'model': 'StandardAbsoluteDeviation',
@@ -233,8 +250,10 @@ def main():
         'timings': {
             'threshold_search_seconds': selection_time,
             'training_seconds': training_time,
-            'test_seconds': test_time,
-            'test_ms_per_flow': 1000 * test_time / len(scaled['test']),
+            'total_training_seconds': total_training_time,
+            'evaluation_seconds': test_time,
+            'evaluation_ms_per_flow': 1000 * test_time / len(scaled['test']),
+            'evaluation_latency_ms': latency,
         },
     }
     if args.output_json:
