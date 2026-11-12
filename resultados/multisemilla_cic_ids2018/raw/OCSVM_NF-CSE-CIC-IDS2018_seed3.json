@@ -31,9 +31,20 @@
     "f1": 0.760029078948918
   },
   "timings": {
-    "training_seconds": 0.5223188400268555,
-    "validation_seconds": 4.709488153457642,
-    "test_seconds": 4.829678535461426,
-    "test_ms_per_flow": 0.004738686281484363
+    "training_seconds": 0.5021798610687256,
+    "validation_seconds": 4.5462729930877686,
+    "total_training_seconds": 0.5021798610687256,
+    "evaluation_seconds": 4.791255950927734,
+    "evaluation_ms_per_flow": 0.0047009875872768446,
+    "evaluation_latency_ms": {
+      "count": 1019202,
+      "mean_ms": 0.002400781076763978,
+      "std_ms": 0.001655060796816487,
+      "min_ms": 0.000401,
+      "median_ms": 0.003687,
+      "p95_ms": 0.003878,
+      "p99_ms": 0.004108,
+      "max_ms": 0.050736
+    }
   }
 }
