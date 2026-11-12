@@ -212,6 +212,37 @@ class TestGenerateDatasetIntegration(unittest.TestCase):
         self.assertEqual(len(curves["accuracy"]), len(scaled["validation"]))
 
 
+class TestEvaluateStreamLatency(unittest.TestCase):
+    class FakeModel:
+        def __init__(self, scores):
+            self._scores = iter(scores)
+            self.learned = []
+
+        def score_one(self, row):
+            return next(self._scores)
+
+        def classify(self, score):
+            return score >= 0.5
+
+        def learn_one(self, row):
+            self.learned.append(row)
+
+    def test_collects_one_latency_sample_per_flow(self):
+        model = self.FakeModel([0.9, 0.1, 0.8])
+        rows = [[1.0], [2.0], [3.0]]
+        labels = pd.DataFrame({'Label': [1, 0, 1]})
+
+        metrics, curves, latencies_ns = hpo.evaluate_stream(
+            model, rows, labels, collect_latency=True,
+        )
+
+        self.assertEqual(len(curves['accuracy']), len(rows))
+        self.assertEqual(len(latencies_ns), len(rows))
+        self.assertTrue(all(sample > 0 for sample in latencies_ns))
+        self.assertEqual(metrics['tp'], 2)
+        self.assertEqual(metrics['tn'], 1)
+
+
 class TestMeanStd(unittest.TestCase):
     def test_empty(self):
         self.assertEqual(me.mean_std([]), (0.0, 0.0))

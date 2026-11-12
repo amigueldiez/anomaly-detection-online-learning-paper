@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Multi-seed evaluation of SAD and LODA on the two NF-UNSW-NB15 datasets.
+"""Multi-seed evaluation of SAD, LODA and One-Class SVM on the NF-UNSW-NB15 datasets.
 
 The protocol mirrors ``multiexecution.py``: the membership of each flow to the
 scaler / training / validation / test sets is fixed, and every execution only
@@ -20,6 +20,8 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+
+import timing_utils as tu
 
 NUM_EXECUTIONS = 12
 SEED_START = 0
@@ -57,6 +59,26 @@ MODELS = {
             'NF-UNSW-NB15-v2': 'StandardScaler, n_bins=20, n_random_cuts=50',
         },
     },
+    'OCSVM': {
+        'script': 'ocsvm_cic.py',
+        'args': [],
+        'args_by_dataset': {
+            'NF-UNSW-NB15': [
+                '--scaling-type', 'MaxAbsScaler', '--nu', '0.05', '--q', '0.99',
+                '--learning-rate', '0.1',
+            ],
+            'NF-UNSW-NB15-v2': [
+                '--scaling-type', 'MaxAbsScaler', '--nu', '0.05', '--q', '0.99',
+                '--learning-rate', '0.3',
+            ],
+        },
+        'selected_key': 'selected_q',
+        'configuration': 'Fixed One-Class SVM configuration selected per dataset',
+        'configuration_by_dataset': {
+            'NF-UNSW-NB15': 'MaxAbsScaler, nu=0.05, q=0.99, learning_rate=0.1',
+            'NF-UNSW-NB15-v2': 'MaxAbsScaler, nu=0.05, q=0.99, learning_rate=0.3',
+        },
+    },
 }
 
 METRICS = ('accuracy', 'recall', 'false_positive', 'precision', 'f1')
@@ -83,10 +105,7 @@ def aggregate_metrics(runs, split):
 
 
 def aggregate_timings(runs, keys):
-    return {
-        key: dict(zip(('mean', 'std'), mean_std([run['timings'][key] for run in runs])))
-        for key in keys
-    }
+    return tu.aggregate_timings(runs, keys)
 
 
 def model_args(model, dataset):
@@ -139,6 +158,9 @@ def print_summary(summary):
                 for metric, stats in entry[split].items():
                     print(f'    {metric:15s} {100 * stats["mean"]:9.4f} % '
                           f'± {100 * stats["std"]:.4f} %')
+            print('  Timings (mean ± std over runs):')
+            for line in tu.format_aggregated_timings(entry['timings']):
+                print(line)
 
 
 def main():

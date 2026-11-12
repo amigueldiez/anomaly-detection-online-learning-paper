@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fixed-hyperparameter One-Class SVM evaluation on NF-CSE-CIC-IDS2018.
+"""Fixed-hyperparameter One-Class SVM evaluation on a NetFlow CSV.
 
 This script mirrors the single-configuration path of
 ``hyperparameter_optimization.py``:
@@ -10,11 +10,13 @@ This script mirrors the single-configuration path of
    flows it does not flag).
 4. Evaluate the held-out test split once with the same model.
 
-The hyperparameters are fixed to the best configuration found by the grid in
-``resultados_ocsvm_cic_ids2018.md`` (StandardScaler, nu=0.5, q=0.9, lr=0.3).
-The only thing that changes between executions is the random seed, which
-controls the internal order of the four sets (the partition membership itself
-is fixed by the pre-shuffled CSV).
+The defaults correspond to the best configuration found for
+NF-CSE-CIC-IDS2018 in ``resultados_ocsvm_cic_ids2018.md`` (StandardScaler,
+nu=0.5, q=0.9, lr=0.3), but every dataset-specific option can be overridden
+from the command line; ``multiexecution_sad_loda.py`` uses the same script for
+the NF-UNSW-NB15 datasets. The only thing that changes between executions is
+the random seed, which controls the internal order of the four sets (the
+partition membership itself is fixed by the CSV order).
 """
 
 import argparse
@@ -25,6 +27,7 @@ from pathlib import Path
 import numpy as np
 
 import hyperparameter_optimization as hp
+import timing_utils as tu
 
 
 def main():
@@ -84,11 +87,16 @@ def main():
 
     print('\nEvaluating held-out test split (online)...')
     start = time.time()
-    test_metrics, _ = hp.evaluate_stream(
-        model, scaled['test'], splits['test_labeled'],
+    test_metrics, _, latencies_ns = hp.evaluate_stream(
+        model, scaled['test'], splits['test_labeled'], collect_latency=True,
     )
     test_time = time.time() - start
+    latency = tu.summarize_latencies_ns(latencies_ns)
     print(f'Test time: {test_time:.2f} s')
+    print(f'Per-flow latency: mean {latency["mean_ms"]:.6f} ms '
+          f'± {latency["std_ms"]:.6f} | median {latency["median_ms"]:.6f} | '
+          f'p95 {latency["p95_ms"]:.6f} | p99 {latency["p99_ms"]:.6f} | '
+          f'max {latency["max_ms"]:.6f} ms')
 
     payload = {
         'dataset': args.filename,
@@ -105,8 +113,10 @@ def main():
         'timings': {
             'training_seconds': training_time,
             'validation_seconds': validation_time,
-            'test_seconds': test_time,
-            'test_ms_per_flow': 1000 * test_time / len(scaled['test']),
+            'total_training_seconds': training_time,
+            'evaluation_seconds': test_time,
+            'evaluation_ms_per_flow': 1000 * test_time / len(scaled['test']),
+            'evaluation_latency_ms': latency,
         },
     }
 

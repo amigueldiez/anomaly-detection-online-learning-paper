@@ -28,6 +28,8 @@ import sys
 import time
 from pathlib import Path
 
+import timing_utils as tu
+
 NUM_EXECUTIONS = 12
 SEED_START = 0
 
@@ -85,10 +87,7 @@ def aggregate_metrics(runs, split):
 
 
 def aggregate_timings(runs, keys):
-    return {
-        key: dict(zip(('mean', 'std'), mean_std([run['timings'][key] for run in runs])))
-        for key in keys
-    }
+    return tu.aggregate_timings(runs, keys)
 
 
 def run_one(model, dataset, seed, filename, raw_path):
@@ -135,6 +134,9 @@ def print_summary(summary):
                 for metric, stats in entry[split].items():
                     print(f'    {metric:15s} {100 * stats["mean"]:9.4f} % '
                           f'± {100 * stats["std"]:.4f} %')
+            print('  Timings (mean ± std over runs):')
+            for line in tu.format_aggregated_timings(entry['timings']):
+                print(line)
 
 
 def main():

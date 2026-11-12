@@ -42,6 +42,7 @@ import numpy as np
 from river import anomaly
 
 import hyperparameter_optimization as hp
+import timing_utils as tu
 
 
 SCALERS = ('MaxAbsScaler', 'MinMaxScaler', 'Normalizer', 'RobustScaler', 'StandardScaler')
@@ -69,16 +70,30 @@ def score_stream(model, rows):
     )
 
 
-def evaluate_stream(model, rows, labels, threshold):
-    """Online evaluation: score, classify, and update when not anomalous."""
+def evaluate_stream(model, rows, labels, threshold, collect_latency=False):
+    """Online evaluation: score, classify, and update when not anomalous.
+
+    When ``collect_latency`` is true, the wall-clock time of every flow
+    (feature preparation + score + threshold + optional update) is recorded and
+    returned alongside the metrics, so the caller can report mean, standard
+    deviation, median, p95, p99 and maximum latency.
+    """
     predictions = []
+    latencies_ns = [] if collect_latency else None
     for row in rows:
+        if collect_latency:
+            start = time.perf_counter_ns()
         score = model.score_one(as_dict(row))
         anomalous = score >= threshold
         predictions.append(anomalous)
         if not anomalous:
             model.learn_one(as_dict(row))
-    return hp.classification_metrics(labels, predictions)
+        if collect_latency:
+            latencies_ns.append(time.perf_counter_ns() - start)
+    metrics = hp.classification_metrics(labels, predictions)
+    if collect_latency:
+        return metrics, latencies_ns
+    return metrics
 
 
 def parse_q_grid(text):
@@ -220,11 +235,20 @@ def main():
 
     print('\nEvaluating the held-out test set (online)...')
     start = time.time()
-    test_metrics = evaluate_stream(model, scaled['test'], test_labels, best['threshold'])
+    test_metrics, latencies_ns = evaluate_stream(
+        model, scaled['test'], test_labels, best['threshold'], collect_latency=True,
+    )
     test_time = time.time() - start
+    latency = tu.summarize_latencies_ns(latencies_ns)
     print_metrics('Test (held out, threshold fixed on validation)', test_metrics,
                   test_time)
+    print(f'Per-flow latency: mean {latency["mean_ms"]:.6f} ms '
+          f'± {latency["std_ms"]:.6f} | median {latency["median_ms"]:.6f} | '
+          f'p95 {latency["p95_ms"]:.6f} | p99 {latency["p99_ms"]:.6f} | '
+          f'max {latency["max_ms"]:.6f} ms')
 
+    total_training_time = (warmup_training_time + train_score_time
+                           + selection_time + training_time)
     payload = {
         'dataset': args.filename,
         'scaling_type': args.scaling_type,
@@ -242,10 +266,12 @@ def main():
         'timings': {
             'warmup_training_seconds': warmup_training_time,
             'train_score_seconds': train_score_time,
-            'threshold_selection_seconds': selection_time,
+            'threshold_search_seconds': selection_time,
             'training_seconds': training_time,
-            'test_seconds': test_time,
-            'test_ms_per_flow': 1000 * test_time / len(scaled['test']),
+            'total_training_seconds': total_training_time,
+            'evaluation_seconds': test_time,
+            'evaluation_ms_per_flow': 1000 * test_time / len(scaled['test']),
+            'evaluation_latency_ms': latency,
         },
     }
     if args.output_json:

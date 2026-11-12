@@ -53,6 +53,19 @@ class TestEvaluateStream(unittest.TestCase):
         self.assertEqual(metrics['fp'], 1)
         self.assertEqual(metrics['fn'], 1)
 
+    def test_collects_one_latency_sample_per_flow(self):
+        model = RecordingModel([5.0, 1.0, 5.0, 1.0])
+        rows = [[0.0], [0.0], [0.0], [0.0]]
+        labels = [1, 0, 0, 1]
+
+        metrics, latencies_ns = ld.evaluate_stream(
+            model, rows, labels, threshold=3.0, collect_latency=True,
+        )
+
+        self.assertEqual(metrics['tp'], 1)
+        self.assertEqual(len(latencies_ns), len(rows))
+        self.assertTrue(all(sample > 0 for sample in latencies_ns))
+
 
 if __name__ == '__main__':
     unittest.main()

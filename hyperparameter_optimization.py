@@ -14,6 +14,8 @@ import yaml
 import ipaddress
 import time
 
+import timing_utils
+
 
 #############################################################
 # Variables configuration                                   #
@@ -378,31 +380,38 @@ def train_model_OML(scaler_dataset_train, parameter):
 
 
 # Evaluate a model over a labeled stream
-def evaluate_stream(model, dataset_no_labels, dataset_labeled):
+def evaluate_stream(model, dataset_no_labels, dataset_labeled, collect_latency=False):
     """Run the online evaluation loop over a labeled stream.
 
     Returns a ``(metrics, curves)`` pair. ``metrics`` holds the final
     confusion-matrix counts and the derived metrics, while ``curves`` holds the
-    cumulative evolution of each metric across the stream.
+    cumulative evolution of each metric across the stream. When
+    ``collect_latency`` is true, a third element with the per-flow wall-clock
+    time (in nanoseconds) is returned.
     """
     labels = list(dataset_labeled['Label'])
     tp, tn, fp, fn = 0, 0, 0, 0
     predictions = []
+    latencies_ns = [] if collect_latency else None
     curves = {'accuracy': [], 'recall': [], 'false_positive': [], 'precision': [], 'f1': []}
 
     for i, row in enumerate(dataset_no_labels):
         if isinstance(row, list):
             row = {f'feature_{j}': value for j, value in enumerate(row)}
 
+        if collect_latency:
+            start = time.perf_counter_ns()
         score = model.score_one(row)
         anomalous = model.classify(score)
+        if not anomalous:
+            model.learn_one(row)
+        if collect_latency:
+            latencies_ns.append(time.perf_counter_ns() - start)
+
         predictions.append(anomalous)
 
         probability_preprocessing.learn_one({0: score})
         probability.update(probability_preprocessing.transform_one({0: score})[0])
-
-        if not anomalous:
-            model.learn_one(row)
 
         label = labels[i]
 
@@ -423,15 +432,25 @@ def evaluate_stream(model, dataset_no_labels, dataset_labeled):
         curves['precision'].append(precision)
         curves['f1'].append(2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0)
 
-    return classification_metrics(labels, predictions), curves
+    metrics = classification_metrics(labels, predictions)
+    if collect_latency:
+        return metrics, curves, latencies_ns
+    return metrics, curves
 
 
 # Test model
 def test_model(model, final_test_dataset, dataset_test_labeled, parameter):
     start_time = time.time()
-    metrics, curves = evaluate_stream(model, final_test_dataset, dataset_test_labeled)
+    metrics, curves, latencies_ns = evaluate_stream(
+        model, final_test_dataset, dataset_test_labeled, collect_latency=True,
+    )
     end_time = time.time()
+    latency = timing_utils.summarize_latencies_ns(latencies_ns)
     print("Testing time: ", end_time - start_time)
+    print(f'Per-flow latency: mean {latency["mean_ms"]:.6f} ms '
+          f'± {latency["std_ms"]:.6f} | median {latency["median_ms"]:.6f} | '
+          f'p95 {latency["p95_ms"]:.6f} | p99 {latency["p99_ms"]:.6f} | '
+          f'max {latency["max_ms"]:.6f} ms')
 
     accuracy = metrics['accuracy']
     recall = metrics['recall']
